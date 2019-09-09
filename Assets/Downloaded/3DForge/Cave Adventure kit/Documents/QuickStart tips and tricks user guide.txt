@@ -1,0 +1,25 @@
+Thanks for purchasing this pakage.
+
+The Demo Scene was created using Unity Terrain with settings:
+Terrain Width 100
+Terrain Height 20
+Terrain Length 100
+Meightmap Resolution 513
+Detail Resolution 2048
+Detail Resolution Per Patch 8
+Control Texture Resolution 512
+Base Texture Resolution 1024
+
+Terrain Textures on adding:
+edit size x & y are 3
+
+NB!!! lift whole terrain for example 4 units before you start to build,
+so that you and add chasms and likewise to areas that you want later
+andnot having to pull everything then up later and loose time in your level building
+
+For Top-Down games, just de-activate the Roof Game Object
+
+
+Send some screenshots to info@3dforge.co.za of your work and I will showcase them on the website
+
+Enjoy

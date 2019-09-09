@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<meshBrushTemplate version="1.9">
+  <instance>
+    <active>true</active>
+    <name>Crystals</name>
+    <stats>false</stats>
+    <lockSceneView>false</lockSceneView>
+  </instance>
+  <meshes>
+    <ui>
+      <style>modern</style>
+      <iconSize>60</iconSize>
+    </ui>
+    <assets>
+      <asset>
+        <guid>9f197e9a0b7fda44b929668569e9b548</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom1_01_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>0e59a88e849a40446b137150a188f0ef</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom1_02_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>1e88eb89853a1cb4b9cd46d4858b6410</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom1_03_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>2b4ee8a63202e584da5461cc822377fc</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom1_04_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>5c10fe36808a259469a8b538bdef4944</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom1_05_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>2e3617eda46bb02479d091eb30e49e15</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom2_01_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>96ef3c9817a30f24781ab0e64f739cb1</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom2_02_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>e1162e940c94d504aba654d43faf7bdf</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom2_03_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>8ffe35e45aa74a94cbc11d8ed0e4bc24</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom2_04_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>b87e8a091da4cd449aa382fe3246bf2c</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom2_05_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>8d07277409bc9734e99436e1e1ff2152</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom2_ring_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>7cdaa775ce394654883f771f811bbe9f</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom3_01_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>3e6fb52a4fd45d04b819c81e15fa921e</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom3_02_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>8e6499655c5531942b17a734f9673f50</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom3_03_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>397a74c35ff806849b67d4c922b4b81a</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom3_04_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>c21414f8cbb276841a386999075068ac</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom3_05_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>53c8d9636f0cac04bac0a3ff6f3b9252</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom4_01_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>4f04219592db9fb42ac13bc41d6edf1d</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom4_02_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>0e6249191c09a394a8d4ed76a3ad82e3</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom4_03_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>f513e87692b6df646b0859b9315ddee3</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom4_04_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>47f419baba3488f4f98c1b14578dcf08</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom4_05_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>36c9efde34f4eab4598a75229fa91238</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom4_06_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>482509570a861f445877265d2ff6a0df</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom4_07_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>04a8f1ec79a4edf45b96a5982f1ebc8a</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom4_08_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>193b942244563d94285076308656d21c</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom4_large_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>d5d34d7ab97f2ce4fa56f351dcf817ad</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom4_medium_green.prefab</path>
+      </asset>
+      <asset>
+        <guid>2bdabb57b1ea74f4c911054f339ee5a4</guid>
+        <path>Assets/3DForge/Cave Adventure kit/Prefabs/Plants/Fungus/fungus_green/cave_mushroom4_small_green.prefab</path>
+      </asset>
+    </assets>
+  </meshes>
+  <keyBindings>
+    <paint>P</paint>
+    <delete>L</delete>
+    <combine>K</combine>
+    <randomize>J</randomize>
+    <increaseRadius>O</increaseRadius>
+    <decreaseRadius>I</decreaseRadius>
+  </keyBindings>
+  <brush>
+    <radius>8</radius>
+    <color>
+      <r>1</r>
+      <g>1</g>
+      <b>1</b>
+      <a>1</a>
+    </color>
+    <quantity>
+      <min>2</min>
+      <max>6</max>
+    </quantity>
+    <useDensity>false</useDensity>
+    <density>
+      <min>0.5</min>
+      <max>0.5</max>
+    </density>
+    <offset>
+      <min>0</min>
+      <max>0</max>
+    </offset>
+    <scattering>
+      <min>17.52</min>
+      <max>50.42</max>
+    </scattering>
+    <delay>0.25</delay>
+    <yAxisTangent>false</yAxisTangent>
+    <strokeAlignment>false</strokeAlignment>
+  </brush>
+  <slopes>
+    <slopeInfluence>
+      <min>0</min>
+      <max>45.3</max>
+    </slopeInfluence>
+    <slopeFilter>
+      <enabled>false</enabled>
+      <inverse>false</inverse>
+      <angleThreshold>
+        <min>25</min>
+        <max>30</max>
+      </angleThreshold>
+      <manualReferenceVectorSampling>false</manualReferenceVectorSampling>
+      <showReferenceVectorInSceneView>true</showReferenceVectorInSceneView>
+      <referenceVector>
+        <x>0</x>
+        <y>1</y>
+        <z>0</z>
+      </referenceVector>
+      <referenceVectorSampleLocation>
+        <x>0</x>
+        <y>0</y>
+        <z>0</z>
+      </referenceVectorSampleLocation>
+    </slopeFilter>
+  </slopes>
+  <randomizers>
+    <scale>
+      <scaleUniformly>true</scaleUniformly>
+      <uniform>
+        <min>2.40622663</min>
+        <max>3</max>
+      </uniform>
+      <nonUniform>
+        <x>
+          <min>0.865833342</min>
+          <max>1.19805551</max>
+        </x>
+        <y>
+          <min>1.05138886</min>
+          <max>2.25888872</max>
+        </y>
+        <z>
+          <min>0.8530556</min>
+          <max>1.21083331</max>
+        </z>
+      </nonUniform>
+      <curve>
+        <variation>0</variation>
+        <keys>
+          <key>
+            <time>0</time>
+            <value>1</value>
+            <inTangent>0</inTangent>
+            <outTangent>0</outTangent>
+          </key>
+          <key>
+            <time>1</time>
+            <value>1</value>
+            <inTangent>0</inTangent>
+            <outTangent>0</outTangent>
+          </key>
+        </keys>
+      </curve>
+    </scale>
+    <rotation>
+      <min>0</min>
+      <max>5</max>
+    </rotation>
+    <randomizerBrush>
+      <position>true</position>
+      <rotation>true</rotation>
+      <scale>true</scale>
+    </randomizerBrush>
+  </randomizers>
+  <overlapFilter>
+    <enabled>false</enabled>
+    <minimumAbsoluteDistance>
+      <min>0.25</min>
+      <max>0.5</max>
+    </minimumAbsoluteDistance>
+  </overlapFilter>
+  <additiveScale>
+    <scaleUniformly>true</scaleUniformly>
+    <uniform>
+      <min>2.437018</min>
+      <max>3</max>
+    </uniform>
+    <nonUniform>
+      <x>0</x>
+      <y>0</y>
+      <z>0</z>
+    </nonUniform>
+  </additiveScale>
+  <optimization>
+    <autoIgnoreRaycast>true</autoIgnoreRaycast>
+    <autoSelectOnCombine>true</autoSelectOnCombine>
+    <autoStatic>true</autoStatic>
+  </optimization>
+  <rangeLimits>
+    <quantity>
+      <max>100</max>
+    </quantity>
+    <density>
+      <max>10</max>
+    </density>
+    <offset>
+      <min>-50</min>
+      <max>50</max>
+    </offset>
+    <delay>
+      <max>1</max>
+    </delay>
+    <minimumAbsoluteDistance>
+      <max>3</max>
+    </minimumAbsoluteDistance>
+    <randomScale>
+      <max>3</max>
+    </randomScale>
+    <additiveScale>
+      <max>3</max>
+    </additiveScale>
+  </rangeLimits>
+  <inspectorFoldouts>
+    <help>false</help>
+    <templatesHelp>false</templatesHelp>
+    <generalUsageHelp>false</generalUsageHelp>
+    <optimizationHelp>false</optimizationHelp>
+    <meshes>true</meshes>
+    <templates>true</templates>
+    <keyBindings>false</keyBindings>
+    <brush>true</brush>
+    <slopes>true</slopes>
+    <randomizers>true</randomizers>
+    <overlapFilter>true</overlapFilter>
+    <additiveScale>true</additiveScale>
+    <optimization>true</optimization>
+  </inspectorFoldouts>
+  <globalPaintingMode>
+    <enabled>false</enabled>
+    <layerMask>
+      <layer index="0">true</layer>
+      <layer index="1">true</layer>
+      <layer index="2">false</layer>
+      <layer index="3">true</layer>
+      <layer index="4">true</layer>
+      <layer index="5">true</layer>
+      <layer index="6">true</layer>
+      <layer index="7">true</layer>
+      <layer index="8">true</layer>
+      <layer index="9">true</layer>
+      <layer index="10">true</layer>
+      <layer index="11">true</layer>
+      <layer index="12">true</layer>
+      <layer index="13">true</layer>
+      <layer index="14">true</layer>
+      <layer index="15">true</layer>
+      <layer index="16">true</layer>
+      <layer index="17">true</layer>
+      <layer index="18">true</layer>
+      <layer index="19">true</layer>
+      <layer index="20">true</layer>
+      <layer index="21">true</layer>
+      <layer index="22">true</layer>
+      <layer index="23">true</layer>
+      <layer index="24">true</layer>
+      <layer index="25">true</layer>
+      <layer index="26">true</layer>
+      <layer index="27">true</layer>
+      <layer index="28">true</layer>
+      <layer index="29">true</layer>
+      <layer index="30">true</layer>
+      <layer index="31">true</layer>
+    </layerMask>
+  </globalPaintingMode>
+</meshBrushTemplate>

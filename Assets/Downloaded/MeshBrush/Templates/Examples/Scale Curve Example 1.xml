@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<meshBrushTemplate version="1.9">
+  <instance>
+    <active>true</active>
+    <name>Small to big (outwards)</name>
+    <stats>false</stats>
+    <lockSceneView>true</lockSceneView>
+  </instance>
+  <meshes>
+    <ui>
+      <style>modern</style>
+      <iconSize>60</iconSize>
+    </ui>
+    <assets>
+      <asset>
+        <guid>0d58d318832249042acd9b4bf59ee42f</guid>
+        <path>Assets/MeshBrush/Example Scenes/MeshBrush Demo Scene/Prefabs/Cube 2.prefab</path>
+      </asset>
+    </assets>
+  </meshes>
+  <keyBindings>
+    <paint>Mouse0</paint>
+    <delete>L</delete>
+    <combine>K</combine>
+    <randomize>J</randomize>
+    <increaseRadius>O</increaseRadius>
+    <decreaseRadius>I</decreaseRadius>
+  </keyBindings>
+  <brush>
+    <radius>6.536</radius>
+    <color>
+      <r>0</r>
+      <g>0.7794118</g>
+      <b>0.134381369</b>
+      <a>1</a>
+    </color>
+    <quantity>
+      <min>1</min>
+      <max>1</max>
+    </quantity>
+    <useDensity>true</useDensity>
+    <density>
+      <min>0.1</min>
+      <max>0.1</max>
+    </density>
+    <offset>
+      <min>0</min>
+      <max>0</max>
+    </offset>
+    <scattering>
+      <min>90</min>
+      <max>100</max>
+    </scattering>
+    <delay>0.05</delay>
+    <yAxisTangent>false</yAxisTangent>
+    <strokeAlignment>false</strokeAlignment>
+  </brush>
+  <slopes>
+    <slopeInfluence>
+      <min>95</min>
+      <max>100</max>
+    </slopeInfluence>
+    <slopeFilter>
+      <enabled>false</enabled>
+      <inverse>false</inverse>
+      <angleThreshold>
+        <min>25</min>
+        <max>30</max>
+      </angleThreshold>
+      <manualReferenceVectorSampling>false</manualReferenceVectorSampling>
+      <showReferenceVectorInSceneView>true</showReferenceVectorInSceneView>
+      <referenceVector>
+        <x>0</x>
+        <y>1</y>
+        <z>0</z>
+      </referenceVector>
+      <referenceVectorSampleLocation>
+        <x>0</x>
+        <y>0</y>
+        <z>0</z>
+      </referenceVectorSampleLocation>
+    </slopeFilter>
+  </slopes>
+  <randomizers>
+    <scale>
+      <scaleUniformly>true</scaleUniformly>
+      <uniform>
+        <min>0.25</min>
+        <max>0.4</max>
+      </uniform>
+      <nonUniform>
+        <x>
+          <min>1</min>
+          <max>1</max>
+        </x>
+        <y>
+          <min>1</min>
+          <max>1</max>
+        </y>
+        <z>
+          <min>1</min>
+          <max>1</max>
+        </z>
+      </nonUniform>
+      <curve>
+        <variation>0</variation>
+        <keys>
+          <key>
+            <time>0</time>
+            <value>0.4375</value>
+            <inTangent>0</inTangent>
+            <outTangent>0</outTangent>
+          </key>
+          <key>
+            <time>0.974990845</time>
+            <value>4.125</value>
+            <inTangent>9.14160252</inTangent>
+            <outTangent>9.14160252</outTangent>
+          </key>
+        </keys>
+      </curve>
+    </scale>
+    <rotation>
+      <min>0</min>
+      <max>35</max>
+    </rotation>
+    <randomizerBrush>
+      <position>false</position>
+      <rotation>true</rotation>
+      <scale>true</scale>
+    </randomizerBrush>
+  </randomizers>
+  <overlapFilter>
+    <enabled>true</enabled>
+    <minimumAbsoluteDistance>
+      <min>0</min>
+      <max>0.1312</max>
+    </minimumAbsoluteDistance>
+  </overlapFilter>
+  <additiveScale>
+    <scaleUniformly>true</scaleUniformly>
+    <uniform>
+      <min>0</min>
+      <max>0</max>
+    </uniform>
+    <nonUniform>
+      <x>0</x>
+      <y>0</y>
+      <z>0</z>
+    </nonUniform>
+  </additiveScale>
+  <optimization>
+    <autoIgnoreRaycast>false</autoIgnoreRaycast>
+    <autoSelectOnCombine>true</autoSelectOnCombine>
+    <autoStatic>false</autoStatic>
+  </optimization>
+  <rangeLimits>
+    <quantity>
+      <max>100</max>
+    </quantity>
+    <density>
+      <max>10</max>
+    </density>
+    <offset>
+      <min>-50</min>
+      <max>50</max>
+    </offset>
+    <delay>
+      <max>1</max>
+    </delay>
+    <minimumAbsoluteDistance>
+      <max>3</max>
+    </minimumAbsoluteDistance>
+    <randomScale>
+      <max>5</max>
+    </randomScale>
+    <additiveScale>
+      <max>3</max>
+    </additiveScale>
+  </rangeLimits>
+  <inspectorFoldouts>
+    <help>false</help>
+    <templatesHelp>false</templatesHelp>
+    <generalUsageHelp>false</generalUsageHelp>
+    <optimizationHelp>false</optimizationHelp>
+    <meshes>true</meshes>
+    <templates>true</templates>
+    <keyBindings>true</keyBindings>
+    <brush>true</brush>
+    <slopes>true</slopes>
+    <randomizers>true</randomizers>
+    <overlapFilter>true</overlapFilter>
+    <additiveScale>true</additiveScale>
+    <optimization>true</optimization>
+  </inspectorFoldouts>
+  <globalPaintingMode>
+    <enabled>true</enabled>
+    <layerMask>
+      <layer index="0">true</layer>
+      <layer index="1">false</layer>
+      <layer index="2">false</layer>
+      <layer index="3">false</layer>
+      <layer index="4">false</layer>
+      <layer index="5">false</layer>
+      <layer index="6">false</layer>
+      <layer index="7">false</layer>
+      <layer index="8">false</layer>
+      <layer index="9">false</layer>
+      <layer index="10">false</layer>
+      <layer index="11">false</layer>
+      <layer index="12">false</layer>
+      <layer index="13">false</layer>
+      <layer index="14">false</layer>
+      <layer index="15">false</layer>
+      <layer index="16">false</layer>
+      <layer index="17">false</layer>
+      <layer index="18">false</layer>
+      <layer index="19">false</layer>
+      <layer index="20">false</layer>
+      <layer index="21">false</layer>
+      <layer index="22">false</layer>
+      <layer index="23">false</layer>
+      <layer index="24">false</layer>
+      <layer index="25">false</layer>
+      <layer index="26">false</layer>
+      <layer index="27">false</layer>
+      <layer index="28">false</layer>
+      <layer index="29">false</layer>
+      <layer index="30">false</layer>
+      <layer index="31">false</layer>
+    </layerMask>
+  </globalPaintingMode>
+</meshBrushTemplate>
