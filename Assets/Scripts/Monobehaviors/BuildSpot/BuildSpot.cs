@@ -3,12 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuildSpot : MonoBehaviour, IEntity
+public class BuildSpot : GameEntity
 {
     public bool IsOccupied => CurrentTower != null;
     public GameObject CurrentTower { get; private set; }
-
-    public Vector3 Position => transform.position;
 
     private void Awake()
     {

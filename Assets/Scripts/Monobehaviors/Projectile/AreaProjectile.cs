@@ -1,15 +1,14 @@
 ﻿public class AreaProjectile : Projectile
 {
-    protected override bool OnTargetHit()
+    protected override bool TargetHit()
     {
-        var aoeAttack = Module as AreaAttackModule;
+        var aoeAttack = owner as AreaAttackModule;
         if (aoeAttack == null)
             return true;
         var targets = RangeTargetScanner<ITakeDamage>.GetTargets(transform.position, WaveManager.Instance.GetEnemiesAlive(), aoeAttack.Range);
         for(int i = 0; i<targets.Length;i++)
         {
-            ApplyActiveEffects(targets[i]);
-            targets[i].TakeDamage(attackData.Damage);
+            targets[i].TakeDamage(owner.AttackerID, owner.AttackData.Damage, owner.ActiveAbilities);
         }
         return true;
     }

@@ -5,6 +5,8 @@ public static class ClosestEntityFinder<T> where T : IEntity
 {
     public static T GetClosestTransform(T[] nearbyTransforms, Vector3 currentPosition)
     {
+        if (nearbyTransforms == null)
+            return default(T);
         if (nearbyTransforms.Length > 0)
         {
             var closestDist = Mathf.Infinity;

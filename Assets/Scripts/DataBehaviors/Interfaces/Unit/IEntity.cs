@@ -2,5 +2,6 @@
 
 public interface IEntity
 {
-    Vector3 Position { get; }
+    Vector3 Position { get; set; }
+    void Destroy();
 }

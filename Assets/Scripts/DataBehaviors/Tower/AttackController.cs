@@ -52,7 +52,7 @@ public class AttackController
         if (enemies.Length <= 0)
             return null;
         var targets = new ITakeDamage[owner.AttackData.TargetLimit];
-        var enemiesInRange = RangeTargetScanner<ITakeDamage>.GetTargets(owner.Obelisk.Position, enemies, owner.AttackData.Range);
+        var enemiesInRange = RangeTargetScanner<ITakeDamage>.GetTargets(owner.Entity.Position, enemies, owner.AttackData.Range);
 
         if (enemiesInRange.Length > 0)
         {

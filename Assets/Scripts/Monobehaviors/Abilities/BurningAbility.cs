@@ -4,8 +4,8 @@
 public class BurningAbility : Ability
 {
     public Damage Damage;
-    protected override void Apply(Unit unit)
+    public override void Apply(ITakeDamage unit, int attackerID)
     {
-        unit.TakeDamage(Damage);
+        unit.TakeDamage(attackerID, Damage);
     }
 }

@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Unit : MonoBehaviour, ITakeDamage
+public class Unit : GameEntity, ITakeDamage
 {
     public static event Action<Unit> OnUnitDeath;
     public event Action<Damage> OnTakeDamage = delegate {};
 
     public float CurrentHealth => currentHealth;
     public float MaxHealth => unitData.Health;
-    public Vector3 Position => transform.position;
 
     public int TargetReachpoint;
     [SerializeField]
@@ -50,7 +49,7 @@ public class Unit : MonoBehaviour, ITakeDamage
         Destroy(this.gameObject);
     }
 
-    public void TakeDamage(Damage damage)
+    public void TakeDamage(int attackerID, Damage damage, Ability[] abilities = null)
     {
         var finalDamage = DamageManager.Instance.GetFinalDamageValues(damage, unitData.Type);
         currentHealth -= finalDamage;
@@ -60,12 +59,18 @@ public class Unit : MonoBehaviour, ITakeDamage
             OnDeath();
             return;
         }
+
+        if (abilities != null)
+        {
+            for(int i = 0; i < abilities.Length; i++)
+                AddEffect(attackerID, new Effect(attackerID, abilities[i]));
+        }
     }
 
-    public void AddEffect(string attackerName, Effect effect, bool stacksInDuration)
+    public void AddEffect(int attackerID, Effect effect)
     {
-        var currentInstance = activeEffects.FirstOrDefault(a => a.AttackerName == attackerName);
-        if (stacksInDuration && currentInstance != null)
+        var currentInstance = activeEffects.FirstOrDefault(a => a.AttackerId == attackerID);
+        if (effect.StackInDuration && currentInstance != null)
         {
             currentInstance.Extend();
         }
@@ -74,7 +79,8 @@ public class Unit : MonoBehaviour, ITakeDamage
             activeEffects.Add(effect);
         }
     }
-    internal void RemoveEffect(Effect effect)
+
+    public void RemoveEffect(Effect effect)
     {
         activeEffects.Remove(effect);
     }

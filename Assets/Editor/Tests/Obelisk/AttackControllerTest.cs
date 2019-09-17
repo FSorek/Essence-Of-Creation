@@ -17,12 +17,12 @@ namespace Tests
             adata.Range = 5;
             adata.AttackTimer = 1f;
 
-            var obelisk = Substitute.For<IObelisk>();
+            var obelisk = Substitute.For<IEntity>();
             obelisk.Position.Returns(Vector3.zero);
 
             ICanAttack module = Substitute.For<ICanAttack>();
             module.AttackData.Returns(adata);
-            module.Obelisk.Returns(obelisk);
+            module.Entity.Returns(obelisk);
 
             ITakeDamage unit = Substitute.For<ITakeDamage>();
             ITakeDamage[] targets = new ITakeDamage[1]
@@ -52,12 +52,12 @@ namespace Tests
             adata.Range = 5;
             adata.AttackTimer = 1f;
 
-            var obelisk = Substitute.For<IObelisk>();
+            var obelisk = Substitute.For<IEntity>();
             obelisk.Position.Returns(Vector3.zero);
 
             ICanAttack module = Substitute.For<ICanAttack>();
             module.AttackData.Returns(adata);
-            module.Obelisk.Returns(obelisk);
+            module.Entity.Returns(obelisk);
 
             ITakeDamage unit = Substitute.For<ITakeDamage>();
             ITakeDamage[] targets = new ITakeDamage[1]
@@ -85,12 +85,12 @@ namespace Tests
             adata.Range = 5;
             adata.AttackTimer = 1f;
 
-            var obelisk = Substitute.For<IObelisk>();
+            var obelisk = Substitute.For<IEntity>();
             obelisk.Position.Returns(Vector3.zero);
 
             ICanAttack module = Substitute.For<ICanAttack>();
             module.AttackData.Returns(adata);
-            module.Obelisk.Returns(obelisk);
+            module.Entity.Returns(obelisk);
 
             ITakeDamage unit1 = Substitute.For<ITakeDamage>();
             ITakeDamage unit2 = Substitute.For<ITakeDamage>();
@@ -120,12 +120,12 @@ namespace Tests
             adata.Range = 5;
             adata.AttackTimer = 1f;
 
-            var obelisk = Substitute.For<IObelisk>();
+            var obelisk = Substitute.For<IEntity>();
             obelisk.Position.Returns(Vector3.zero);
 
             ICanAttack module = Substitute.For<ICanAttack>();
             module.AttackData.Returns(adata);
-            module.Obelisk.Returns(obelisk);
+            module.Entity.Returns(obelisk);
 
             ITakeDamage unit1 = Substitute.For<ITakeDamage>();
 

@@ -3,20 +3,21 @@ using UnityEngine;
 
 public abstract class AttackModule : MonoBehaviour, ICanAttack
 {
+    public IEntity Entity { get => entity; }
     public TowerAttackData AttackData { get => attackData; set => attackData = value; }
-    public IObelisk Obelisk { get => obelisk; }
     public Ability[] ActiveAbilities { get => activeAbilities; set => activeAbilities = value; }
-    public abstract void Attack(ITakeDamage target);
+    public int AttackerID => TowerRecipeId.GetID(GetComponent<Obelisk>().InfusedElements);
 
     private Ability[] activeAbilities;
-    private Obelisk obelisk;
+    private IEntity entity;
     [SerializeField]private TowerAttackData attackData;
     private AttackController attackController;
 
+    public abstract void Attack(ITakeDamage target);
 
     private void Awake()
     {
-        obelisk = GetComponent<Obelisk>();
+        entity = GetComponent<IEntity>();
         this.attackController = new AttackController(this, WaveManager.Instance);
     }
 

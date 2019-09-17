@@ -3,6 +3,8 @@
 public static class GameTime
 {
     private static float forward;
+
+
     public static void Reset() => forward = 0;
 
     public static void MoveTimeForward(float seconds)
@@ -11,5 +13,6 @@ public static class GameTime
     }
 
     public static float time => Time.time + forward;
+    public static float deltaTime => Time.deltaTime;
 }
 

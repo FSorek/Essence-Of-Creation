@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "Obelisk Attack Data", menuName = "Essence/Obelisk/Attack Data", order = 0)]
+[CreateAssetMenu(fileName = "Entity Attack Data", menuName = "Essence/Entity/Attack Data", order = 0)]
 public class TowerAttackData : ScriptableObject
 {
     public string Name;

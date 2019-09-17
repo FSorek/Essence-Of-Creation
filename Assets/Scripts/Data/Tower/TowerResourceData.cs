@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Obelisk Resource Data", menuName = "Essence/Obelisk/Resource Data", order = 1)]
+[CreateAssetMenu(fileName = "Entity Resource Data", menuName = "Essence/Entity/Resource Data", order = 1)]
 public class TowerResourceData : ScriptableObject
 {
     public int BuildCost;

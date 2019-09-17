@@ -3,14 +3,13 @@ using UnityEngine;
 
 public class SingleProjectile : Projectile
 {
-    protected override bool OnTargetHit()
+    protected override bool TargetHit()
     {
         if(target == null)
             return true;
         else
         {
-            target.TakeDamage(attackData.Damage);
-            ApplyActiveEffects(target);
+            target.TakeDamage(owner.AttackerID, owner.AttackData.Damage, owner.ActiveAbilities);
             return true;
         }
     }

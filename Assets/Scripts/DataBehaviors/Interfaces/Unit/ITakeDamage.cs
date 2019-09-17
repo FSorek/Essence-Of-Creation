@@ -6,8 +6,9 @@ public interface ITakeDamage : IEntity
     float CurrentHealth { get; }
     float MaxHealth { get; }
 
-    void TakeDamage(Damage damage);
+    void TakeDamage(int attackerID, Damage damage, Ability[] abilities = null);
     void OnDeath();
 
-    void AddEffect(string attackerName, Effect effect, bool stacksInDuration);
+    void AddEffect(int attackerID, Effect effect);
+    void RemoveEffect(Effect effect);
 }

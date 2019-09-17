@@ -7,7 +7,7 @@ public class BounceAttackModule : AttackModule
 
     public override void Attack(ITakeDamage target)
     {
-        var projectile = GameObject.Instantiate(AttackData.projectileModel, Obelisk.AttackSpawnPosition, Quaternion.identity);
+        var projectile = GameObject.Instantiate(AttackData.projectileModel, Entity.Position, Quaternion.identity);
         projectile.AddComponent<BounceProjectile>().Initialize(target, this);
     }
 }

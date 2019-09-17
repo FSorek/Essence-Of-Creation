@@ -5,10 +5,11 @@
 public class BleedAbility : Ability
 {
     public Damage damage;
-    protected override void Apply(Unit unit)
+
+    public override void Apply(ITakeDamage unit, int attackerID)
     {
         // if(unit.Shield <= 0)
-        unit.TakeDamage(damage);
+        unit.TakeDamage(attackerID, damage);
     }
 }
 
