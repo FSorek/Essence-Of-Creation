@@ -35,13 +35,12 @@ namespace Tests
 
             AttackController controller = new AttackController(module, waveManager);
 
-
+            GameTime.SetOffsetTimeForward(1f);
             controller.Tick();
-            GameTime.MoveTimeForward(1);
+            GameTime.SetOffsetTimeForward(2f);
             controller.Tick();
 
             module.Received(2).Attack(targets[0]);
-            GameTime.Reset();
         }
 
         [Test]
@@ -71,10 +70,10 @@ namespace Tests
             AttackController controller = new AttackController(module, waveManager);
 
             controller.Tick();
-            GameTime.MoveTimeForward(.1f);
+            GameTime.SetOffsetTimeForward(.1f);
+            var result = controller.CanAttack();
 
-            Assert.False(controller.CanAttack());
-            GameTime.Reset();
+            Assert.False(result);
         }
 
         [Test]
@@ -105,7 +104,7 @@ namespace Tests
 
             AttackController controller = new AttackController(module, waveManager);
 
-
+            GameTime.SetOffsetTimeForward(1f);
             controller.Tick();
 
             module.Received().Attack(targets[0]);
@@ -139,7 +138,7 @@ namespace Tests
 
             AttackController controller = new AttackController(module, waveManager);
 
-
+            GameTime.SetOffsetTimeForward(1f);
             controller.Tick();
 
             module.Received().Attack(targets[0]);

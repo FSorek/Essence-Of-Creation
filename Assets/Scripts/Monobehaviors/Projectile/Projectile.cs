@@ -26,6 +26,12 @@ public abstract class Projectile : GameEntity
         if(!initialized)
             return;
 
-        projectileController.Tick(TargetHit());
+        projectileController?.Tick(TargetHit);
+    }
+
+    public override void Destroy()
+    {
+        base.Destroy();
+        projectileController = null;
     }
 }

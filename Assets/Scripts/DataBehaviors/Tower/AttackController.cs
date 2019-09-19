@@ -29,7 +29,7 @@ public class AttackController
             targets = GetTargets();
             if (targets == null || targets.Length <= 0)
                 return false;
-            lastRecordedAttackTime = Time.time;
+            lastRecordedAttackTime = GameTime.time;
             return true;
         }
         return false;

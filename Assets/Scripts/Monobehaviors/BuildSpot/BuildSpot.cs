@@ -15,7 +15,7 @@ public class BuildSpot : GameEntity
 
     private void AssignTower(GameObject tower, BuildSpot spot)
     {
-        if(spot != transform)
+        if(spot.transform != transform)
             return;
 
         CurrentTower = tower;

@@ -10,6 +10,6 @@ public class EntitySimpleMove : IEntitySimpleMove
 
     public void Move(Vector3 position, float speed)
     {
-        entity.Position = (position - entity.Position).normalized * GameTime.deltaTime * speed;
+        entity.Position += (position - entity.Position).normalized * GameTime.deltaTime * speed;
     }
 }
