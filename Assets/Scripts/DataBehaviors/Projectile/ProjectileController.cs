@@ -9,7 +9,7 @@ public class ProjectileController
     protected IEntity projectile;
 
     protected Ability[] activeAbilities;
-    protected IEntitySimpleMove movement;
+    protected EntitySimpleMove movement;
 
     public ProjectileController(ITakeDamage target, ICanAttack owner, IEntity projectile)
     {

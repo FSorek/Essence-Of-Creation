@@ -51,7 +51,7 @@ public class Unit : GameEntity, ITakeDamage
 
     public void TakeDamage(int attackerID, Damage damage, Ability[] abilities = null)
     {
-        var finalDamage = DamageManager.Instance.GetFinalDamageValues(damage, unitData.Type);
+        var finalDamage = damage.GetDamageToArmor(unitData.Type);
         currentHealth -= finalDamage;
         OnTakeDamage(damage);
         if (currentHealth <= 0)

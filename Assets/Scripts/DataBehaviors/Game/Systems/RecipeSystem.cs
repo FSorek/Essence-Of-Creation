@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 
-public class RecipeSystem : MonoBehaviour
+public class RecipeSystem : MonoBehaviour // static ?
 {
     public Obelisk[] PlayableObelisks;
     public static Dictionary<int, Obelisk> Recipes => Instance.recipes;

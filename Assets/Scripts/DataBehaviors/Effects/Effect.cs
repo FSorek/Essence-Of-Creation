@@ -19,7 +19,7 @@ public class Effect
         this.attackerID = attackerId;
         this.duration = ability.Duration;
         this.interval = ability.Interval;
-        this.stacksInDuration = ability.stacksInDuration;
+        this.stacksInDuration = ability.StacksInDuration;
         this.tick = (target) => ability.Apply(target, attackerId);
         lastRecordedTick = 0f;
         firstAppliedTime = GameTime.time;

@@ -7,9 +7,13 @@ public class BuildSpot : GameEntity
 {
     public bool IsOccupied => CurrentTower != null;
     public GameObject CurrentTower { get; private set; }
+    public static List<IEntity> BuildSpots; 
 
     private void Awake()
     {
+        if(BuildSpots == null)
+            BuildSpots = new List<IEntity>();
+        BuildSpots.Add(this);
         PlayerBuildManager.OnTowerCreated += AssignTower;
     }
 

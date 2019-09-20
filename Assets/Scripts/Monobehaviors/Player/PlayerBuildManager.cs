@@ -39,7 +39,7 @@ public class PlayerBuildManager : MonoBehaviour
         var peak = Instantiate(BuildSpotPeakPrefab);
         peak.transform.position = buildBlocks[buildingBlocksNumber - 1].transform.position + latestBuildSpotDirection * 2;
         peak.AddComponent<BuildSpot>();
-        BuildSpotManager.BuildSpots.Add(peak.GetComponent<IEntity>());
+        BuildSpot.BuildSpots.Add(peak.GetComponent<IEntity>());
         for (int i = 0; i < buildingBlocksNumber; i++)
         {
             buildBlocks[i] = null;

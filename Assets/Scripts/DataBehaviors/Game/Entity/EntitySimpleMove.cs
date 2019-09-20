@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class EntitySimpleMove : IEntitySimpleMove
+public class EntitySimpleMove
 {
     private IEntity entity;
     public EntitySimpleMove(IEntity entity)

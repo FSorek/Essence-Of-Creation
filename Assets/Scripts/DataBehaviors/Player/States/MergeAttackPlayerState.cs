@@ -31,7 +31,7 @@ public class MergeAttackPlayerState : PlayerState
 
         if (Input.GetMouseButtonDown(0) && !Input.GetMouseButton(1))
         {
-            var potentialTargets = RangeTargetScanner<BuildSpot>.GetTargets(playerC.HandTransform.transform.position, BuildSpotManager.BuildSpots.ToArray(),
+            var potentialTargets = RangeTargetScanner<BuildSpot>.GetTargets(playerC.HandTransform.transform.position, BuildSpot.BuildSpots.ToArray(),
                 playerC.BuildingData.BuildSpotDetectionRange)?.Where(t => !t.IsOccupied).ToArray();
             currentBuildSpot = ClosestEntityFinder<BuildSpot>.GetClosestTransform(potentialTargets, playerC.HandTransform.position);
             if (currentBuildSpot != null)
@@ -56,7 +56,7 @@ public class MergeAttackPlayerState : PlayerState
 
         if (Input.GetMouseButtonDown(1) && !Input.GetMouseButton(0))
         {
-            var potentialTargets = RangeTargetScanner<BuildSpot>.GetTargets(playerC.HandTransform.transform.position, BuildSpotManager.BuildSpots.ToArray(),
+            var potentialTargets = RangeTargetScanner<BuildSpot>.GetTargets(playerC.HandTransform.transform.position, BuildSpot.BuildSpots.ToArray(),
                 playerC.BuildingData.BuildSpotDetectionRange)?.Where(t => t.GetComponent<BuildSpot>().IsOccupied).ToArray();
             currentBuildSpot = ClosestEntityFinder<BuildSpot>.GetClosestTransform(potentialTargets, playerC.HandTransform.position);
             if (currentBuildSpot != null)
