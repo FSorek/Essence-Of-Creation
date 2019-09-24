@@ -7,19 +7,21 @@ internal class HealthBar : MonoBehaviour
     [SerializeField] private Image foregroundImg;
     [SerializeField] private float updateSpeed = 0.5f;
     [SerializeField] private float positionOffset;
+    private Camera mainCamera;
 
-    private Unit unitAttached;
-    internal void SetHealth(Unit unit)
+    private ITakeDamage attachedEntity;
+    internal void SetHealth(ITakeDamage entity)
     {
-        unitAttached = unit;
-        unit.OnTakeDamage += HandleHealthChanged;
+        attachedEntity = entity;
         foregroundImg.fillAmount = 1f;
+        mainCamera = Camera.main;
+        attachedEntity.OnTakeDamage += HandleHealthChanged;
     }
 
     private void HandleHealthChanged(Damage damage)
     {
         // later on add different visuals depending on the dominating type of damage
-        var pct = unitAttached.CurrentHealth/unitAttached.MaxHealth;
+        var pct = attachedEntity.CurrentHealth/attachedEntity.MaxHealth;
         StartCoroutine(ResizeToPercentage(pct));
     }
 
@@ -40,14 +42,14 @@ internal class HealthBar : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(unitAttached != null)
-            transform.position =
-                Camera.main.WorldToScreenPoint(unitAttached.transform.position + Vector3.up * positionOffset);
+        if(attachedEntity != null && !attachedEntity.Equals(null))
+            transform.position = mainCamera.WorldToScreenPoint(attachedEntity.Position + Vector3.up * positionOffset);
     }
 
     private void OnDisable()
     {
-        if(unitAttached != null)
-            unitAttached.OnTakeDamage -= HandleHealthChanged;
+        if(attachedEntity != null)
+            attachedEntity.OnTakeDamage -= HandleHealthChanged;
     }
 }
+

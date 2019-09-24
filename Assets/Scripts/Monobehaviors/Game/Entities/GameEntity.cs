@@ -13,7 +13,8 @@ public class GameEntity : MonoBehaviour, IEntity
     public virtual void Destroy() // hmm
     {
         var vfx = GetComponent<VisualEffect>();
-        vfx?.Stop();
+        if(vfx != null)
+            vfx.Stop();
         Destroy(this.gameObject, 4f); // pool
         Destroy(this);
     }

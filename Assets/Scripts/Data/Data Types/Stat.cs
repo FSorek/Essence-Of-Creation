@@ -9,8 +9,27 @@ public class Stat
     private float _value;
     private float lastBaseValue = float.MinValue;
 
-    public float BaseValue;
+    /// <summary>
+    /// The original value of the stat - without modifiers.
+    /// </summary>
+    public float BaseValue { get; set; }
 
+    /// <summary>
+    /// The final value of the stat - with modifiers.
+    /// </summary>
+    public float Value
+    {
+        get
+        {
+            if (isDirty || lastBaseValue != BaseValue)
+            {
+                lastBaseValue = BaseValue;
+                _value = CalculateFinalValue();
+                isDirty = false;
+            }
+            return _value;
+        }
+    }
 
     public Stat(float baseValue) : this()
     {
@@ -44,40 +63,21 @@ public class Stat
     public static implicit operator int(Stat stat) => Mathf.RoundToInt(stat.Value);
     public static implicit operator float(Stat stat) => stat.Value;
 
-    public float Value
-    {
-        get
-        {
-            if (isDirty || lastBaseValue != BaseValue)
-            {
-                lastBaseValue = BaseValue;
-                _value = CalculateFinalValue();
-                isDirty = false;
-            }
-            return _value;
-        }
-    }
-
     private float CalculateFinalValue()
     {
         float finalValue = BaseValue;
         float percentageModification = 1f;
         for (int i = 0; i < statModifiers.Count; i++)
         {
-            StatModifier mod = statModifiers[i];
-
-            if (mod.Type == StatModifierType.Flat)
+            if (statModifiers[i].Type == StatModifierType.Flat)
             {
-                finalValue += mod.Value;
+                finalValue += statModifiers[i].Value;
             }
-            else if (mod.Type == StatModifierType.Percent)
+            else if (statModifiers[i].Type == StatModifierType.Percent)
             {
-                percentageModification += mod.Value;
+                percentageModification += statModifiers[i].Value;
             }
         }
-
-        finalValue *= percentageModification;
-
-        return finalValue;
+        return finalValue * percentageModification;
     }
 }

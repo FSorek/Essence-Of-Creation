@@ -4,18 +4,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class StateMachine : MonoBehaviour
+public class StateMachine
 {
-    private Dictionary<Type, BaseState> availableStates;
-    public BaseState CurrentState { get; private set; }
-    public event Action<BaseState> OnStateChanged;
+    private Dictionary<Type, UnitState> availableStates;
+    public UnitState CurrentState { get; private set; }
+    public event Action<UnitState> OnStateChanged;
 
-    public void SetStates(Dictionary<Type, BaseState> dict)
+    public void SetStates(Dictionary<Type, UnitState> dict)
     {
         availableStates = dict;
     }
 
-    private void Update()
+    public void Tick()
     {
         if (CurrentState == null)
             CurrentState = availableStates.Values.First();

@@ -6,10 +6,8 @@ using UnityEngine.UI;
 
 public class WaveManager : MonoBehaviour, IWaveManager
 {
-    public static event Action<Unit> OnSpawn = delegate(Unit uniTransform) {  };
-
     public static WaveManager Instance;
-    public Transform[] Reachpoints;
+    [SerializeField]private Transform[] reachpoints;
     [SerializeField] private Transform spawnPoint;
     [SerializeField] private WaveSettings waveSettings;
 
@@ -17,6 +15,9 @@ public class WaveManager : MonoBehaviour, IWaveManager
     private UnitData[] unitGeneratedWaves = new UnitData[50];
 
     public int CurrentWave { get; private set; }
+
+    public Transform[] Reachpoints => reachpoints;
+
     private float timer;
     private void Awake()
     {
@@ -65,7 +66,6 @@ public class WaveManager : MonoBehaviour, IWaveManager
         {
             var enemy = Instantiate(wave.Model, spawnPoint.position, Quaternion.identity);
             enemiesAlive.Add(enemy.GetComponent<Unit>());
-            OnSpawn(enemy.GetComponent<Unit>());
             yield return new WaitForSeconds(wave.TimeBetweenSpawns);
         }
 

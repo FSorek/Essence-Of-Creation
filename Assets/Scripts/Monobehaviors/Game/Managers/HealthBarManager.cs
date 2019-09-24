@@ -3,22 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class HealthBarController : MonoBehaviour
+public class HealthBarManager : MonoBehaviour
 {
-    [SerializeField]
-    private ObjectPool Pool;
-    [SerializeField] private HealthBar healthBarPrefab;
+    [SerializeField] private ObjectPool Pool;
 
-    private Dictionary<Unit, HealthBar> healthBars = new Dictionary<Unit, HealthBar>();
+    private Dictionary<ITakeDamage, HealthBar> healthBars = new Dictionary<ITakeDamage, HealthBar>();
 
     private void Awake()
     {
-        WaveManager.OnSpawn += AddHealthBar;
+        Unit.OnUnitSpawn += AddHealthBar;
         Unit.OnUnitDeath += RemoveHealthBar;
-
     }
 
-    private void RemoveHealthBar(Unit obj)
+    private void RemoveHealthBar(ITakeDamage obj)
     {
         if (healthBars.ContainsKey(obj))
         {
@@ -27,7 +24,7 @@ public class HealthBarController : MonoBehaviour
         }
     }
 
-    private void AddHealthBar(Unit obj)
+    private void AddHealthBar(ITakeDamage obj)
     {
         if (!healthBars.ContainsKey(obj))
         {

@@ -11,8 +11,7 @@ public class Effect
     private float lastRecordedTick;
     private float firstAppliedTime;
     private int attackerID;
-    public int AttackerId => attackerID;
-    public bool StackInDuration => stacksInDuration;
+
 
     public Effect(int attackerId, Ability ability)
     {
@@ -51,4 +50,7 @@ public class Effect
     {
         duration += duration;
     }
+
+    public int AttackerId => attackerID;
+    public bool StackInDuration => stacksInDuration;
 }

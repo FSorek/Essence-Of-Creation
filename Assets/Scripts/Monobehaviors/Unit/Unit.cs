@@ -1,38 +1,28 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class Unit : GameEntity, ITakeDamage
+public class Unit : GameEntity, ITakeDamage, ICanMove
 {
-    public static event Action<Unit> OnUnitDeath;
-    public event Action<Damage> OnTakeDamage = delegate {};
+    protected UnitData unitData { get; set; }
+    protected List<Effect> activeEffects { get; private set; }
 
-    public float CurrentHealth => currentHealth;
-    public float MaxHealth => unitData.Health;
-
-    public int TargetReachpoint;
-    [SerializeField]
-    private UnitData unitData;
-    private int currentHealth;
-
-    private StateMachine stateMachine => GetComponent<StateMachine>();
-    private List<Effect> activeEffects;
-    private List<UnitAbility> unitAbilities;
+    private UnitController unitController { get; set; }
+    private StateMachine stateMachine { get; set; }
 
     private void Awake()
     {
+        activeEffects = new List<Effect>();
         unitData = WaveManager.Instance.GetCurrentGeneratedUnit();
-        currentHealth = unitData.Health;
-        TargetReachpoint = -1;
-        var dict = new Dictionary<Type, BaseState>()
+        stateMachine = new StateMachine();
+        var dict = new Dictionary<Type, UnitState>()
         {
-            {typeof(GetNextWaypoint), new GetNextWaypoint(this) },
-            {typeof(RunningState), new RunningState(this) }
+            {typeof(UnitRunState), new UnitRunState(this, WaveManager.Instance) },
         };
         stateMachine.SetStates(dict);
-        activeEffects = new List<Effect>();
+
+        unitController = new UnitController(this);
+        OnUnitSpawn(this);
     }
 
     private void Update()
@@ -41,49 +31,30 @@ public class Unit : GameEntity, ITakeDamage
         {
             activeEffects[i].Tick(this);
         }
+        stateMachine.Tick();
     }
 
-    public void OnDeath()
+    public void TakeDamage(int attackerID, Damage damage, Ability[] abilities = null)
+    {
+        unitController.TakeDamage(attackerID,damage,abilities);
+        OnTakeDamage(damage);
+    }
+
+    public override void Destroy()
     {
         OnUnitDeath(this);
         Destroy(this.gameObject);
     }
 
-    public void TakeDamage(int attackerID, Damage damage, Ability[] abilities = null)
-    {
-        var finalDamage = damage.GetDamageToArmor(unitData.Type);
-        currentHealth -= finalDamage;
-        OnTakeDamage(damage);
-        if (currentHealth <= 0)
-        {
-            OnDeath();
-            return;
-        }
+    public void RemoveEffect(Effect effect) => unitController.RemoveEffect(effect);
 
-        if (abilities != null)
-        {
-            for(int i = 0; i < abilities.Length; i++)
-                AddEffect(attackerID, new Effect(attackerID, abilities[i]));
-        }
-    }
+    public float MaxHealth => unitData.Health;
+    public float CurrentHealth => unitController.CurrentHealth;
+    public float MovementSpeed => unitData.MoveSpeed;
+    public ArmorType ArmorType => unitData.Type;
 
-    public void AddEffect(int attackerID, Effect effect)
-    {
-        var currentInstance = activeEffects.FirstOrDefault(a => a.AttackerId == attackerID);
-        if (effect.StackInDuration && currentInstance != null)
-        {
-            currentInstance.Extend();
-        }
-        else
-        {
-            activeEffects.Add(effect);
-        }
-    }
+    public static event Action<ITakeDamage> OnUnitSpawn = delegate { };
+    public static event Action<ITakeDamage> OnUnitDeath = delegate { };
 
-    public void RemoveEffect(Effect effect)
-    {
-        activeEffects.Remove(effect);
-    }
-
-    public Stat MoveSpeed => unitData.MoveSpeed;
+    public event Action<Damage> OnTakeDamage = delegate { };
 }
