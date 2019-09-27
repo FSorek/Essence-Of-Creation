@@ -36,7 +36,7 @@ public class Unit : GameEntity, ITakeDamage, ICanMove
 
     public void TakeDamage(int attackerID, Damage damage, Ability[] abilities = null)
     {
-        unitController.TakeDamage(attackerID,damage,abilities);
+        unitController.TakeDamage(attackerID,damage.GetDamageToArmor(unitData.Type),abilities);
         OnTakeDamage(damage);
     }
 
@@ -51,7 +51,6 @@ public class Unit : GameEntity, ITakeDamage, ICanMove
     public float MaxHealth => unitData.Health;
     public float CurrentHealth => unitController.CurrentHealth;
     public float MovementSpeed => unitData.MoveSpeed;
-    public ArmorType ArmorType => unitData.Type;
 
     public static event Action<ITakeDamage> OnUnitSpawn = delegate { };
     public static event Action<ITakeDamage> OnUnitDeath = delegate { };

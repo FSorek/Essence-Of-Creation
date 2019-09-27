@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 
-public class RecipeSystem : MonoBehaviour // static ?
+public class RecipeManager : MonoBehaviour // static ?
 {
     public Obelisk[] PlayableObelisks;
     public static Dictionary<int, Obelisk> Recipes => Instance.recipes;
     private Dictionary<int, Obelisk> recipes = new Dictionary<int, Obelisk>();
-    public static RecipeSystem Instance;
+    public static RecipeManager Instance;
 
 
     private void Awake()
@@ -21,7 +21,7 @@ public class RecipeSystem : MonoBehaviour // static ?
             Instance = this;
         else
         {
-            Debug.LogError("RecipeSystem instance singleton set more than once!");
+            Debug.LogError("RecipeManager instance singleton set more than once!");
         }
 
         foreach (var playableTower in PlayableObelisks)

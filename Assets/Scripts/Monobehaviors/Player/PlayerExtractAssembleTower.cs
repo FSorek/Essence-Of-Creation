@@ -37,9 +37,9 @@ public class PlayerExtractAssembleTower : MonoBehaviour
 
             Obelisk result = null;
             if (inB.InfusedElements.Count == 1)
-                result = RecipeSystem.Instance.GetTowerFromPath(inA.InfusedElements, inB.InfusedElements[0]);
+                result = RecipeManager.Instance.GetTowerFromPath(inA.InfusedElements, inB.InfusedElements[0]);
             else if (inB.InfusedElements.Count > 1 && inA.InfusedElements.Count == 1)
-                result = RecipeSystem.Instance.GetTowerFromPath(inB.InfusedElements, inA.InfusedElements[0]);
+                result = RecipeManager.Instance.GetTowerFromPath(inB.InfusedElements, inA.InfusedElements[0]);
             if (result == null)
             {
                 extractedTowers.Push(inA.gameObject);

@@ -14,9 +14,8 @@ public class UnitController
         activeEffects = new List<Effect>();
     }
 
-    public void TakeDamage(int attackerID, Damage damage, Ability[] abilities = null)
+    public void TakeDamage(int attackerID, float finalDamage, Ability[] abilities = null)
     {
-        var finalDamage = damage.GetDamageToArmor(owner.ArmorType);
         currentHealth -= finalDamage;
         if (currentHealth <= 0)
         {
@@ -26,13 +25,13 @@ public class UnitController
         if (abilities != null)
         {
             for (int i = 0; i < abilities.Length; i++)
-                AddEffect(attackerID, new Effect(attackerID, abilities[i]));
+                AddEffect(new Effect(attackerID, abilities[i]));
         }
     }
 
-    public void AddEffect(int attackerID, Effect effect)
+    public void AddEffect(Effect effect)
     {
-        var currentInstance = activeEffects.FirstOrDefault(a => a.AttackerId == attackerID);
+        var currentInstance = activeEffects.FirstOrDefault(a => a.OwnerId == effect.OwnerId && a.EffectTick == effect.EffectTick);
         if (effect.StackInDuration && currentInstance != null)
         {
             currentInstance.Extend();
@@ -45,4 +44,5 @@ public class UnitController
     public void RemoveEffect(Effect effect) => activeEffects.Remove(effect);
 
     public float CurrentHealth => currentHealth;
+    public List<Effect> ActiveEffects => activeEffects;
 }
