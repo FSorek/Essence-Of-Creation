@@ -32,6 +32,7 @@ public class Unit : GameEntity, ITakeDamage, ICanMove
             activeEffects[i].Tick(this);
         }
         stateMachine.Tick();
+        unitController.RegenerateHealth();
     }
 
     public void TakeDamage(int attackerID, Damage damage, Ability[] abilities = null)
@@ -51,6 +52,7 @@ public class Unit : GameEntity, ITakeDamage, ICanMove
     public float MaxHealth => unitData.Health;
     public float CurrentHealth => unitController.CurrentHealth;
     public float MovementSpeed => unitData.MoveSpeed;
+    public float HealthRegeneration => unitData.HealthRegen;
 
     public static event Action<ITakeDamage> OnUnitSpawn = delegate { };
     public static event Action<ITakeDamage> OnUnitDeath = delegate { };

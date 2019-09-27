@@ -66,5 +66,23 @@ namespace Tests
 
             Assert.IsTrue(controller.ActiveEffects.Contains(effect1) && controller.ActiveEffects.Contains(effect2));
         }
+
+        [Test]
+        public void Unit_Takes_10Damage_Then_Regenerates_5Health()
+        {
+            var owner = Substitute.For<ITakeDamage>();
+            var emptyAction = Substitute.For<Action<ITakeDamage>>();
+            var effect1 = new Effect(0, 1, 1, true, emptyAction);
+            var effect2 = new Effect(1, 1, 1, true, emptyAction);
+            owner.MaxHealth.Returns(100);
+            owner.HealthRegeneration.Returns(5);
+            var controller = new UnitController(owner);
+
+            controller.TakeDamage(0,5);
+            GameTime.SetOffsetTimeForward(1f);
+            controller.RegenerateHealth();
+            
+            Assert.AreEqual(95, controller.CurrentHealth);
+        }
     }
 }

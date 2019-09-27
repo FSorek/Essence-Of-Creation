@@ -6,12 +6,14 @@ public class UnitController
     private ITakeDamage owner;
     private float currentHealth;
     private List<Effect> activeEffects;
+    private float lastRegenTime;
 
     public UnitController(ITakeDamage owner)
     {
         this.owner = owner;
         currentHealth = owner.MaxHealth;
         activeEffects = new List<Effect>();
+        lastRegenTime = GameTime.time;
     }
 
     public void TakeDamage(int attackerID, float finalDamage, Ability[] abilities = null)
@@ -39,6 +41,18 @@ public class UnitController
         else
         {
             activeEffects.Add(effect);
+        }
+    }
+
+    public void RegenerateHealth()
+    {
+        if ((GameTime.time - lastRegenTime) > 1f && currentHealth < owner.MaxHealth)
+        {
+            if (currentHealth + owner.HealthRegeneration >= owner.MaxHealth)
+                currentHealth = owner.MaxHealth;
+            else
+                currentHealth += owner.HealthRegeneration;
+            lastRegenTime = GameTime.time;
         }
     }
     public void RemoveEffect(Effect effect) => activeEffects.Remove(effect);
