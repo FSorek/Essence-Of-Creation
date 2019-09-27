@@ -3,14 +3,13 @@ using UnityEngine;
 
 public class Effect
 {
-    private readonly float interval;
-    private readonly Action<ITakeDamage> tick;
-
+    private int attackerID;
     private bool stacksInDuration;
+    private float interval;
+    private Action<ITakeDamage> tick;
     private float duration;
     private float lastRecordedTick;
     private float firstAppliedTime;
-    private int attackerID;
 
 
     public Effect(int attackerId, Ability ability)
@@ -20,7 +19,7 @@ public class Effect
         this.interval = ability.Interval;
         this.stacksInDuration = ability.StacksInDuration;
         this.tick = (target) => ability.Apply(target, attackerId);
-        lastRecordedTick = 0f;
+        lastRecordedTick = GameTime.time;
         firstAppliedTime = GameTime.time;
     }
 
@@ -31,7 +30,7 @@ public class Effect
         this.interval = interval;
         this.tick = tick;
         this.stacksInDuration = stacksInDuration;
-        lastRecordedTick = 0f;
+        lastRecordedTick = GameTime.time;
         firstAppliedTime = GameTime.time;
     }
 
@@ -46,7 +45,7 @@ public class Effect
         }
     }
 
-    internal void Extend()
+    public void Extend()
     {
         duration += duration;
     }
