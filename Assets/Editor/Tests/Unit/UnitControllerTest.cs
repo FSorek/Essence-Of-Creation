@@ -23,8 +23,8 @@ namespace Tests
         {
             var owner = Substitute.For<ITakeDamage>();
             var emptyAction = Substitute.For<Action<ITakeDamage>>();
-            var effect1 = new Effect(1, 1, 1, true, emptyAction);
-            var effect2 = new Effect(1, 1, 1, true, emptyAction);
+            var effect1 = new Effect(1, 1, 1, true, emptyAction, emptyAction, emptyAction);
+            var effect2 = new Effect(1, 1, 1, true, emptyAction, emptyAction, emptyAction);
 
             var controller = new UnitController(owner);
 
@@ -40,8 +40,8 @@ namespace Tests
             var owner = Substitute.For<ITakeDamage>();
             var emptyAction = Substitute.For<Action<ITakeDamage>>();
             var emptyAction2 = Substitute.For<Action<ITakeDamage>>();
-            var effect1 = new Effect(1, 1, 1, true, emptyAction);
-            var effect2 = new Effect(1, 2, .5f, true, emptyAction2);
+            var effect1 = new Effect(1, 1, 1, true, emptyAction, emptyAction, emptyAction);
+            var effect2 = new Effect(1, 2, .5f, true, emptyAction2, emptyAction2, emptyAction2);
 
             var controller = new UnitController(owner);
 
@@ -56,8 +56,8 @@ namespace Tests
         {
             var owner = Substitute.For<ITakeDamage>();
             var emptyAction = Substitute.For<Action<ITakeDamage>>();
-            var effect1 = new Effect(0, 1, 1, true, emptyAction);
-            var effect2 = new Effect(1, 1, 1, true, emptyAction);
+            var effect1 = new Effect(0, 1, 1, true, emptyAction, emptyAction, emptyAction);
+            var effect2 = new Effect(1, 1, 1, true, emptyAction, emptyAction, emptyAction);
 
             var controller = new UnitController(owner);
 
@@ -72,8 +72,8 @@ namespace Tests
         {
             var owner = Substitute.For<ITakeDamage>();
             var emptyAction = Substitute.For<Action<ITakeDamage>>();
-            var effect1 = new Effect(0, 1, 1, true, emptyAction);
-            var effect2 = new Effect(1, 1, 1, true, emptyAction);
+            var effect1 = new Effect(0, 1, 1, true, emptyAction, emptyAction, emptyAction);
+            var effect2 = new Effect(1, 1, 1, true, emptyAction, emptyAction, emptyAction);
             owner.MaxHealth.Returns(100);
             owner.HealthRegeneration.Returns(5);
             var controller = new UnitController(owner);

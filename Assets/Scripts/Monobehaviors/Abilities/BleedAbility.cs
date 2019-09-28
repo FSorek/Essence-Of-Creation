@@ -11,5 +11,15 @@ public class BleedAbility : Ability
         // if(unit.Shield <= 0)
         unit.TakeDamage(attackerID, damage);
     }
+
+    public override void Remove(ITakeDamage unit, int attackerID)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Tick(ITakeDamage unit, int attackerID)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 

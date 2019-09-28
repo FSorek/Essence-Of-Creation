@@ -8,4 +8,14 @@ public class BurningAbility : Ability
     {
         unit.TakeDamage(attackerID, Damage);
     }
+
+    public override void Remove(ITakeDamage unit, int attackerID)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Tick(ITakeDamage unit, int attackerID)
+    {
+        throw new System.NotImplementedException();
+    }
 }

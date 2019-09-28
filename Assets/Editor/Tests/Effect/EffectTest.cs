@@ -13,7 +13,7 @@ namespace Tests
             GameTime.SetOffsetTimeForward(10);
             var unit = Substitute.For<ITakeDamage>();
             var emptyAction = Substitute.For<Action<ITakeDamage>>();
-            var effect = new Effect(0, 1, 0.5f, true, emptyAction);
+            var effect = new Effect(0, 1, 0.5f, true, emptyAction, emptyAction, emptyAction);
 
             effect.Tick(unit);
             GameTime.SetOffsetTimeForward(11.01f);
@@ -27,8 +27,9 @@ namespace Tests
         {
             GameTime.SetOffsetTimeForward(10);
             ITakeDamage unit = Substitute.For<ITakeDamage>();
-            var emptyAction = Substitute.For<Action<ITakeDamage>>();
-            var effect = new Effect(0, 1, 0.5f, true, emptyAction);
+            var tick = Substitute.For<Action<ITakeDamage>>();
+            var emptyAction2 = Substitute.For<Action<ITakeDamage>>();
+            var effect = new Effect(0, 1, 0.5f, true, tick, emptyAction2, emptyAction2);
 
             effect.Tick(unit);
             GameTime.SetOffsetTimeForward(10.01f);
@@ -42,7 +43,7 @@ namespace Tests
             GameTime.SetOffsetTimeForward(11);
             effect.Tick(unit);
 
-            emptyAction.Received(2).Invoke(unit);
+            tick.Received(2).Invoke(unit);
         }
 
         [Test]
@@ -51,7 +52,7 @@ namespace Tests
             GameTime.SetOffsetTimeForward(10);
             ITakeDamage unit = Substitute.For<ITakeDamage>();
             var emptyAction = Substitute.For<Action<ITakeDamage>>();
-            var effect = new Effect(0, 1, 0.5f, true, emptyAction);
+            var effect = new Effect(0, 1, 0.5f, true, emptyAction, emptyAction, emptyAction);
 
             GameTime.SetOffsetTimeForward(10.99f);
             effect.Tick(unit);
