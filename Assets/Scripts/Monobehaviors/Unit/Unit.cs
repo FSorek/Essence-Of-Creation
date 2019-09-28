@@ -53,6 +53,8 @@ public class Unit : GameEntity, ITakeDamage, ICanMove
     public float CurrentHealth => unitController.CurrentHealth;
     public float MovementSpeed => unitData.MoveSpeed;
     public float HealthRegeneration => unitData.HealthRegen;
+    public int ArmorLayers => unitData.ArmorLayers;
+    public int CrystallineLayers => unitData.CrystallineLayers;
 
     public static event Action<ITakeDamage> OnUnitSpawn = delegate { };
     public static event Action<ITakeDamage> OnUnitDeath = delegate { };

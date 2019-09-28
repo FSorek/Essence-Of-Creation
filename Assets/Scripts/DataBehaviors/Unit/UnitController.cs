@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class UnitController
 {
@@ -7,6 +8,7 @@ public class UnitController
     private float currentHealth;
     private List<Effect> activeEffects;
     private float lastRegenTime;
+    private int lastHealthStage;
 
     public UnitController(ITakeDamage owner)
     {
@@ -14,10 +16,14 @@ public class UnitController
         currentHealth = owner.MaxHealth;
         activeEffects = new List<Effect>();
         lastRegenTime = GameTime.time;
+        lastHealthStage = 4;
     }
 
     public void TakeDamage(int attackerID, float finalDamage, Ability[] abilities = null)
     {
+        finalDamage -= owner.ArmorLayers;
+        if (finalDamage <= 0)
+            finalDamage = 0;
         currentHealth -= finalDamage;
         if (currentHealth <= 0)
         {
@@ -28,6 +34,20 @@ public class UnitController
         {
             for (int i = 0; i < abilities.Length; i++)
                 AddEffect(new Effect(attackerID, abilities[i]));
+        }
+
+        //To-Do: Implement.
+        if (owner.CrystallineLayers > 0)
+        {
+            var currentHealthStage = Mathf.CeilToInt(HealthPercentage / 25f);
+            if (currentHealthStage != lastHealthStage)
+            {
+                var healthStageDifference = lastHealthStage - currentHealthStage;
+                for (int i = 0; i < healthStageDifference; i++)
+                {
+
+                }
+            }
         }
     }
 
@@ -46,7 +66,7 @@ public class UnitController
 
     public void RegenerateHealth()
     {
-        if ((GameTime.time - lastRegenTime) > 1f && currentHealth < owner.MaxHealth)
+        if ((GameTime.time - lastRegenTime) >= 1f && currentHealth < owner.MaxHealth)
         {
             if (currentHealth + owner.HealthRegeneration >= owner.MaxHealth)
                 currentHealth = owner.MaxHealth;
@@ -57,6 +77,7 @@ public class UnitController
     }
     public void RemoveEffect(Effect effect) => activeEffects.Remove(effect);
 
+    public float HealthPercentage => (currentHealth / owner.MaxHealth) * 100;
     public float CurrentHealth => currentHealth;
     public List<Effect> ActiveEffects => activeEffects;
 }

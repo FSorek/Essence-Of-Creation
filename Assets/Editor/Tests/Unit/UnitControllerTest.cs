@@ -70,18 +70,46 @@ namespace Tests
         [Test]
         public void Unit_Takes_10Damage_Then_Regenerates_5Health()
         {
+            GameTime.SetOffsetTimeForward(0);
             var owner = Substitute.For<ITakeDamage>();
-            var emptyAction = Substitute.For<Action<ITakeDamage>>();
-            var effect1 = new Effect(0, 1, 1, true, emptyAction, emptyAction, emptyAction);
-            var effect2 = new Effect(1, 1, 1, true, emptyAction, emptyAction, emptyAction);
             owner.MaxHealth.Returns(100);
             owner.HealthRegeneration.Returns(5);
             var controller = new UnitController(owner);
 
-            controller.TakeDamage(0,5);
-            GameTime.SetOffsetTimeForward(1f);
+            controller.TakeDamage(0,10);
+            controller.RegenerateHealth();
+            controller.RegenerateHealth();
+            GameTime.SetOffsetTimeForward(1.5f);
             controller.RegenerateHealth();
             
+            Assert.AreEqual(95, controller.CurrentHealth);
+        }
+
+        [Test]
+        public void Unit_Takes_10Damage_But_1ArmorLayer_Reduces_To_9Damage()
+        {
+            var owner = Substitute.For<ITakeDamage>();
+            owner.MaxHealth.Returns(100);
+            owner.HealthRegeneration.Returns(5);
+            owner.ArmorLayers.Returns(1);
+            var controller = new UnitController(owner);
+
+            controller.TakeDamage(0, 10);
+
+            Assert.AreEqual(91, controller.CurrentHealth);
+        }
+
+        [Test]
+        public void Unit_Takes_10Damage_But_5ArmorLayer_Reduces_To_5Damage()
+        {
+            var owner = Substitute.For<ITakeDamage>();
+            owner.MaxHealth.Returns(100);
+            owner.HealthRegeneration.Returns(5);
+            owner.ArmorLayers.Returns(5);
+            var controller = new UnitController(owner);
+
+            controller.TakeDamage(0, 10);
+
             Assert.AreEqual(95, controller.CurrentHealth);
         }
     }
