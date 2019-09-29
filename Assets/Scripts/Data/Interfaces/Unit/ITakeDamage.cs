@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 public interface ITakeDamage : IEntity
 {
-    float MaxHealth { get; }
-    float CurrentHealth { get; }
-    float HealthRegeneration { get; }
-    int ArmorLayers { get; }
-    int CrystallineLayers { get; }
+    Stat MaxHealth { get; }
+    Stat CurrentHealth { get; }
+    Stat HealthRegeneration { get; }
+    Stat ArmorLayers { get; }
+    Stat CrystallineLayers { get; }
 
-    void TakeDamage(int attackerID, Damage damage, Ability[] abilities = null);
+    void TakeDamage(int attackerID, Damage damage, IAbility[] abilities = null);
     event Action<Damage> OnTakeDamage;
     void RemoveEffect(Effect effect);
 }

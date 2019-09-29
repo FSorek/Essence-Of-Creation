@@ -11,7 +11,7 @@ namespace Tests
         public void Effect_Removed_When_Expired()
         {
             GameTime.SetOffsetTimeForward(10);
-            var unit = Substitute.For<ITakeDamage>();
+            var unit = Substitute.For<IUnit>();
             var emptyAction = Substitute.For<Action<ITakeDamage>>();
             var effect = new Effect(0, 1, 0.5f, true, emptyAction, emptyAction, emptyAction);
 
@@ -26,7 +26,7 @@ namespace Tests
         public void Effect_Interval_HalfSecond_Duration_OneSecond_Ticks_Twice()
         {
             GameTime.SetOffsetTimeForward(10);
-            ITakeDamage unit = Substitute.For<ITakeDamage>();
+            var unit = Substitute.For<IUnit>();
             var tick = Substitute.For<Action<ITakeDamage>>();
             var emptyAction2 = Substitute.For<Action<ITakeDamage>>();
             var effect = new Effect(0, 1, 0.5f, true, tick, emptyAction2, emptyAction2);
@@ -50,7 +50,7 @@ namespace Tests
         public void Effect_Gets_Extended_Correctly()
         {
             GameTime.SetOffsetTimeForward(10);
-            ITakeDamage unit = Substitute.For<ITakeDamage>();
+            var unit = Substitute.For<IUnit>();
             var emptyAction = Substitute.For<Action<ITakeDamage>>();
             var effect = new Effect(0, 1, 0.5f, true, emptyAction, emptyAction, emptyAction);
 

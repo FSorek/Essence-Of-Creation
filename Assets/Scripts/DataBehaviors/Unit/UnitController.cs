@@ -19,7 +19,7 @@ public class UnitController
         lastHealthStage = 4;
     }
 
-    public void TakeDamage(int attackerID, float finalDamage, Ability[] abilities = null)
+    public void TakeDamage(int attackerID, float finalDamage, IAbility[] abilities = null)
     {
         finalDamage -= owner.ArmorLayers;
         if (finalDamage <= 0)

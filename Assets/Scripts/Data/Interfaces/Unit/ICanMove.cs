@@ -1,4 +1,4 @@
 ﻿public interface ICanMove : IEntity
 {
-    float MovementSpeed { get; }
+    Stat MovementSpeed { get; }
 }

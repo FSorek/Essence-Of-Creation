@@ -10,7 +10,7 @@ namespace Tests
         public void Unit_Takes_Damage_And_Dies()
         {
             var owner = Substitute.For<ITakeDamage>();
-            owner.MaxHealth.Returns(100);
+            owner.MaxHealth.Returns(new Stat(100));
             var controller = new UnitController(owner);
 
             controller.TakeDamage(0,100);
@@ -22,7 +22,7 @@ namespace Tests
         public void Unit_Extends_Already_Applied_Effect()
         {
             var owner = Substitute.For<ITakeDamage>();
-            var emptyAction = Substitute.For<Action<ITakeDamage>>();
+            var emptyAction = Substitute.For<Action<IUnit>>();
             var effect1 = new Effect(1, 1, 1, true, emptyAction, emptyAction, emptyAction);
             var effect2 = new Effect(1, 1, 1, true, emptyAction, emptyAction, emptyAction);
 
@@ -38,8 +38,8 @@ namespace Tests
         public void Unit_Adds_Second_Unique_Effect_From_Same_Source()
         {
             var owner = Substitute.For<ITakeDamage>();
-            var emptyAction = Substitute.For<Action<ITakeDamage>>();
-            var emptyAction2 = Substitute.For<Action<ITakeDamage>>();
+            var emptyAction = Substitute.For<Action<IUnit>>();
+            var emptyAction2 = Substitute.For<Action<IUnit>>();
             var effect1 = new Effect(1, 1, 1, true, emptyAction, emptyAction, emptyAction);
             var effect2 = new Effect(1, 2, .5f, true, emptyAction2, emptyAction2, emptyAction2);
 
@@ -55,7 +55,7 @@ namespace Tests
         public void Unit_Adds_New_Similar_Effect_But_Different_Attacker()
         {
             var owner = Substitute.For<ITakeDamage>();
-            var emptyAction = Substitute.For<Action<ITakeDamage>>();
+            var emptyAction = Substitute.For<Action<IUnit>>();
             var effect1 = new Effect(0, 1, 1, true, emptyAction, emptyAction, emptyAction);
             var effect2 = new Effect(1, 1, 1, true, emptyAction, emptyAction, emptyAction);
 
@@ -72,8 +72,8 @@ namespace Tests
         {
             GameTime.SetOffsetTimeForward(0);
             var owner = Substitute.For<ITakeDamage>();
-            owner.MaxHealth.Returns(100);
-            owner.HealthRegeneration.Returns(5);
+            owner.MaxHealth.Returns(new Stat(100));
+            owner.HealthRegeneration.Returns(new Stat(5));
             var controller = new UnitController(owner);
 
             controller.TakeDamage(0,10);
@@ -89,9 +89,9 @@ namespace Tests
         public void Unit_Takes_10Damage_But_1ArmorLayer_Reduces_To_9Damage()
         {
             var owner = Substitute.For<ITakeDamage>();
-            owner.MaxHealth.Returns(100);
-            owner.HealthRegeneration.Returns(5);
-            owner.ArmorLayers.Returns(1);
+            owner.MaxHealth.Returns(new Stat(100));
+            owner.HealthRegeneration.Returns(new Stat(5));
+            owner.ArmorLayers.Returns(new Stat(1));
             var controller = new UnitController(owner);
 
             controller.TakeDamage(0, 10);
@@ -103,9 +103,9 @@ namespace Tests
         public void Unit_Takes_10Damage_But_5ArmorLayer_Reduces_To_5Damage()
         {
             var owner = Substitute.For<ITakeDamage>();
-            owner.MaxHealth.Returns(100);
-            owner.HealthRegeneration.Returns(5);
-            owner.ArmorLayers.Returns(5);
+            owner.MaxHealth.Returns(new Stat(100));
+            owner.HealthRegeneration.Returns(new Stat(5));
+            owner.ArmorLayers.Returns(new Stat(5));
             var controller = new UnitController(owner);
 
             controller.TakeDamage(0, 10);

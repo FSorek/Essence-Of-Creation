@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unit : GameEntity, ITakeDamage, ICanMove
+public class Unit : GameEntity, IUnit
 {
     protected UnitData unitData { get; set; }
     protected List<Effect> activeEffects { get; private set; }
@@ -35,7 +35,7 @@ public class Unit : GameEntity, ITakeDamage, ICanMove
         unitController.RegenerateHealth();
     }
 
-    public void TakeDamage(int attackerID, Damage damage, Ability[] abilities = null)
+    public void TakeDamage(int attackerID, Damage damage, IAbility[] abilities = null)
     {
         unitController.TakeDamage(attackerID,damage.GetDamageToArmor(unitData.Type),abilities);
         OnTakeDamage(damage);
@@ -49,12 +49,17 @@ public class Unit : GameEntity, ITakeDamage, ICanMove
 
     public void RemoveEffect(Effect effect) => unitController.RemoveEffect(effect);
 
-    public float MaxHealth => unitData.Health;
-    public float CurrentHealth => unitController.CurrentHealth;
-    public float MovementSpeed => unitData.MoveSpeed;
-    public float HealthRegeneration => unitData.HealthRegen;
-    public int ArmorLayers => unitData.ArmorLayers;
-    public int CrystallineLayers => unitData.CrystallineLayers;
+    public Stat MaxHealth => unitData.Health;
+    public Stat CurrentHealth => unitController.CurrentHealth;
+    public Stat MovementSpeed => unitData.MoveSpeed;
+    public Stat HealthRegeneration => unitData.HealthRegen;
+    public Stat ArmorLayers => unitData.ArmorLayers;
+    public Stat CrystallineLayers => unitData.CrystallineLayers;
+    public Stat MoveSpeed
+    {
+        get { return unitData.MoveSpeed; }
+        set { unitData.MoveSpeed = value; }
+    }
 
     public static event Action<ITakeDamage> OnUnitSpawn = delegate { };
     public static event Action<ITakeDamage> OnUnitDeath = delegate { };

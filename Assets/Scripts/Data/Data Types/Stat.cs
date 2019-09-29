@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -31,6 +32,11 @@ public class Stat
         }
     }
 
+    public void SetDirty()
+    {
+        isDirty = true;
+    }
+
     public Stat(float baseValue) : this()
     {
         BaseValue = baseValue;
@@ -41,27 +47,41 @@ public class Stat
         statModifiers = new List<StatModifier>();
     }
 
-    public static bool operator +(Stat stat, StatModifier modifier)
+    public static Stat operator +(Stat stat, StatModifier modifier)
     {
         stat.isDirty = true;
         stat.statModifiers.Add(modifier);
-        return true;
+        return stat;
     }
 
-    public static bool operator -(Stat stat, StatModifier modifier)
+    public static Stat operator -(Stat stat, StatModifier modifier)
     {
         stat.isDirty = true;
-        return stat.statModifiers.Remove(modifier);
+        stat.statModifiers.Remove(modifier);
+        return stat;
     }
 
-    public static bool operator ==(Stat stat, float value) => stat.Value == value;
-    public static bool operator !=(Stat stat, float value) => stat.Value != value;
-    public static bool operator >(Stat stat, float value) => stat.Value > value;
-    public static bool operator <(Stat stat, float value) => stat.Value < value;
-    public static bool operator <=(Stat stat, float value) => stat.Value <= value;
-    public static bool operator >=(Stat stat, float value) => stat.Value >= value;
-    public static implicit operator int(Stat stat) => Mathf.RoundToInt(stat.Value);
-    public static implicit operator float(Stat stat) => stat.Value;
+    public void AddModifier(StatModifier mod)
+    {
+        isDirty = true;
+        statModifiers.Add(mod);
+    }
+
+    public void RemoveModifier(StatModifier mod)
+    {
+        isDirty = true;
+        statModifiers.Remove(mod);
+    }
+
+    public static bool operator ==(Stat stat, float value) => (stat != null ? stat.Value : default(float)) == value;
+    public static bool operator !=(Stat stat, float value) => (stat != null ? stat.Value : default(float)) != value;
+    public static bool operator >(Stat stat, float value) => (stat != null ?  stat.Value : default(float)) > value;
+    public static bool operator <(Stat stat, float value) => (stat != null ? stat.Value : default(float)) < value;
+    public static bool operator <=(Stat stat, float value) => (stat != null ? stat.Value : default(float)) <= value;
+    public static bool operator >=(Stat stat, float value) => (stat != null ? stat.Value : default(float)) >= value;
+    public static implicit operator int(Stat stat) => stat != null ? Mathf.RoundToInt(stat.Value) : default(int);
+    public static implicit operator float(Stat stat) => stat != null ? Mathf.RoundToInt(stat.Value) : default(int);
+    public static implicit operator Stat(float f) => new Stat(f);
 
     private float CalculateFinalValue()
     {

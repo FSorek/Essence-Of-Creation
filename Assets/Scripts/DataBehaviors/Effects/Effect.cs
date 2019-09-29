@@ -6,15 +6,15 @@ public class Effect
     private int ownerID;
     private bool stacksInDuration;
     private float interval;
-    private Action<ITakeDamage> tick;
-    private Action<ITakeDamage> apply;
-    private Action<ITakeDamage> remove;
+    private Action<IUnit> tick;
+    private Action<IUnit> apply;
+    private Action<IUnit> remove;
     private float duration;
     private float lastRecordedTick;
     private float firstAppliedTime;
     private bool applied = false;
 
-    public Effect(int ownerId, Ability ability)
+    public Effect(int ownerId, IAbility ability)
     {
         this.ownerID = ownerId;
         this.duration = ability.Duration;
@@ -27,7 +27,7 @@ public class Effect
         firstAppliedTime = GameTime.time;
     }
 
-    public Effect(int ownerId, float duration, float interval, bool stacksInDuration, Action<ITakeDamage> tick, Action<ITakeDamage> apply, Action<ITakeDamage> remove)
+    public Effect(int ownerId, float duration, float interval, bool stacksInDuration, Action<IUnit> tick, Action<IUnit> apply, Action<IUnit> remove)
     {
         this.ownerID = ownerId;
         this.duration = duration;
@@ -40,7 +40,7 @@ public class Effect
         firstAppliedTime = GameTime.time;
     }
 
-    public void Tick(ITakeDamage unit)
+    public void Tick(IUnit unit)
     {
         if (!applied)
         {
@@ -67,5 +67,5 @@ public class Effect
     public int OwnerId => ownerID;
     public bool StackInDuration => stacksInDuration;
     public float Duration => duration;
-    public Action<ITakeDamage> EffectTick => tick;
+    public Action<IUnit> EffectTick => tick;
 }

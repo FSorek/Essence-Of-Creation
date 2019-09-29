@@ -1,7 +1,7 @@
 ﻿public class StatModifier
 {
-    public readonly float Value;
-    public readonly StatModifierType Type;
+    public float Value { get; set; }
+    public StatModifierType Type { get; private set; }
 
     public StatModifier(float value, StatModifierType type)
     {
