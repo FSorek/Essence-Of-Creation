@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ public class UnitController
     private List<Effect> activeEffects;
     private float lastRegenTime;
     private int lastHealthStage;
+    private Damage totalDamageTaken;
 
     public UnitController(ITakeDamage owner)
     {
@@ -19,8 +21,18 @@ public class UnitController
         lastHealthStage = 4;
     }
 
-    public void TakeDamage(int attackerID, float finalDamage, IAbility[] abilities = null)
+    public void TakeDamage(int attackerID, Damage incomingDamage, IAbility[] abilities = null)
     {
+        totalDamageTaken += incomingDamage;
+        var damage = new Damage();
+        damage += incomingDamage;
+
+        var dominatingElement = totalDamageTaken.GetDominatingDamage();
+        SetElementalArmorReduction(damage, dominatingElement);
+        Crystalize(damage, dominatingElement);
+        var finalDamage = damage.GetDamageToArmor(owner.ArmorType);
+        
+
         finalDamage -= owner.ArmorLayers;
         if (finalDamage <= 0)
             finalDamage = 0;
@@ -35,21 +47,57 @@ public class UnitController
             for (int i = 0; i < abilities.Length; i++)
                 AddEffect(new Effect(attackerID, abilities[i]));
         }
+    }
 
-        //To-Do: Implement.
+    private void Crystalize(Damage damage, Elements dominatingElement)
+    {
         if (owner.CrystallineLayers > 0)
         {
             var currentHealthStage = Mathf.CeilToInt(HealthPercentage / 25f);
-            if (currentHealthStage != lastHealthStage)
+            var strength = 1 - (owner.CrystallineLayers * (4 - currentHealthStage) * .02f);
+            for (int i = 4; i > currentHealthStage; i--)
             {
-                var healthStageDifference = lastHealthStage - currentHealthStage;
-                for (int i = 0; i < healthStageDifference; i++)
-                {
-
-                }
+                
+            }
+            switch (dominatingElement)
+            {
+                case Elements.Fire:
+                    damage.Fire.BaseValue *= strength;
+                    break;
+                case Elements.Earth:
+                    damage.Earth.BaseValue *= strength;
+                    break;
+                case Elements.Water:
+                    damage.Water.BaseValue *= strength;
+                    break;
+                case Elements.Air:
+                    damage.Air.BaseValue *= strength;
+                    break;
             }
         }
     }
+
+    private void SetElementalArmorReduction(Damage damage, Elements dominatingElement)
+    {
+        if(owner.ArmorType != ArmorType.Elemental)
+            return;
+        switch (dominatingElement)
+        {
+            case Elements.Fire:
+                damage.Fire.BaseValue *= .5f;
+                break;
+            case Elements.Earth:
+                damage.Fire.BaseValue *= .5f;
+                break;
+            case Elements.Water:
+                damage.Fire.BaseValue *= .5f;
+                break;
+            case Elements.Air:
+                damage.Fire.BaseValue *= .5f;
+                break;
+        }
+    }
+
 
     public void AddEffect(Effect effect)
     {

@@ -2,7 +2,11 @@
 
 public interface IWaveManager
 {
-    ITakeDamage[] GetEnemiesAlive();
-    UnitData GetCurrentGeneratedUnit();
+    int CurrentWave { get; }
+    ITakeDamage[] EnemiesAlive { get; }
+    UnitData CurrentGeneratedUnit { get; }
     Transform[] Reachpoints { get; }
+
+    void SetReachpoints(Transform reachpointsParent);
+    void NextWave();
 }

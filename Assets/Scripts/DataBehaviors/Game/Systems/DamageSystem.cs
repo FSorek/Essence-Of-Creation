@@ -8,6 +8,9 @@ public static class DamageSystem
 
         switch (armorType)
         {
+            default:
+                final = damage.Water + damage.Air + damage.Earth + damage.Fire;
+                break;
             case ArmorType.Armoured:
                 final = damage.Earth * 2 +
                         Mathf.FloorToInt(damage.Water * .75f) +
@@ -33,10 +36,10 @@ public static class DamageSystem
                         damage.Air * 2;
                 break;
             case ArmorType.Elemental:
-                final = Mathf.FloorToInt(damage.Earth * .5f) +
-                        Mathf.FloorToInt(damage.Water * .5f) +
-                        Mathf.FloorToInt(damage.Fire * .5f) +
-                        Mathf.FloorToInt(damage.Air * .5f);
+                final = Mathf.FloorToInt(damage.Earth * 1.2f) +
+                        Mathf.FloorToInt(damage.Water * 1.2f) +
+                        Mathf.FloorToInt(damage.Fire * 1.2f) +
+                        Mathf.FloorToInt(damage.Air * 1.2f);
                 break;
         }
 

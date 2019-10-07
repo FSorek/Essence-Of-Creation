@@ -48,7 +48,7 @@ public class AttackController
 
     protected ITakeDamage[] GetTargets()
     {
-        var enemies = waveManager.GetEnemiesAlive();
+        var enemies = waveManager.EnemiesAlive;
         if (enemies.Length <= 0)
             return null;
         var targets = new ITakeDamage[owner.AttackData.TargetLimit];

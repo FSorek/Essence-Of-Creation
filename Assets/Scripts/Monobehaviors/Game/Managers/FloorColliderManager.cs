@@ -2,8 +2,8 @@
 
 public class FloorColliderManager : MonoBehaviour
 {
-    public static GameEntity[] FloorColliderEntities => Instance.floorColliderEntities;
-    [SerializeField]private GameEntity[] floorColliderEntities;
+    public static GameEntity[] FloorColliderEntities => Instance?.GetFloorColliders();
+    [SerializeField]private Transform floorColliderParent;
     public static FloorColliderManager Instance;
 
     public void Awake()
@@ -14,5 +14,14 @@ public class FloorColliderManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
+
+    private GameEntity[] GetFloorColliders()
+    {
+        int children = floorColliderParent.childCount;
+        GameEntity[] colliders = new GameEntity[children];
+        for (int i = 0; i < children; ++i)
+            colliders[i] = floorColliderParent.GetChild(i).GetComponent<GameEntity>();
+        return colliders;
     }
 }

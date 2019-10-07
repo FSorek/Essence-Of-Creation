@@ -9,6 +9,7 @@ public interface ITakeDamage : IEntity
     Stat HealthRegeneration { get; }
     Stat ArmorLayers { get; }
     Stat CrystallineLayers { get; }
+    ArmorType ArmorType { get; }
 
     void TakeDamage(int attackerID, Damage damage, IAbility[] abilities = null);
     event Action<Damage> OnTakeDamage;

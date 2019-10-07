@@ -9,11 +9,14 @@ public class Stat
     private bool isDirty = true;
     private float _value;
     private float lastBaseValue = float.MinValue;
+    [SerializeField]private float _baseValue;
+
+    public StatModifier[] AppliedModifiers => statModifiers.ToArray();
 
     /// <summary>
     /// The original value of the stat - without modifiers.
     /// </summary>
-    public float BaseValue { get; set; }
+    public float BaseValue { get => _baseValue; set => _baseValue = value; }
 
     /// <summary>
     /// The final value of the stat - with modifiers.
@@ -72,10 +75,9 @@ public class Stat
         isDirty = true;
         statModifiers.Remove(mod);
     }
-
     public static bool operator ==(Stat stat, float value) => (stat != null ? stat.Value : default(float)) == value;
     public static bool operator !=(Stat stat, float value) => (stat != null ? stat.Value : default(float)) != value;
-    public static bool operator >(Stat stat, float value) => (stat != null ?  stat.Value : default(float)) > value;
+    public static bool operator >(Stat stat, float value) => (stat != null ? stat.Value : default(float)) > value;
     public static bool operator <(Stat stat, float value) => (stat != null ? stat.Value : default(float)) < value;
     public static bool operator <=(Stat stat, float value) => (stat != null ? stat.Value : default(float)) <= value;
     public static bool operator >=(Stat stat, float value) => (stat != null ? stat.Value : default(float)) >= value;

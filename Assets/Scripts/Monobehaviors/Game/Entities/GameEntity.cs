@@ -3,7 +3,7 @@ using UnityEngine.Experimental.VFX;
 
 public class GameEntity : MonoBehaviour, IEntity
 {
-
+    public GameObject GameObject => this.gameObject;
     public Vector3 Position
     {
         get => transform.position;

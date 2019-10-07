@@ -21,6 +21,7 @@ public class SlowAbility : MonoBehaviour, IAbility
     public void Tick(IUnit unit, int attackerID)
     {
         slow.Value -= 5;
+        
         unit.MovementSpeed.SetDirty();
     }
 

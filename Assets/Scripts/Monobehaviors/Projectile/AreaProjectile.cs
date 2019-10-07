@@ -10,7 +10,7 @@ public class AreaProjectile : Projectile
             Debug.LogWarning("Area projectile without a module.");
             return true;
         }
-        var targets = RangeTargetScanner<ITakeDamage>.GetTargets(transform.position, WaveManager.Instance.GetEnemiesAlive(), aoeAttack.Range);
+        var targets = RangeTargetScanner<ITakeDamage>.GetTargets(transform.position, WaveManager.Instance.EnemiesAlive, aoeAttack.Range);
         for(int i = 0; i<targets.Length;i++)
         {
             targets[i].TakeDamage(owner.AttackerID, owner.AttackData.Damage, owner.ActiveAbilities);

@@ -30,7 +30,7 @@ public class ObjectPool : MonoBehaviour
         for (int i = 0; i < v; i++)
         {
             GameObject obj = Instantiate(prefab);
-            obj.gameObject.SetActive(false);
+            obj.SetActive(false);
             objects.Enqueue(obj);
             obj.GetComponent<IGameObjectPooled>().Pool = this;
             obj.transform.SetParent(this.transform);
@@ -45,7 +45,7 @@ public class ObjectPool : MonoBehaviour
     private IEnumerator DelayedReturnToPool(GameObject obj, float delay)
     {
         yield return new WaitForSeconds(delay);
-        obj.gameObject.SetActive(false);
+        obj.SetActive(false);
         objects.Enqueue(obj);
     }
 }

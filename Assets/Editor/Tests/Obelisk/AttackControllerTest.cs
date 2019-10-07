@@ -31,7 +31,7 @@ namespace Tests
             };
 
             IWaveManager waveManager = Substitute.For<IWaveManager>();
-            waveManager.GetEnemiesAlive().Returns(targets);
+            waveManager.EnemiesAlive.Returns(targets);
 
             AttackController controller = new AttackController(module, waveManager);
 
@@ -65,7 +65,7 @@ namespace Tests
             };
 
             IWaveManager waveManager = Substitute.For<IWaveManager>();
-            waveManager.GetEnemiesAlive().Returns(targets);
+            waveManager.EnemiesAlive.Returns(targets);
 
             AttackController controller = new AttackController(module, waveManager);
 
@@ -100,7 +100,7 @@ namespace Tests
             };
 
             IWaveManager waveManager = Substitute.For<IWaveManager>();
-            waveManager.GetEnemiesAlive().Returns(targets);
+            waveManager.EnemiesAlive.Returns(targets);
 
             AttackController controller = new AttackController(module, waveManager);
 
@@ -134,7 +134,7 @@ namespace Tests
             };
 
             IWaveManager waveManager = Substitute.For<IWaveManager>();
-            waveManager.GetEnemiesAlive().Returns(targets);
+            waveManager.EnemiesAlive.Returns(targets);
 
             AttackController controller = new AttackController(module, waveManager);
 

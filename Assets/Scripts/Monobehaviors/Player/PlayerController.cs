@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public PlayerState CurrentPlayerState => currentPlayerState;
     public Elements CurrentElement { get; private set; }
 
-    public static event Action<Elements> OnElementExecuted;
+    public static event Action<Elements> OnElementExecuted = delegate {};
     private PlayerState currentPlayerState;
     private PlayerState lastPlayerState;
     private Dictionary<Type, PlayerState> availablePlayerStates;

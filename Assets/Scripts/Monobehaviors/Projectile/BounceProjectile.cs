@@ -25,7 +25,7 @@ public class BounceProjectile : Projectile
         if (availableBounces <= 0)
             return true;
         availableBounces--;
-        var enemies = WaveManager.Instance.GetEnemiesAlive().Except(previousTargets);
+        var enemies = WaveManager.Instance.EnemiesAlive.Except(previousTargets);
         target = RangeTargetScanner<ITakeDamage>.GetTargets(transform.position, enemies.ToArray(), bounceAttack.Range).FirstOrDefault();
         return false;
     }

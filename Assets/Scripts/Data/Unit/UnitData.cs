@@ -1,4 +1,6 @@
-﻿[System.Serializable]
+﻿using System;
+
+[System.Serializable]
 public class UnitData
 {
     public Stat Health;
