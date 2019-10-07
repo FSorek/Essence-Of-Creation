@@ -21,7 +21,7 @@ internal class HealthBar : MonoBehaviour
     private void HandleHealthChanged(Damage damage)
     {
         // later on add different visuals depending on the dominating type of damage
-        var pct = attachedEntity.CurrentHealth/attachedEntity.MaxHealth;
+        var pct = attachedEntity.CurrentHealth/(float)attachedEntity.MaxHealth;
         StartCoroutine(ResizeToPercentage(pct));
     }
 
@@ -32,7 +32,7 @@ internal class HealthBar : MonoBehaviour
 
         while (elapsed < updateSpeed)
         {
-            elapsed += Time.deltaTime;
+            elapsed += GameTime.deltaTime;
             foregroundImg.fillAmount = Mathf.Lerp(preChangePercentage, pct, elapsed / updateSpeed);
             yield return null;
         }
@@ -48,7 +48,7 @@ internal class HealthBar : MonoBehaviour
 
     private void OnDisable()
     {
-        if(attachedEntity != null)
+        if(attachedEntity != null && !attachedEntity.Equals(null))
             attachedEntity.OnTakeDamage -= HandleHealthChanged;
     }
 }

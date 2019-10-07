@@ -41,9 +41,13 @@ public class Unit : GameEntity, IUnit
         OnTakeDamage(damage);
     }
 
-    public override void Destroy()
+    private void OnDisable()
     {
         OnUnitDeath(this);
+    }
+
+    public override void Destroy()
+    {
         GetComponent<IGameObjectPooled>().Pool.ReturnToPool(this.gameObject);
     }
 

@@ -33,17 +33,17 @@ internal class WaveGenerator : IWaveGenerator
         return uData;
     }
 
-    private Stat RollHealth(int v)
+    private int RollHealth(int v)
     {
         return v * 10;
     }
 
-    private Stat RollMoveSpeed(int v)
+    private float RollMoveSpeed(int v)
     {
         return v * .05f;
     }
 
-    private Stat RollHealthRegen(int v)
+    private int RollHealthRegen(int v) // wasting some PP rolling
     {
         return Mathf.RoundToInt(v * .1f);
     }
@@ -62,14 +62,14 @@ internal class WaveGenerator : IWaveGenerator
         else return ArmorType.Elemental;
     }
 
-    private Stat RollArmorLayers(int v)
+    private int RollArmorLayers(int v) // wasting some PP rolling
     {
-        return Mathf.FloorToInt(v / 3f);
+        return Mathf.FloorToInt(v / 2f);
     }
 
-    private Stat RollCrystallineLayers(int v)
+    private int RollCrystallineLayers(int v) // wasting some PP rolling
     {
-        return Mathf.FloorToInt(v / 3f);
+        return Mathf.FloorToInt(v / 4f);
     }
 
     private UnitAbility[] RollAbilities(int v)
