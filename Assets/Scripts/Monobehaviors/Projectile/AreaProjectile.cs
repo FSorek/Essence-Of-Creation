@@ -13,7 +13,7 @@ public class AreaProjectile : Projectile
         var targets = RangeTargetScanner<ITakeDamage>.GetTargets(transform.position, WaveManager.Instance.EnemiesAlive, aoeAttack.Range);
         for(int i = 0; i<targets.Length;i++)
         {
-            targets[i].TakeDamage(owner.AttackerID, owner.AttackData.Damage, owner.ActiveAbilities);
+            targets[i].TakeDamage(owner.AttackerID, owner.AttackData.Damage);
         }
         return true;
     }

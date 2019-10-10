@@ -5,14 +5,13 @@ using UnityEngine;
 public class Unit : GameEntity, IUnit
 {
     protected UnitData unitData { get; set; }
-    protected List<Effect> activeEffects { get; private set; }
 
-    private UnitController unitController { get; set; }
+    private UnitStatusController unitStatusController { get; set; }
+    private UnitDamageController unitDamageController { get; set; }
     private StateMachine stateMachine { get; set; }
 
     private void OnEnable()
     {
-        activeEffects = new List<Effect>();
         unitData = WaveManager.Instance.CurrentGeneratedUnit;
         stateMachine = new StateMachine();
         var dict = new Dictionary<Type, UnitState>()
@@ -21,23 +20,21 @@ public class Unit : GameEntity, IUnit
         };
         stateMachine.SetStates(dict);
 
-        unitController = new UnitController(this);
+        unitDamageController = new UnitDamageController(this);
+        unitStatusController = new UnitStatusController(this);
         OnUnitSpawn(this);
     }
 
     private void Update()
     {
-        for (int i = 0; i < activeEffects.Count; i++)
-        {
-            activeEffects[i].Tick(this);
-        }
         stateMachine.Tick();
-        unitController.RegenerateHealth();
+        unitStatusController.Tick();
+        unitDamageController.RegenerateHealth();
     }
 
-    public void TakeDamage(int attackerID, Damage damage, IAbility[] abilities = null)
+    public void TakeDamage(int attackerID, Damage damage)
     {
-        unitController.TakeDamage(attackerID, damage, abilities);
+        unitDamageController.TakeDamage(attackerID, damage);
         OnTakeDamage(damage);
     }
 
@@ -51,15 +48,15 @@ public class Unit : GameEntity, IUnit
         GetComponent<IGameObjectPooled>().Pool.ReturnToPool(this.gameObject);
     }
 
-    public void RemoveEffect(Effect effect) => unitController.RemoveEffect(effect);
-
+    public void AddStatus(IStatus status) => unitStatusController.AddStatus(status);
     public Stat MaxHealth => unitData.Health;
-    public Stat CurrentHealth => unitController.CurrentHealth;
+    public Stat CurrentHealth => unitDamageController.CurrentHealth;
     public Stat MovementSpeed => unitData.MoveSpeed;
     public Stat HealthRegeneration => unitData.HealthRegen;
     public Stat ArmorLayers => unitData.ArmorLayers;
     public Stat CrystallineLayers => unitData.CrystallineLayers;
     public ArmorType ArmorType => unitData.Type;
+    public IStatus[] CurrentStatuses => unitStatusController.CurrentStatuses;
 
     public static event Action<ITakeDamage> OnUnitSpawn = delegate { };
     public static event Action<ITakeDamage> OnUnitDeath = delegate { };

@@ -11,5 +11,5 @@ public class UnitData
     public Stat ArmorLayers;
     public Stat CrystallineLayers;
 
-    public UnitAbility[] Abilities;
+    //public UnitAbility[] Abilities;
 }

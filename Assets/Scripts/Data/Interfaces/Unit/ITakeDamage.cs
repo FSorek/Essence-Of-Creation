@@ -11,7 +11,6 @@ public interface ITakeDamage : IEntity
     Stat CrystallineLayers { get; }
     ArmorType ArmorType { get; }
 
-    void TakeDamage(int attackerID, Damage damage, IAbility[] abilities = null);
+    void TakeDamage(int attackerID, Damage damage);
     event Action<Damage> OnTakeDamage;
-    void RemoveEffect(Effect effect);
 }

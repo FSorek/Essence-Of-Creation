@@ -10,6 +10,7 @@ public class WaveManager : MonoBehaviour
     public IWaveSpawner Spawner;
     public Transform SpawnPosition;
     public Transform ReachpointsParent;
+    
 
     private static IWaveManager waveManagerController;
     private float timer;
@@ -29,9 +30,23 @@ public class WaveManager : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0)
         {
-            Spawner.Spawn(SpawnPosition.position);
+            StartCoroutine(SpawnWave());
             waveManagerController.NextWave();
             timer = WaveSettings.TimeBetweenWaves;
         }
+    }
+
+    private IEnumerator SpawnWave()
+    {
+        int enemiesPerSpawn = Random.Range(1,4);
+        int numberOfSpawns = WaveSettings.EnemiesPerWave / enemiesPerSpawn;
+        float timeBetweenSpawns = (float)WaveSettings.TimeBetweenWaves / (float)numberOfSpawns;
+        for (int i = 0; i < numberOfSpawns; i++)
+        {
+            Spawner.Spawn(SpawnPosition.position, enemiesPerSpawn);
+            yield return new WaitForSeconds(timeBetweenSpawns);
+        }
+
+        
     }
 }

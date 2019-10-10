@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class SlowAbility : MonoBehaviour, IAbility
+public class SlowTowerAbility : MonoBehaviour, ITowerLastingAbility
 {
     public Damage damage;
     [SerializeField] private float duration = 2;
@@ -27,5 +27,5 @@ public class SlowAbility : MonoBehaviour, IAbility
 
     public float Duration => duration;
     public float Interval => interval;
-    public bool StacksInDuration => stacksInDuration;
+    public bool Stacks => stacksInDuration;
 }

@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
 /// <summary>
-/// A simple DoT ability, low damage, stacks intensity and only works on non-shielded units
+/// A simple DoT attackAbility, low damage, stacks intensity and only works on non-shielded units
 /// </summary>
 
-public class BleedAbility : MonoBehaviour, IAbility
+public class BleedTowerAbility : MonoBehaviour, ITowerLastingAbility
 {
     public Damage damage;
     [SerializeField] private float duration = 2;
@@ -29,5 +29,5 @@ public class BleedAbility : MonoBehaviour, IAbility
 
     public float Duration => duration;
     public float Interval => interval;
-    public bool StacksInDuration => stacksInDuration;
+    public bool Stacks => stacksInDuration;
 }

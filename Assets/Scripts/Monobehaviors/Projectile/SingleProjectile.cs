@@ -9,7 +9,7 @@ public class SingleProjectile : Projectile
             return true;
         else
         {
-            target.TakeDamage(owner.AttackerID, owner.AttackData.Damage, owner.ActiveAbilities);
+            target.TakeDamage(owner.AttackerID, owner.AttackData.Damage);
             return true;
         }
     }

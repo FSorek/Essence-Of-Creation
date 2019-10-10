@@ -5,10 +5,10 @@ public abstract class AttackModule : MonoBehaviour, ICanAttack
 {
     public IEntity Entity { get => entity; }
     public TowerAttackData AttackData { get => attackData; set => attackData = value; }
-    public IAbility[] ActiveAbilities { get => activeAbilities; set => activeAbilities = value; }
+    public ITowerLastingAbility[] ActiveTowerAbilities { get => _activeTowerAbilities; set => _activeTowerAbilities = value; }
     public int AttackerID => TowerRecipeId.GetID(GetComponent<Obelisk>().InfusedElements);
 
-    private IAbility[] activeAbilities;
+    private ITowerLastingAbility[] _activeTowerAbilities;
     private IEntity entity;
     [SerializeField]private TowerAttackData attackData;
     private AttackController attackController;

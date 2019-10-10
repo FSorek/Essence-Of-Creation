@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public interface IAbility
+﻿public interface IUnitAbility
 {
     float Duration { get; }
     float Interval { get; }
@@ -9,3 +7,4 @@ public interface IAbility
     void Tick(IUnit unit, int attackerID);
     void Remove(IUnit unit, int attackerID);
 }
+

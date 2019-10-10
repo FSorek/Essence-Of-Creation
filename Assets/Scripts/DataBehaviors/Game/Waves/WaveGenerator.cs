@@ -28,7 +28,7 @@ internal class WaveGenerator : IWaveGenerator
         uData.HealthRegen += RollHealthRegen(pointDistribution[2]);
         uData.ArmorLayers += RollArmorLayers(pointDistribution[3]);
         uData.CrystallineLayers += RollCrystallineLayers(pointDistribution[4]);
-        uData.Abilities = RollAbilities(pointDistribution[5]);
+        //uData.Abilities = RollAbilities(pointDistribution[5]);
 
         return uData;
     }
@@ -72,22 +72,22 @@ internal class WaveGenerator : IWaveGenerator
         return Mathf.FloorToInt(v / 4f);
     }
 
-    private UnitAbility[] RollAbilities(int v)
-    {
-        return new UnitAbility[0];
-    }
+    //private UnitAbility[] RollAbilities(int v)
+    //{
+    //    return new UnitAbility[0];
+    //}
 
     private UnitData LoadBaseStats()
     {
         UnitData uData = new UnitData();
 
         uData.Health = 20;
-        uData.MoveSpeed = 1;
+        uData.MoveSpeed = 4f;
         uData.HealthRegen = 0;
         uData.Type = ArmorType.None;
         uData.ArmorLayers = 0;
         uData.CrystallineLayers = 0;
-        uData.Abilities = null;
+        //uData.Abilities = null;
 
         return uData;
     }

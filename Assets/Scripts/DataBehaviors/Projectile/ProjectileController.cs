@@ -8,7 +8,7 @@ public class ProjectileController
     protected ICanAttack owner;
     protected IEntity projectile;
 
-    protected IAbility[] activeAbilities;
+    protected ITowerLastingAbility[] ActiveTowerAbilities;
     protected EntitySimpleMove movement;
 
     public ProjectileController(ITakeDamage target, ICanAttack owner, IEntity projectile)

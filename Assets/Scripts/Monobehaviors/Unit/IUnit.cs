@@ -1,4 +1,4 @@
-﻿public interface IUnit : ITakeDamage, ICanMove
+﻿public interface IUnit : ITakeDamage, ICanMove, ISusceptible
 {
     
 }

@@ -3,25 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class UnitController
+public class UnitDamageController
 {
-    private ITakeDamage owner;
+    private IUnit owner;
     private float currentHealth;
-    private List<Effect> activeEffects;
     private float lastRegenTime;
     private int lastHealthStage;
     private Damage totalDamageTaken;
 
-    public UnitController(ITakeDamage owner)
+    public UnitDamageController(IUnit owner)
     {
         this.owner = owner;
         currentHealth = owner.MaxHealth;
-        activeEffects = new List<Effect>();
         lastRegenTime = GameTime.time;
         lastHealthStage = 4;
     }
 
-    public void TakeDamage(int attackerID, Damage incomingDamage, IAbility[] abilities = null)
+    public void TakeDamage(int attackerID, Damage incomingDamage)
     {
         totalDamageTaken += incomingDamage;
         var damage = new Damage();
@@ -32,7 +30,6 @@ public class UnitController
         Crystalize(damage, dominatingElement);
         var finalDamage = damage.GetDamageToArmor(owner.ArmorType);
         
-
         finalDamage -= owner.ArmorLayers;
         if (finalDamage <= 0)
             finalDamage = 0;
@@ -41,11 +38,6 @@ public class UnitController
         {
             owner.Destroy();
             return;
-        }
-        if (abilities != null)
-        {
-            for (int i = 0; i < abilities.Length; i++)
-                AddEffect(new Effect(attackerID, abilities[i]));
         }
     }
 
@@ -98,20 +90,6 @@ public class UnitController
         }
     }
 
-
-    public void AddEffect(Effect effect)
-    {
-        var currentInstance = activeEffects.FirstOrDefault(a => a.OwnerId == effect.OwnerId && a.EffectTick == effect.EffectTick);
-        if (effect.StackInDuration && currentInstance != null)
-        {
-            currentInstance.Extend();
-        }
-        else
-        {
-            activeEffects.Add(effect);
-        }
-    }
-
     public void RegenerateHealth()
     {
         if ((GameTime.time - lastRegenTime) >= 1f && currentHealth < owner.MaxHealth)
@@ -123,9 +101,7 @@ public class UnitController
             lastRegenTime = GameTime.time;
         }
     }
-    public void RemoveEffect(Effect effect) => activeEffects.Remove(effect);
 
     public float HealthPercentage => (currentHealth / owner.MaxHealth) * 100;
     public float CurrentHealth => currentHealth;
-    public List<Effect> ActiveEffects => activeEffects;
 }

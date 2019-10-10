@@ -20,7 +20,7 @@ public class BounceProjectile : Projectile
         if(target != null)
         {
             previousTargets.Push(target);
-            target.TakeDamage(owner.AttackerID, owner.AttackData.Damage, owner.ActiveAbilities);
+            target.TakeDamage(owner.AttackerID, owner.AttackData.Damage);
         }
         if (availableBounces <= 0)
             return true;
