@@ -47,4 +47,5 @@ public class WaveManagerController : IWaveManager
     public Transform[] Reachpoints => reachpoints.ToArray();
     public ITakeDamage[] EnemiesAlive => enemiesAlive.ToArray();
     public UnitData CurrentGeneratedUnit => waves[currentWave];
+    public WaveSettings WaveSettings => settings;
 }

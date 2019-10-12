@@ -5,16 +5,27 @@ using UnityEngine;
 using UnityEngine.Experimental.VFX;
 using UnityEngine.Experimental.VFX.Utility;
 
-public class SummonEffectController : MonoBehaviour
+public class SummonEffectController
 {
-    public GameObject SummonFire;
-    public GameObject SummonAir;
-    public GameObject SummonEarth;
-    public GameObject SummonWater;
+    private VisualEffect summonFire;
+    private VisualEffect summonAir;
+    private VisualEffect summonEarth;
+    private VisualEffect summonWater;
 
-    private void Awake()
+    public SummonEffectController(IPlayer player)
     {
-        PlayerController.OnElementExecuted += Summon;
+        player.OnElementExecuted += Summon;
+        var vfxData = player.VFXData;
+
+        summonFire = GameObject.Instantiate(vfxData.SummonFire).GetComponent<VisualEffect>();
+        summonAir = GameObject.Instantiate(vfxData.SummonAir).GetComponent<VisualEffect>();
+        summonEarth = GameObject.Instantiate(vfxData.SummonEarth).GetComponent<VisualEffect>();
+        summonWater = GameObject.Instantiate(vfxData.SummonWater).GetComponent<VisualEffect>();
+
+        summonFire.GetComponent<VFXPositionBinder>().Target = player.HandTransform;
+        summonAir.GetComponent<VFXPositionBinder>().Target = player.HandTransform;
+        summonEarth.GetComponent<VFXPositionBinder>().Target = player.HandTransform;
+        summonWater.GetComponent<VFXPositionBinder>().Target = player.HandTransform;
     }
 
     public void Summon(Elements activeElement)
@@ -29,29 +40,29 @@ public class SummonEffectController : MonoBehaviour
                 break;
             case Elements.Fire:
                 DisableAllSummons();
-                SummonFire.GetComponent<VisualEffect>().SendEvent("OnPlay");
+                summonFire.SendEvent("OnPlay");
                 break;
             case Elements.Earth:
                 DisableAllSummons();
-                SummonEarth.GetComponent<VisualEffect>().SendEvent("OnPlay");
+                summonEarth.SendEvent("OnPlay");
                 break;
             case Elements.Water:
                 DisableAllSummons();
-                SummonWater.GetComponent<VisualEffect>().SendEvent("OnPlay");
+                summonWater.SendEvent("OnPlay");
                 break;
             case Elements.Air:
                 DisableAllSummons();
-                SummonAir.GetComponent<VisualEffect>().SendEvent("OnPlay");
+                summonAir.SendEvent("OnPlay");
                 break;
         }
     }
 
     private void DisableAllSummons()
     {
-        SummonFire.GetComponent<VisualEffect>().SendEvent("OnStop");
-        SummonAir.GetComponent<VisualEffect>().SendEvent("OnStop");
-        SummonEarth.GetComponent<VisualEffect>().SendEvent("OnStop");
-        SummonWater.GetComponent<VisualEffect>().SendEvent("OnStop");
+        summonFire.SendEvent("OnStop");
+        summonAir.SendEvent("OnStop");
+        summonEarth.SendEvent("OnStop");
+        summonWater.SendEvent("OnStop");
     }
 }
 

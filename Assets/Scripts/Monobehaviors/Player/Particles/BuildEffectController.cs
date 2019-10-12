@@ -15,7 +15,7 @@ public class BuildEffectController : MonoBehaviour
         AttunedPlayerState.OnElementBuildingFinished += BuildStopped;
     }
 
-    private void BuildStopped(PlayerController obj)
+    private void BuildStopped(IPlayer obj)
     {
         if (activeEffect != null)
         {
@@ -23,7 +23,7 @@ public class BuildEffectController : MonoBehaviour
         }
     }
 
-    public void Build(PlayerController playerCon, BuildSpot spot)
+    public void Build(IPlayer playerCon, BuildSpot spot)
     {
         switch (playerCon.CurrentElement)
         {

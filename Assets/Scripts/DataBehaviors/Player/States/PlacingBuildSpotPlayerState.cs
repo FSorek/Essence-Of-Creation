@@ -15,7 +15,7 @@ public class PlacingBuildSpotPlayerState : PlayerState
 
     private float lastColliderScanTime = 0;
 
-    public PlacingBuildSpotPlayerState(PlayerController playerC) : base(playerC)
+    public PlacingBuildSpotPlayerState(IPlayer playerC) : base(playerC)
     {
         buildSpotFloorColliders = FloorColliderManager.FloorColliderEntities;
         closestAvailableSpace = ClosestEntityFinder<GameEntity>.GetClosestTransform(buildSpotFloorColliders, playerC.HandTransform.position);

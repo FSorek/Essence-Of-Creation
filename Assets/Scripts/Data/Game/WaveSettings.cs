@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-[CreateAssetMenu(fileName = "Wave Settings", menuName = "Essence/Game", order = 0)]
+[CreateAssetMenu(fileName = "Wave Settings", menuName = "Essence/Game/Wave Settings", order = 0)]
 public class WaveSettings : ScriptableObject
 {
     public float TimeToFirstWave;

@@ -36,11 +36,8 @@ public class Unit : GameEntity, IUnit
     {
         unitDamageController.TakeDamage(attackerID, damage);
         OnTakeDamage(damage);
-    }
-
-    private void OnDisable()
-    {
-        OnUnitDeath(this);
+        if(CurrentHealth <= 0)
+            OnUnitDeath(this);
     }
 
     public override void Destroy()

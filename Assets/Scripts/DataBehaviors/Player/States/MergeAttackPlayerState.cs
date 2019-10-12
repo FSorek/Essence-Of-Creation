@@ -21,7 +21,7 @@ public class MergeAttackPlayerState : PlayerState
     private BuildSpot currentBuildSpot;
     private float timeStarted;
 
-    public MergeAttackPlayerState(PlayerController playerC) : base(playerC)
+    public MergeAttackPlayerState(IPlayer playerC) : base(playerC)
     {
     }
 

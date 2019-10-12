@@ -57,7 +57,7 @@ public class PlayerBuildManager : MonoBehaviour
         buildingBlocksNumber = 0;
     }
 
-    private void BuildFinished(PlayerController playerC)
+    private void BuildFinished(IPlayer playerC)
     {
         GameObject obelisk = null;
         switch (playerC.CurrentElement)

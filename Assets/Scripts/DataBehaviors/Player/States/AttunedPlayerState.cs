@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class AttunedPlayerState : PlayerState
 {
-    public static event Action<PlayerController, BuildSpot> OnElementBuildingStarted;
-    public static event Action<PlayerController> OnElementBuildingFinished;
-    public static event Action<PlayerController> OnElementBuildingInterrupted;
+    public static event Action<IPlayer, BuildSpot> OnElementBuildingStarted;
+    public static event Action<IPlayer> OnElementBuildingFinished;
+    public static event Action<IPlayer> OnElementBuildingInterrupted;
 
     private BuildSpot currentBuildSpot;
     private float timeStarted;
+    private readonly IEconomyManager economyManager;
 
-    public AttunedPlayerState(PlayerController playerC) : base(playerC)
+    public AttunedPlayerState(IPlayer playerC, IEconomyManager economyManager) : base(playerC)
     {
+        this.economyManager = economyManager;
     }
 
     public override void ListenToState()
     {
+        if (economyManager.Essence < economyManager.Settings.EssencePerSummon)
+            return;
         if (Input.GetMouseButtonDown(0))
         {
             var potentialTargets = RangeTargetScanner<BuildSpot>.GetTargets(playerC.HandTransform.transform.position, BuildSpot.BuildSpots.ToArray(),

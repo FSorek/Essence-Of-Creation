@@ -1,8 +1,8 @@
 ﻿public abstract class PlayerState
 {
-    protected PlayerController playerC;
+    protected IPlayer playerC;
 
-    public PlayerState(PlayerController playerC)
+    public PlayerState(IPlayer playerC)
     {
         this.playerC = playerC;
     }
