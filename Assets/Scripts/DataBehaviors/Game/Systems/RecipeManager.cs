@@ -1,46 +1,43 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Data.Data_Types;
+using DataBehaviors.Recipes;
+using Monobehaviors.Tower;
 using UnityEngine;
 
-
-public class RecipeManager : MonoBehaviour // static ?
+namespace DataBehaviors.Game.Systems
 {
-    public Obelisk[] PlayableObelisks;
-    public static Dictionary<int, Obelisk> Recipes => Instance.recipes;
-    private Dictionary<int, Obelisk> recipes = new Dictionary<int, Obelisk>();
-    public static RecipeManager Instance;
-
-
-    private void Awake()
+    public class RecipeManager : MonoBehaviour // static ?
     {
-        if (Instance == null)
-            Instance = this;
-        else
+        public static RecipeManager Instance;
+        public Obelisk[] PlayableObelisks;
+        private readonly Dictionary<int, Obelisk> recipes = new Dictionary<int, Obelisk>();
+        public static Dictionary<int, Obelisk> Recipes => Instance.recipes;
+
+
+        private void Awake()
         {
-            Debug.LogError("RecipeManager instance singleton set more than once!");
+            if (Instance == null)
+                Instance = this;
+            else
+                Debug.LogError("RecipeManager instance singleton set more than once!");
+
+            foreach (var playableTower in PlayableObelisks)
+            {
+                int recipeId = TowerRecipeId.GetID(playableTower.InfusedElements);
+                recipes.Add(recipeId, playableTower);
+            }
         }
 
-        foreach (var playableTower in PlayableObelisks)
+        public Obelisk GetTowerFromPath(List<BaseElement> path)
         {
-            var recipeId = TowerRecipeId.GetID(playableTower.InfusedElements);
-            recipes.Add(recipeId, playableTower);
+            int id = TowerRecipeId.GetID(path);
+            return recipes.ContainsKey(id) ? recipes[id] : null;
         }
-    }
 
-    public Obelisk GetTowerFromPath(List<BaseElement> path)
-    {
-        var id = TowerRecipeId.GetID(path);
-        return recipes.ContainsKey(id) ? recipes[id] : null;
-    }
-
-    public Obelisk GetTowerFromPath(List<BaseElement> currentPath, BaseElement element)
-    {
-        var id = TowerRecipeId.GetID(currentPath, element);
-        return recipes.ContainsKey(id) ? recipes[id] : null;
+        public Obelisk GetTowerFromPath(List<BaseElement> currentPath, BaseElement element)
+        {
+            int id = TowerRecipeId.GetID(currentPath, element);
+            return recipes.ContainsKey(id) ? recipes[id] : null;
+        }
     }
 }
-

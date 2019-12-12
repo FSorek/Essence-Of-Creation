@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using Downloaded.MeshBrush.Scripts.Classes.Utilities;
+using UnityEngine;
 
-namespace MeshBrush
+namespace Downloaded.MeshBrush.Scripts.Classes.Components
 {
     public class MeshBrushParent : MonoBehaviour
     {

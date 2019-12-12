@@ -1,7 +1,11 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using Data.Data_Types;
+using Data.Player;
+using Monobehaviors.BuildSpot;
 
-public interface IHandBuilder
+namespace Data.Interfaces.Player
 {
-    void Build(Elements element, PlayerBuildingData data, BuildSpot buildSpot);
+    public interface IHandBuilder
+    {
+        void Build(Elements element, PlayerBuildingData data, BuildSpotComponent buildSpotComponent);
+    }
 }

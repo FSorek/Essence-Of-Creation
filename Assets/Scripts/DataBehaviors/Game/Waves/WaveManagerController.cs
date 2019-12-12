@@ -1,51 +1,55 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
+using Data.Game;
+using Data.Interfaces.Game.Waves;
+using Data.Unit;
+using Monobehaviors.Unit;
+using UnityEngine;    
 
-public class WaveManagerController : IWaveManager
+namespace DataBehaviors.Game.Waves
 {
-    private List<UnitData> waves;
-    private int currentWave;
-    private readonly IWaveGenerator generator;
-    private readonly WaveSettings settings;
-    private List<ITakeDamage> enemiesAlive;
-    private Stack<Transform> reachpoints;
-
-    public WaveManagerController(int seed, WaveSettings settings)
+    public class WaveManagerController : IWaveManager
     {
-        generator = new WaveGenerator(seed);
-        waves = new List<UnitData>();
-        enemiesAlive = new List<ITakeDamage>();
-        for (int i = 0; i < settings.WaveCount; i++)
+        private readonly IWaveGenerator generator;
+        private readonly List<Transform> unitsAlive;
+        private Stack<Transform> reachpoints;
+        private readonly List<UnitData> waves;
+
+        public WaveManagerController(int seed, WaveSettings settings)
         {
-            waves.Add(generator.Generate(settings.WavesPowerPoints[i]));
+            generator = new WaveGenerator(seed);
+            waves = new List<UnitData>();
+            unitsAlive = new List<Transform>();
+            for (int i = 0; i < settings.WaveCount; i++) waves.Add(generator.Generate(settings.WavesPowerPoints[i]));
+            WaveSettings = settings;
+
+            UnitComponent.OnUnitDeath += u => unitsAlive.Remove(u.transform);
+            UnitComponent.OnUnitSpawn += u => unitsAlive.Add(u.transform);
         }
-        this.settings = settings;
 
-        Unit.OnUnitDeath += (u) => enemiesAlive.Remove(u);
-        Unit.OnUnitSpawn += (u) => enemiesAlive.Add(u);
-    }
-
-    public void SetReachpoints(Transform reachpointsParent)
-    {
-        int children = reachpointsParent.childCount;
-        reachpoints = new Stack<Transform>();
-        for (int i = 0; i < children; ++i)
-            reachpoints.Push(reachpointsParent.GetChild(i));
-    }
-
-    public void NextWave() // later make it generate a new wave for infinite levels
-    {
-        currentWave++;
-        if (currentWave >= settings.WaveCount - 1)
+        public void SetReachpoints(Transform reachpointsParent)
         {
-            var generatedPP = settings.WavesPowerPoints[settings.WaveCount - 1] + 10 * (currentWave - settings.WaveCount);
-            waves.Add(generator.Generate(generatedPP));
+            int children = reachpointsParent.childCount;
+            reachpoints = new Stack<Transform>();
+            for (int i = 0; i < children; ++i)
+                reachpoints.Push(reachpointsParent.GetChild(i));
         }
-    }
 
-    public int CurrentWave => currentWave;
-    public Transform[] Reachpoints => reachpoints.ToArray();
-    public ITakeDamage[] EnemiesAlive => enemiesAlive.ToArray();
-    public UnitData CurrentGeneratedUnit => waves[currentWave];
-    public WaveSettings WaveSettings => settings;
+        public void NextWave() // later make it generate a new wave for infinite levels
+        {
+            CurrentWave++;
+            if (CurrentWave >= WaveSettings.WaveCount - 1)
+            {
+                int generatedPP = WaveSettings.WavesPowerPoints[WaveSettings.WaveCount - 1] +
+                                  10 * (CurrentWave - WaveSettings.WaveCount);
+                waves.Add(generator.Generate(generatedPP));
+            }
+        }
+
+        public int CurrentWave { get; private set; }
+
+        public Transform[] Reachpoints => reachpoints.ToArray();
+        public Transform[] UnitsAlive => unitsAlive.ToArray();
+        public UnitData CurrentGeneratedUnit => waves[CurrentWave];
+        public WaveSettings WaveSettings { get; }
+    }
 }

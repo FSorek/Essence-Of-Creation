@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public interface IClosestTransformFinder
+namespace Data.Interfaces.Targeting
 {
-    Transform GetClosestTransform(Transform[] nearbyBuildSpots, Vector3 currentPosition);
+    public interface IClosestTransformFinder
+    {
+        Transform GetClosestTransform(Transform[] nearbyBuildSpots, Vector3 currentPosition);
+    }
 }

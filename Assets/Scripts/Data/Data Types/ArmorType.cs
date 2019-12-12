@@ -1,9 +1,12 @@
-﻿public enum ArmorType
+﻿namespace Data.Data_Types
 {
-    None = 0,
-    Armoured,
-    Carapace,
-    Ethereal,
-    Flesh,
-    Elemental
+    public enum ArmorType
+    {
+        None = 0,
+        Armoured,
+        Carapace,
+        Ethereal,
+        Flesh,
+        Elemental
+    }
 }

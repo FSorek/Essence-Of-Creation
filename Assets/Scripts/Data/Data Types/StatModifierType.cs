@@ -1,5 +1,8 @@
-﻿public enum StatModifierType
+﻿namespace Data.Data_Types
 {
-    Flat,
-    Percent
+    public enum StatModifierType
+    {
+        Flat,
+        Percent
+    }
 }

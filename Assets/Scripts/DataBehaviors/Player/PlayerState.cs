@@ -1,12 +1,18 @@
-﻿public abstract class PlayerState
+﻿using Data.Interfaces.Player;
+using Monobehaviors.Player;
+
+namespace DataBehaviors.Player
 {
-    protected IPlayer playerC;
-
-    public PlayerState(IPlayer playerC)
+    public abstract class PlayerState
     {
-        this.playerC = playerC;
-    }
+        protected PlayerComponent playerComponentC;
 
-    public abstract void ListenToState();
-    public abstract void OnStateExit();
+        public PlayerState(PlayerComponent playerComponentC)
+        {
+            this.playerComponentC = playerComponentC;
+        }
+
+        public abstract void ListenToState();
+        public abstract void OnStateExit();
+    }
 }

@@ -1,4 +1,6 @@
-﻿    public enum BaseElement
+﻿namespace Data.Data_Types
+{
+    public enum BaseElement
     {
         None = 0,
         Fire = 1,
@@ -6,6 +8,7 @@
         Earth = 4,
         Air = 8
     }
+}
 ///***
 ///
 /// None  0000

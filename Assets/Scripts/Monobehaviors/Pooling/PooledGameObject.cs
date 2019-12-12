@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using Data.Interfaces.Pooling;
+using UnityEngine;
 
-public class PooledGameObject : MonoBehaviour, IGameObjectPooled
+namespace Monobehaviors.Pooling
 {
-    public ObjectPool Pool { get; set; }
+    public class PooledGameObject : MonoBehaviour, IGameObjectPooled
+    {
+        public ObjectPool Pool { get; set; }
+    }
 }
-

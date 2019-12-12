@@ -1,13 +1,18 @@
-﻿using System;
+﻿using Data.Game;
+using Data.Interfaces.Game.Economy;
+using DataBehaviors.Game.Economy;
 using UnityEngine;
 
-public class EconomyManager : MonoBehaviour
+namespace Monobehaviors.Game.Managers
 {
-    public static IEconomyManager Instance;
-    public EconomySettings EconomySettings;
-
-    private void Awake()
+    public class EconomyManager : MonoBehaviour
     {
-        Instance = new EconomyManagerController(EconomySettings, WaveManager.Instance);
+        public static IEconomyManager Instance;
+        public EconomySettings EconomySettings;
+
+        private void Awake()
+        {
+            Instance = new EconomyManagerController(EconomySettings, WaveManager.Instance);
+        }
     }
 }

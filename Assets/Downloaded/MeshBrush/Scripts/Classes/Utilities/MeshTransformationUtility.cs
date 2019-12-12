@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MeshBrush
+namespace Downloaded.MeshBrush.Scripts.Classes.Utilities
 {
     /// <summary>
     /// Mesh transformation utility useful for randomizations that require scaling, rotating and/or offsetting existing meshes.

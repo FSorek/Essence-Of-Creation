@@ -1,5 +1,10 @@
-﻿public interface IEconomyManager
+﻿using Data.Game;
+
+namespace Data.Interfaces.Game.Economy
 {
-    int Essence { get; }
-    EconomySettings Settings { get; }
+    public interface IEconomyManager
+    {
+        int Essence { get; }
+        EconomySettings Settings { get; }
+    }
 }

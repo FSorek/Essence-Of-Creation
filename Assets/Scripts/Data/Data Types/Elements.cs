@@ -1,11 +1,14 @@
-﻿public enum Elements
+﻿namespace Data.Data_Types
 {
-    None,
-    Fire,
-    Earth,
-    Water,
-    Air,
-    Life,
-    Death,
-    Invocation
+    public enum Elements
+    {
+        None,
+        Fire,
+        Earth,
+        Water,
+        Air,
+        Life,
+        Death,
+        Invocation
+    }
 }

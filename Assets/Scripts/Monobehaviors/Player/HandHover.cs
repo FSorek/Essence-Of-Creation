@@ -1,19 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using Monobehaviors.Camera;
 using UnityEngine;
 
-public class HandHover : MonoBehaviour
+namespace Monobehaviors.Player
 {
-    public float HeightAboveSurface = 2f;
-    public bool IsCursorVisible = false;
-    void FixedUpdate()
+    public class HandHover : MonoBehaviour
     {
-        var hit = MouseWorldPoint.RaycastHit;
-        if (hit.HasValue)
+        public float HeightAboveSurface = 2f;
+        public bool IsCursorVisible;
+
+        private void FixedUpdate()
         {
-            transform.position = hit.Value.point + new Vector3(0, HeightAboveSurface, -HeightAboveSurface);
-            Cursor.visible = IsCursorVisible;
+            var hit = MouseWorldPoint.RaycastHit;
+            if (hit.HasValue)
+            {
+                transform.position = hit.Value.point + new Vector3(0, HeightAboveSurface, -HeightAboveSurface);
+                Cursor.visible = IsCursorVisible;
+            }
         }
     }
 }

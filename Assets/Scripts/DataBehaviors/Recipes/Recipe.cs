@@ -1,19 +1,21 @@
 ﻿using System.Collections.Generic;
+using Data.Data_Types;
 using UnityEngine;
 
-public class Recipe
+namespace DataBehaviors.Recipes
 {
-    public byte Tier { get; private set; }
-    public int Id { get; private set; }
-
-    public Recipe(List<BaseElement> elementChain)
+    public class Recipe
     {
-        Id = TowerRecipeId.GetID(elementChain);
-        Tier = 1;
-        for (int i = 1; i <= 3; i++)
+        public Recipe(List<BaseElement> elementChain)
         {
-            if (Id >= Mathf.Pow(16, i))
-                Tier++;
+            Id = TowerRecipeId.GetID(elementChain);
+            Tier = 1;
+            for (int i = 1; i <= 3; i++)
+                if (Id >= Mathf.Pow(16, i))
+                    Tier++;
         }
+
+        public byte Tier { get; }
+        public int Id { get; }
     }
 }

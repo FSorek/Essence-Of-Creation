@@ -1,74 +1,79 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using Data.Interfaces.Game.Waves;
+using Data.Tower;
+using DataBehaviors.Game.Entity.Targeting;
+using DataBehaviors.Game.Utility;
+using Monobehaviors.Projectiles;
+using Monobehaviors.Tower.Attack;
+using UnityEngine;
 
-public class AttackController
+namespace DataBehaviors.Tower
 {
-    private float lastRecordedAttackTime = 0;
-    private ICanAttack owner;
-    private IWaveManager waveManager;
-    private ITakeDamage[] targets;
-
-    public AttackController(ICanAttack owner, IWaveManager waveManager)
+    public class AttackController
     {
-        this.owner = owner;
-        this.waveManager = waveManager;
-        targets = new ITakeDamage[owner.AttackData.TargetLimit];
-    }
+        private float lastRecordedAttackTime;
+        private readonly Transform owner;
+        private readonly TowerAttack attack;
+        private Transform[] targets;
+        private readonly IWaveManager waveManager;
 
-    public void Tick()
-    {
-        if (CanAttack())
+        public AttackController(Transform owner, TowerAttack attack, IWaveManager waveManager)
         {
-            DoAttack();
+            this.owner = owner;
+            this.attack = attack;
+            this.waveManager = waveManager;
+            targets = new Transform[attack.TargetLimit];
         }
-    }
 
-    public bool CanAttack()
-    {
-        if (GameTime.time - lastRecordedAttackTime >= owner.AttackData.AttackTimer)
+        public void Tick()
         {
-            targets = GetTargets();
-            if (targets == null || targets.Length <= 0)
-                return false;
-            lastRecordedAttackTime = GameTime.time;
-            return true;
+            if (CanAttack()) DoAttack();
         }
-        return false;
-    }
 
-    private void DoAttack()
-    {
-        for (int i = 0; i < owner.AttackData.TargetLimit; i++)
+        public bool CanAttack()
         {
-            if (targets[i] != null)
+            if (GameTime.time - lastRecordedAttackTime >= attack.AttackTimer)
             {
-                owner.Attack(targets[i]);
+                targets = GetTargets();
+                if (targets == null || targets[0] == null)
+                    return false;
+                lastRecordedAttackTime = GameTime.time;
+                return true;
             }
+
+            return false;
         }
-    }
 
-    protected ITakeDamage[] GetTargets()
-    {
-        var enemies = waveManager.EnemiesAlive;
-        if (enemies.Length <= 0)
-            return null;
-        var targets = new ITakeDamage[owner.AttackData.TargetLimit];
-        var enemiesInRange = RangeTargetScanner<ITakeDamage>.GetTargets(owner.Entity.Position, enemies, owner.AttackData.Range);
-
-        if (enemiesInRange.Length > 0)
+        private void DoAttack()
         {
-            for (int i = 0; i < Mathf.Min(owner.AttackData.TargetLimit, enemiesInRange.Length); i++)
-            {
-                targets[i] = enemiesInRange[i];
-            }
-        }
-        else
-        {
-            for (int i = 0; i < owner.AttackData.TargetLimit; i++)
-            {
-                targets[i] = null;
-            }
+            for (int i = 0; i < attack.TargetLimit; i++)
+                if (targets[i] != null)
+                {
+                    CreateProjectile(targets[i]);
+                }
         }
 
-        return targets;
+        private void CreateProjectile(Transform target)
+        {
+            var projectile = GameObject.Instantiate(attack.ProjectileModel, owner.position, Quaternion.identity).AddComponent<Projectile>();
+            projectile.Initialize(attack, target);
+            owner.GetComponent<AttackComponent>().FireOnProjectileFired(projectile);
+        }
+
+        protected Transform[] GetTargets()
+        {
+            var enemies = waveManager.UnitsAlive;
+            if (enemies.Length <= 0)
+                return null;
+            var availableTargets = new Transform[attack.TargetLimit];
+            var enemiesInRange =
+                RangeTargetScanner.GetTargets(owner.transform.position, enemies, attack.Range);
+
+            if (enemiesInRange.Length <= 0) return availableTargets;
+            for (int i = 0; i < Mathf.Min(attack.TargetLimit, enemiesInRange.Length); i++)
+                availableTargets[i] = enemiesInRange[i];
+
+            return availableTargets;
+        }
     }
 }

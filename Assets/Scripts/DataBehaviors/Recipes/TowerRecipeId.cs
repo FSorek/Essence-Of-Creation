@@ -1,38 +1,34 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Data.Data_Types;
 
-public static class TowerRecipeId
+namespace DataBehaviors.Recipes
 {
-    public static int GetID(List<BaseElement> elementChain)
+    public static class TowerRecipeId
     {
-        int id = 0;
-        for (int i = 0; i < elementChain.Count; i++)
+        public static int GetID(List<BaseElement> elementChain)
         {
-            if (i > 1)
+            int id = 0;
+            for (int i = 0; i < elementChain.Count; i++)
             {
-                id <<= 4;
+                if (i > 1) id <<= 4;
+                id |= (int) elementChain[i];
             }
-            id |= (int) elementChain[i];
+
+            return id;
         }
 
-        return id;
-    }
-
-    public static int GetID(List<BaseElement> elementChain, BaseElement lastElement)
-    {
-        int id = 0;
-        List<BaseElement> fullElements = new List<BaseElement>(elementChain);
-        fullElements.Add(lastElement);
-        for (int i = 0; i < fullElements.Count; i++)
+        public static int GetID(List<BaseElement> elementChain, BaseElement lastElement)
         {
-            if (i > 1)
+            int id = 0;
+            var fullElements = new List<BaseElement>(elementChain);
+            fullElements.Add(lastElement);
+            for (int i = 0; i < fullElements.Count; i++)
             {
-                id <<= 4;
+                if (i > 1) id <<= 4;
+                id |= (int) fullElements[i];
             }
-            id |= (int)fullElements[i];
-        }
 
-        return id;
+            return id;
+        }
     }
 }

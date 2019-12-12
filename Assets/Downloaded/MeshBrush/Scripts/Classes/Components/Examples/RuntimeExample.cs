@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 #pragma warning disable 
 
-namespace MeshBrush.Examples
+namespace Downloaded.MeshBrush.Scripts.Classes.Components.Examples
 {
     public class RuntimeExample : MonoBehaviour
     {

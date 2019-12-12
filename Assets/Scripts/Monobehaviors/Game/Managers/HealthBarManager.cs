@@ -1,37 +1,40 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Data.Extensions;
+using Monobehaviors.Pooling;
+using Monobehaviors.Unit;
+using Monobehaviors.Unit.HealthBar;
 using UnityEngine;
 using UnityEngine.UI;
-public class HealthBarManager : MonoBehaviour
+
+namespace Monobehaviors.Game.Managers
 {
-    [SerializeField] private ObjectPool Pool;
-
-    private Dictionary<ITakeDamage, HealthBar> healthBars = new Dictionary<ITakeDamage, HealthBar>();
-
-    private void Awake()
+    public class HealthBarManager : MonoBehaviour
     {
-        Unit.OnUnitSpawn += AddHealthBar;
-        Unit.OnUnitDeath += RemoveHealthBar;
-    }
+        private readonly Dictionary<UnitComponent, HealthBar> healthBars = new Dictionary<UnitComponent, HealthBar>();
+        [SerializeField] private ObjectPool Pool;
 
-    private void RemoveHealthBar(ITakeDamage obj)
-    {
-        if (healthBars.ContainsKey(obj))
+        private void Awake()
         {
+            UnitComponent.OnUnitSpawn += AddHealthBar;
+            UnitComponent.OnUnitDeath += RemoveHealthBar;
+        }
+
+        private void RemoveHealthBar(UnitComponent obj)
+        {
+            if (!healthBars.ContainsKey(obj) || healthBars[obj] == null) return;
             healthBars[obj].gameObject.ReturnToPool();
             healthBars.Remove(obj);
         }
-    }
 
-    private void AddHealthBar(ITakeDamage obj)
-    {
-        if (!healthBars.ContainsKey(obj))
+        private void AddHealthBar(UnitComponent obj)
         {
-            var hpBar = Pool.Get().GetComponent<HealthBar>();
-            healthBars.Add(obj, hpBar);
-            hpBar.SetHealth(obj);
-            hpBar.gameObject.SetActive(true);
+            if (!healthBars.ContainsKey(obj))
+            {
+                var hpBar = Pool.Get().GetComponent<HealthBar>();
+                healthBars.Add(obj, hpBar);
+                hpBar.SetHealth(obj);
+                hpBar.gameObject.SetActive(obj.gameObject.activeSelf);
+            }
         }
     }
 }

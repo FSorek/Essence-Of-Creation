@@ -1,55 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using DataBehaviors.Game.Systems;
+using DataBehaviors.Player.States;
+using Monobehaviors.Tower;
 using UnityEngine;
 
-public class PlayerExtractAssembleTower : MonoBehaviour
+namespace Monobehaviors.Player
 {
-    public Stack<GameObject> ExtractedTowers => extractedTowers;
-    private Stack<GameObject> extractedTowers = new Stack<GameObject>(2);
-
-    private void Awake()
+    public class PlayerExtractAssembleTower : MonoBehaviour
     {
-        MergeAttackPlayerState.OnExtractTowerFinished += ExtractionFinished;
-        MergeAttackPlayerState.OnAssembleTowerFinished += AssembleFinished;
-    }
+        public Stack<GameObject> ExtractedTowers { get; } = new Stack<GameObject>(2);
 
-    private void AssembleFinished(BuildSpot spot)
-    {
-        if(extractedTowers.Count <= 0)
-            return;
-        var assembledTower = extractedTowers.Pop();
-        spot.SetCurrentTower(assembledTower);
-        assembledTower.transform.position = spot.Position;
-        assembledTower.SetActive(true);
-    }
-
-    private void ExtractionFinished(BuildSpot spot)
-    {
-        var extractedTower = spot.CurrentTower;
-        extractedTower.SetActive(false);
-        extractedTowers.Push(extractedTower);
-        spot.ClearCurrentTower();
-
-        if (extractedTowers.Count >= 2)
+        private void Awake()
         {
-            var inA = extractedTowers.Pop().GetComponent<Obelisk>();
-            var inB = extractedTowers.Peek().GetComponent<Obelisk>();
+            MergeAttackPlayerState.OnExtractTowerFinished += ExtractionFinished;
+            MergeAttackPlayerState.OnAssembleTowerFinished += AssembleFinished;
+        }
 
-            Obelisk result = null;
-            if (inB.InfusedElements.Count == 1)
-                result = RecipeManager.Instance.GetTowerFromPath(inA.InfusedElements, inB.InfusedElements[0]);
-            else if (inB.InfusedElements.Count > 1 && inA.InfusedElements.Count == 1)
-                result = RecipeManager.Instance.GetTowerFromPath(inB.InfusedElements, inA.InfusedElements[0]);
-            if (result == null)
+        private void AssembleFinished(BuildSpot.BuildSpotComponent spotComponent)
+        {
+            if (ExtractedTowers.Count <= 0)
+                return;
+            var assembledTower = ExtractedTowers.Pop();
+            spotComponent.SetCurrentTower(assembledTower);
+            assembledTower.transform.position = spotComponent.transform.position;
+            assembledTower.SetActive(true);
+        }
+
+        private void ExtractionFinished(BuildSpot.BuildSpotComponent spotComponent)
+        {
+            var extractedTower = spotComponent.CurrentTower;
+            extractedTower.SetActive(false);
+            ExtractedTowers.Push(extractedTower);
+            spotComponent.ClearCurrentTower();
+
+            if (ExtractedTowers.Count >= 2)
             {
-                extractedTowers.Push(inA.gameObject);
-            }
-            else
-            {
-                extractedTowers.Pop();
-                var newTower = Instantiate(result);
-                newTower.gameObject.SetActive(false);
-                extractedTowers.Push(newTower.gameObject);
+                var inA = ExtractedTowers.Pop().GetComponent<Obelisk>();
+                var inB = ExtractedTowers.Peek().GetComponent<Obelisk>();
+
+                Obelisk result = null;
+                if (inB.InfusedElements.Count == 1)
+                    result = RecipeManager.Instance.GetTowerFromPath(inA.InfusedElements, inB.InfusedElements[0]);
+                else if (inB.InfusedElements.Count > 1 && inA.InfusedElements.Count == 1)
+                    result = RecipeManager.Instance.GetTowerFromPath(inB.InfusedElements, inA.InfusedElements[0]);
+                if (result == null)
+                {
+                    ExtractedTowers.Push(inA.gameObject);
+                }
+                else
+                {
+                    ExtractedTowers.Pop();
+                    var newTower = Instantiate(result);
+                    newTower.gameObject.SetActive(false);
+                    ExtractedTowers.Push(newTower.gameObject);
+                }
             }
         }
     }

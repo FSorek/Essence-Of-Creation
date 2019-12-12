@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using System.Collections.Generic;
 
-namespace MeshBrush
+namespace Downloaded.MeshBrush.Scripts.Classes.Utilities
 {
     /// <summary>
     /// Class that provides functionality for saving and loading 

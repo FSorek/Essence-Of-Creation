@@ -1,37 +1,44 @@
-﻿using UnityEngine;
+﻿using Data.Game;
+using Data.Interfaces.Game.Economy;
+using Data.Interfaces.Game.Waves;
+using Data.Interfaces.Player;
+using DataBehaviors.Player.States;
 
-public class EconomyManagerController : IEconomyManager
+namespace DataBehaviors.Game.Economy
 {
-    private int playerEssence;
-    private int essencePerEnemy = 10;
-    private EconomySettings settings;
-    private readonly IWaveManager waveManager;
-
-    public EconomyManagerController(EconomySettings settings, IWaveManager waveManager)
+    public class EconomyManagerController : IEconomyManager
     {
-        this.settings = settings;
-        this.waveManager = waveManager;
-        Unit.OnUnitDeath += AddEssence;
-        AttunedPlayerState.OnElementBuildingFinished += UseEssenceToBuild;
-        PlacingBuildSpotPlayerState.OnBuildSpotCreated += UseEssenceForBuildSpot;
-        playerEssence = settings.StartingEssence;
-        //essencePerEnemy = settings.EssencePerWave / waveManager.WaveSettings.EnemiesPerWave;
-    }
-    private void UseEssenceForBuildSpot()
-    {
-        playerEssence -= settings.EssencePerBuildspot;
-    }
+        private readonly IWaveManager waveManager;
+        private readonly int essencePerEnemy = 10;
 
-    private void UseEssenceToBuild(IPlayer obj)
-    {
-        playerEssence -= settings.EssencePerSummon;
-    }
+        public EconomyManagerController(EconomySettings settings, IWaveManager waveManager)
+        {
+            Settings = settings;
+            this.waveManager = waveManager;
+            Monobehaviors.Unit.UnitComponent.OnUnitDeath += AddEssence;
+            AttunedPlayerState.OnElementBuildingFinished += UseEssenceToBuild;
+            PlacingBuildSpotPlayerState.OnBuildSpotCreated += UseEssenceForBuildSpot;
+            Essence = settings.StartingEssence;
+            //essencePerEnemy = settings.EssencePerWave / waveManager.WaveSettings.EnemiesPerWave;
+        }
 
-    private void AddEssence(ITakeDamage obj)
-    {
-        playerEssence += essencePerEnemy;
-    }
+        public int Essence { get; private set; }
 
-    public int Essence => playerEssence;
-    public EconomySettings Settings => settings;
+        public EconomySettings Settings { get; }
+
+        private void UseEssenceForBuildSpot()
+        {
+            Essence -= Settings.EssencePerBuildspot;
+        }
+
+        private void UseEssenceToBuild(IPlayer obj)
+        {
+            Essence -= Settings.EssencePerSummon;
+        }
+
+        private void AddEssence(Monobehaviors.Unit.UnitComponent unitComponent)
+        {
+            Essence += essencePerEnemy;
+        }
+    }
 }

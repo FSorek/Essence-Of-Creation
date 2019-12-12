@@ -1,123 +1,163 @@
 ﻿using System;
+using Data.Data_Types;
+using Data.Interfaces.Player;
+using DataBehaviors.Game.Entity.Targeting;
+using DataBehaviors.Player.States;
+using Monobehaviors.BuildSpot;
+using Monobehaviors.Game.Managers;
 using UnityEngine;
 
-public class PlayerBuildManager : MonoBehaviour
+namespace Monobehaviors.Player
 {
-    public static event Action<GameObject, BuildSpot> OnTowerCreated = delegate {};
-
-    public GameObject FireObeliskPrefab;
-    public GameObject AirObeliskPrefab;
-    public GameObject WaterObeliskPrefab;
-    public GameObject EarthObeliskPrefab;
-
-    public GameObject BuildSpotBlockPrefab;
-    public GameObject BuildSpotPeakPrefab;
-
-    private int buildingBlocksNumber;
-    private GameObject[] buildBlocks;
-    private Vector3 latestBuildSpotDirection;
-    private BuildSpot spotOnFocus;
-    
-
-    private void Awake()
+    [RequireComponent(typeof(PlayerComponent))]
+    public class PlayerBuildManager : MonoBehaviour
     {
-        buildingBlocksNumber = 0;
-        AttunedPlayerState.OnElementBuildingStarted += (playerC, spot) => spotOnFocus = spot;
-        AttunedPlayerState.OnElementBuildingFinished += BuildFinished;
+        public GameObject AirObeliskPrefab;
+        private GameObject[] buildBlocks;
 
-        PlacingBuildSpotPlayerState.OnIncreaseBuildSpotHeight += IncreaseBuildingBlocks;
-        PlacingBuildSpotPlayerState.OnDecreaseBuildSpotHeight += ReduceBuildingBlocks;
-        PlacingBuildSpotPlayerState.PlacingBuildSpot = PlacingBuildSpot;
-        PlacingBuildSpotPlayerState.OnBuildSpotCreated += BuildSpotCreated;
-        PlacingBuildSpotPlayerState.OnBuildSpotCancelled += BuildSpotCancelled;
+        private int buildingBlocksNumber;
 
-        buildBlocks = new GameObject[3];
-    }
+        public GameObject BuildSpotBasePrefab;
+        public GameObject BuildSpotBlockPrefab;
+        public GameObject BuildSpotPeakPrefab;
+        public GameObject EarthObeliskPrefab;
 
-    private void BuildSpotCreated()
-    {
-        var peak = Instantiate(BuildSpotPeakPrefab);
-        peak.transform.position = buildBlocks[buildingBlocksNumber - 1].transform.position + latestBuildSpotDirection * 2;
-        peak.AddComponent<BuildSpot>();
-        BuildSpot.BuildSpots.Add(peak.GetComponent<IEntity>());
-        for (int i = 0; i < buildingBlocksNumber; i++)
+        public GameObject FireObeliskPrefab;
+        private Vector3 latestBuildSpotDirection;
+        private BuildSpotComponent spotComponentOnFocus;
+        public GameObject WaterObeliskPrefab;
+        private Transform handTransform;
+        private bool isBuilding;
+        private PlayerComponent player;
+        public static event Action<GameObject, BuildSpotComponent> OnTowerCreated = delegate { };
+
+
+        private void Awake()
         {
-            buildBlocks[i] = null;
-        }
-        buildingBlocksNumber = 0;
-    }
+            player = GetComponent<PlayerComponent>();
+            handTransform = player.HandTransform;
+            
+            buildingBlocksNumber = 0;
+            buildBlocks = new GameObject[3];
+            
+            AttunedPlayerState.OnElementBuildingStarted += AttunedPlayerStateOnElementBuildingStarted;
+            AttunedPlayerState.OnElementBuildingFinished += BuildFinished;
 
-    private void BuildSpotCancelled()
-    {
-        for (int i = 0; i < buildingBlocksNumber; i++)
-        {
-            Destroy(buildBlocks[i].gameObject);
-            buildBlocks[i] = null;
-        }
-        buildingBlocksNumber = 0;
-    }
+            PlacingBuildSpotPlayerState.OnIncreaseBuildSpotHeight += IncreaseBuildingBlocks;
+            PlacingBuildSpotPlayerState.OnDecreaseBuildSpotHeight += ReduceBuildingBlocks;
+            PlacingBuildSpotPlayerState.OnBuildSpotCreated += BuildSpotCreated;
+            PlacingBuildSpotPlayerState.OnBuildSpotCancelled += BuildSpotCancelled;
 
-    private void BuildFinished(IPlayer playerC)
-    {
-        GameObject obelisk = null;
-        switch (playerC.CurrentElement)
-        {
-            case Elements.Fire:
-                obelisk = FireObeliskPrefab;
-                break;
-            case Elements.Earth:
-                obelisk = EarthObeliskPrefab;
-                break;
-            case Elements.Water:
-                obelisk = WaterObeliskPrefab;
-                break;
-            case Elements.Air:
-                obelisk = AirObeliskPrefab;
-                break;
         }
 
-        if (obelisk != null && spotOnFocus != null)
+        private void AttunedPlayerStateOnElementBuildingStarted(PlayerComponent player, BuildSpotComponent spot)
         {
-            var tower = Instantiate(obelisk, spotOnFocus.Position, Quaternion.identity);
-            OnTowerCreated(tower, spotOnFocus);
+            spotComponentOnFocus = spot;
         }
-    }
 
-    private void PlacingBuildSpot(Vector3 closestPointOnTerrain, Vector3 HandPosition)
-    {
-        if (buildingBlocksNumber <= 0)
-            IncreaseBuildingBlocks();
-        latestBuildSpotDirection = (HandPosition - closestPointOnTerrain).normalized;
-        
-        for (int i = 0; i < buildingBlocksNumber; i++)
+        private void BuildSpotCreated()
         {
-            buildBlocks[i].transform.LookAt(HandPosition);
-            buildBlocks[i].transform.position = closestPointOnTerrain + i * latestBuildSpotDirection * 3;
+            var peak = Instantiate(BuildSpotPeakPrefab);
+            peak.transform.position =
+                buildBlocks[buildingBlocksNumber - 1].transform.position + latestBuildSpotDirection * 2;
+            peak.AddComponent<BuildSpotComponent>();
+            BuildSpotComponent.BuildSpots.Add(peak.transform);
+            for (int i = 0; i < buildingBlocksNumber; i++) buildBlocks[i] = null;
+            buildingBlocksNumber = 0;
         }
-    }
 
-    private void ReduceBuildingBlocks()
-    {
-        if (buildingBlocksNumber > 1)
+        private void BuildSpotCancelled()
         {
-            if (buildBlocks[buildingBlocksNumber - 1] != null)
+            for (int i = 0; i < buildingBlocksNumber; i++)
             {
-                Destroy(buildBlocks[buildingBlocksNumber - 1].gameObject);
-                buildBlocks[buildingBlocksNumber - 1] = null;
+                Destroy(buildBlocks[i].gameObject);
+                buildBlocks[i] = null;
             }
-            buildingBlocksNumber--;
-        }
-    }
 
-    private void IncreaseBuildingBlocks()
-    {
-        if (buildingBlocksNumber < 3)
+            buildingBlocksNumber = 0;
+        }
+
+        private void BuildFinished(IPlayer playerC)
         {
-            buildingBlocksNumber++;
-            if (buildBlocks[buildingBlocksNumber - 1] == null)
+            GameObject obelisk = null;
+            switch (playerC.CurrentElement)
             {
-                var block = Instantiate(BuildSpotBlockPrefab);
-                buildBlocks[buildingBlocksNumber - 1] = block;
+                case Elements.Fire:
+                    obelisk = FireObeliskPrefab;
+                    break;
+                case Elements.Earth:
+                    obelisk = EarthObeliskPrefab;
+                    break;
+                case Elements.Water:
+                    obelisk = WaterObeliskPrefab;
+                    break;
+                case Elements.Air:
+                    obelisk = AirObeliskPrefab;
+                    break;
+            }
+
+            if (obelisk != null && spotComponentOnFocus != null)
+            {
+                var tower = Instantiate(obelisk, spotComponentOnFocus.transform.position, Quaternion.identity);
+                OnTowerCreated(tower, spotComponentOnFocus);
+            }
+
+            isBuilding = false;
+        }
+
+        private void Update()
+        {
+            if(player.CurrentElement != Elements.Invocation) return;
+            if (buildingBlocksNumber <= 0)
+                IncreaseBuildingBlocks();
+            var position = handTransform.position;
+            Vector3 closestPoint =
+                ClosestEntityFinder.GetClosestTransform(FloorColliderManager.Instance.BuildColliders,
+                    position).GetComponent<Collider>().ClosestPointOnBounds(position);
+            latestBuildSpotDirection = (position - closestPoint).normalized;
+
+            for (int i = 0; i < buildingBlocksNumber; i++)
+            {
+                buildBlocks[i].transform.LookAt(position);
+                buildBlocks[i].transform.position = closestPoint + i * 3 * latestBuildSpotDirection;
+            }
+        }
+
+        private void ReduceBuildingBlocks()
+        {
+            if (buildingBlocksNumber > 1)
+            {
+                if (buildBlocks[buildingBlocksNumber - 1] != null)
+                {
+                    Destroy(buildBlocks[buildingBlocksNumber - 1].gameObject);
+                    buildBlocks[buildingBlocksNumber - 1] = null;
+                }
+
+                buildingBlocksNumber--;
+            }
+        }
+
+        private void IncreaseBuildingBlocks()
+        {
+            if (buildingBlocksNumber < 3)
+            {
+                buildingBlocksNumber++;
+                if (buildBlocks[buildingBlocksNumber - 1] == null)
+                {
+                    if (buildingBlocksNumber == 1)
+                    {
+                        var block = Instantiate(BuildSpotBasePrefab);
+                        buildBlocks[buildingBlocksNumber - 1] = block;
+                    }
+                    else
+                    {
+                        var block = Instantiate(BuildSpotBlockPrefab);
+                        var scale = block.transform.lossyScale.x * Mathf.Pow(.8f, buildingBlocksNumber);
+                        block.transform.localScale = new Vector3(scale,scale, scale);
+                        buildBlocks[buildingBlocksNumber - 1] = block;
+                    }
+
+                }
             }
         }
     }

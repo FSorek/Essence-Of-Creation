@@ -1,9 +1,23 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using Data.Data_Types;
 using UnityEngine;
 
-public partial class Obelisk : GameEntity
+namespace Monobehaviors.Tower
 {
-    public Vector3 AttackSpawnPosition => transform.position;
-    public List<BaseElement> InfusedElements = new List<BaseElement>();
+    public class Obelisk : MonoBehaviour
+    {
+        public static List<Obelisk> ObeliskEntities = new List<Obelisk>();
+        public List<BaseElement> InfusedElements = new List<BaseElement>();
+        public Vector3 AttackSpawnPosition => transform.position;
+
+        private void Awake()
+        {
+            ObeliskEntities.Add(this);
+        }
+
+        private void OnDestroy()
+        {
+            ObeliskEntities.Remove(this);
+        }
+    }
 }

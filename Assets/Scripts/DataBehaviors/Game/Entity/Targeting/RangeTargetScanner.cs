@@ -1,32 +1,33 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-public static class RangeTargetScanner<T> where T : IEntity
+namespace DataBehaviors.Game.Entity.Targeting
 {
-    public static T[] GetTargets(Vector3 currentPosition, IEntity[] enemies, float range)
+    public static class RangeTargetScanner
     {
-        List<T> targets = new List<T>();
-
-        foreach (T potentialTarget in enemies)
+        public static Transform[] GetTargets(Vector3 currentPosition, Transform[] targetPool, float range)
         {
-            var dx = Mathf.Abs(potentialTarget.Position.x - currentPosition.x);
-            if (dx > range)
-                continue;
-            var dy = Mathf.Abs(potentialTarget.Position.z - currentPosition.z);
-            if(dy > range)
-                continue;
-            if (dx + dy <= range)
+            var targets = new List<Transform>();
+
+            foreach (Transform potentialTarget in targetPool)
             {
-                targets.Add(potentialTarget);
-                continue;
+                float dx = Mathf.Abs(potentialTarget.transform.position.x - currentPosition.x);
+                if (dx > range)
+                    continue;
+                float dy = Mathf.Abs(potentialTarget.transform.position.z - currentPosition.z);
+                if (dy > range)
+                    continue;
+                if (dx + dy <= range)
+                {
+                    targets.Add(potentialTarget);
+                    continue;
+                }
+
+                if (dx * dx + dy * dy <= range * range)
+                    targets.Add(potentialTarget);
             }
 
-            if (dx * dx + dy * dy <= range * range)
-                targets.Add(potentialTarget);
+            return targets.ToArray();
         }
-
-        return targets.ToArray();
     }
 }

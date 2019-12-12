@@ -1,4 +1,9 @@
-﻿internal interface IWaveGenerator
+﻿using Data.Unit;
+
+namespace Data.Interfaces.Game.Waves
 {
-    UnitData Generate(int powerPoints);
+    internal interface IWaveGenerator
+    {
+        UnitData Generate(int powerPoints);
+    }
 }

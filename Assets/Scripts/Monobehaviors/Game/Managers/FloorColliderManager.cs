@@ -1,27 +1,32 @@
 ﻿using UnityEngine;
 
-public class FloorColliderManager : MonoBehaviour
+namespace Monobehaviors.Game.Managers
 {
-    public static GameEntity[] FloorColliderEntities => Instance?.GetFloorColliders();
-    [SerializeField]private Transform floorColliderParent;
-    public static FloorColliderManager Instance;
-
-    public void Awake()
+    public class FloorColliderManager : MonoBehaviour
     {
-        if( Instance != null )
-            Destroy(this);
-        else
+        public static FloorColliderManager Instance;
+        [SerializeField] private Transform floorColliderParent;
+        private Transform[] buildColliders = new Transform[0];
+
+        public Transform[] BuildColliders => buildColliders;
+
+        public void Awake()
         {
-            Instance = this;
-        }
-    }
+            if (Instance != null)
+                Destroy(this);
+            else
+                Instance = this;
 
-    private GameEntity[] GetFloorColliders()
-    {
-        int children = floorColliderParent.childCount;
-        GameEntity[] colliders = new GameEntity[children];
-        for (int i = 0; i < children; ++i)
-            colliders[i] = floorColliderParent.GetChild(i).GetComponent<GameEntity>();
-        return colliders;
+            buildColliders = GetFloorColliders();
+        }
+
+        private Transform[] GetFloorColliders()
+        {
+            int children = floorColliderParent.childCount;
+            var colliders = new Transform[children];
+            for (int i = 0; i < children; ++i)
+                colliders[i] = floorColliderParent.GetChild(i);
+            return colliders;
+        }
     }
 }

@@ -1,40 +1,41 @@
-﻿using System;
+﻿using Data.Game;
+using Data.Interfaces.Game.Waves;
+using DataBehaviors.Game.Entity.Targeting;
+using Monobehaviors.Game.Managers;
+using Monobehaviors.Pooling;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class WaveSpawner : IWaveSpawner
+namespace DataBehaviors.Game.Waves
 {
-    private readonly WaveSettings settings;
-    private readonly ObjectPool currentPool;
-
-    public WaveSpawner(WaveSettings settings, ObjectPool currentPool)
+    public class WaveSpawner : IWaveSpawner
     {
-        this.settings = settings;
-        this.currentPool = currentPool;
-    }
+        private readonly ObjectPool currentPool;
+        private readonly WaveSettings settings;
 
-    public void Spawn(Vector3 position, int amount = 1)
-    {
-        //var model = settings.ModelPool[Random.Range(0, settings.ModelPool.Length)];
-        for (int i = 0; i < amount; i++)
+        public WaveSpawner(WaveSettings settings, ObjectPool currentPool)
         {
-            var unitEntity = currentPool.Get();
-            unitEntity.transform.position = AdjustPosition(position, amount);
-            unitEntity.gameObject.SetActive(true);
+            this.settings = settings;
+            this.currentPool = currentPool;
         }
-    }
 
-    private Vector3 AdjustPosition(Vector3 position, int amount)
-    {
-        if (amount <= 1)
-            return position;
-        else
+        public void Spawn(Vector3 position, int amount = 1)
         {
-            Vector3 newPosition = position;
-            while (RangeTargetScanner<ITakeDamage>.GetTargets(newPosition, WaveManager.Instance.EnemiesAlive, 1f).Length > 0)
+            //var model = settings.ModelPool[Random.Range(0, settings.ModelPool.Length)];
+            for (int i = 0; i < amount; i++)
             {
-                newPosition = newPosition + new Vector3(0, 0, -1f);
+                var unitEntity = currentPool.Get();
+                unitEntity.transform.position = AdjustPosition(position, amount);
+                unitEntity.gameObject.SetActive(true);
             }
+        }
+
+        private Vector3 AdjustPosition(Vector3 position, int amount)
+        {
+            if (amount <= 1) return position;
+
+            var newPosition = position;
+            while (RangeTargetScanner.GetTargets(newPosition, WaveManager.Instance.UnitsAlive, 1f).Length > 0
+            ) newPosition = newPosition + new Vector3(0, 0, -1f);
 
             return newPosition;
         }

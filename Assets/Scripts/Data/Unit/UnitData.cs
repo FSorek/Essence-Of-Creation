@@ -1,15 +1,19 @@
 ﻿using System;
+using Data.Data_Types;
 
-[System.Serializable]
-public class UnitData
+namespace Data.Unit
 {
-    public Stat Health;
-    public Stat MoveSpeed;
-    public Stat HealthRegen;
+    [Serializable]
+    public class UnitData
+    {
+        public Stat ArmorLayers;
+        public Stat CrystallineLayers;
+        public Stat Health;
+        public Stat HealthRegen;
+        public Stat MoveSpeed;
 
-    public ArmorType Type;
-    public Stat ArmorLayers;
-    public Stat CrystallineLayers;
+        public ArmorType Type;
 
-    //public UnitAbility[] Abilities;
+        //public UnitAbility[] Abilities;
+    }
 }

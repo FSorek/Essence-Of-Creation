@@ -1,14 +1,14 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
+using UnityEngine;
 
-namespace MeshBrush
+namespace Downloaded.MeshBrush.Scripts.Classes.Wizards.Editor
 {
     public class EditRangeLimitsWizard : ScriptableWizard
     {
         const string minString = "Min", maxString = "Max";
 
         /// <summary>
-        /// Boolean value indicating whether this <see cref="T:MeshBrush.EditRangeLimitsWizard"/> is initialized.
+        /// Boolean value indicating whether this <see cref="T:Downloaded.MeshBrush.Scripts.Classes.Wizards.Editor.EditRangeLimitsWizard"/> is initialized.
         /// </summary>
         public bool Initialized { get; private set; }
 
@@ -30,7 +30,7 @@ namespace MeshBrush
         /// Initialize the wizard.
         /// </summary>
         /// <param name="meshBrush">The linked MeshBrush instance (the one whose range limits are being edited).</param>
-        public void Initialize(MeshBrush meshBrush)
+        public void Initialize(Components.MeshBrush meshBrush)
         {
             meshBrushInstance = new SerializedObject(meshBrush);
             {

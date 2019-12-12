@@ -1,23 +1,30 @@
 ﻿using UnityEngine;
 
-public static class GameTime
+namespace DataBehaviors.Game.Utility
 {
-    private static float forward;
-    private static float lastFrame;
-    private static void Reset() => forward = lastFrame = 0;
-
-    public static void SetOffsetTimeForward(float seconds)
+    public static class GameTime
     {
-        Reset();
-        forward = seconds - Time.time;
-    }
-    public static void SetTimeSinceLastFrame(float seconds)
-    {
-        Reset();
-        lastFrame = seconds - Time.deltaTime;
-    }
+        private static float forward;
+        private static float lastFrame;
 
-    public static float time => Time.time + forward;
-    public static float deltaTime => Time.deltaTime + lastFrame;
+        public static float time => Time.time + forward;
+        public static float deltaTime => Time.deltaTime + lastFrame;
+
+        private static void Reset()
+        {
+            forward = lastFrame = 0;
+        }
+
+        public static void SetOffsetTimeForward(float seconds)
+        {
+            Reset();
+            forward = seconds - Time.time;
+        }
+
+        public static void SetTimeSinceLastFrame(float seconds)
+        {
+            Reset();
+            lastFrame = seconds - Time.deltaTime;
+        }
+    }
 }
-

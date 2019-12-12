@@ -1,36 +1,41 @@
 ﻿using System;
+using Data.Data_Types;
+using DataBehaviors.Player.States;
+using Monobehaviors.Tower;
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerExtractAssembleTower))]
-public class PlayerMergeAttack : MonoBehaviour
+namespace Monobehaviors.Player
 {
-    private PlayerExtractAssembleTower extractionSystem;
-    private void Awake()
+    [RequireComponent(typeof(PlayerExtractAssembleTower))]
+    public class PlayerMergeAttack : MonoBehaviour
     {
-        MergeAttackPlayerState.OnMiddleMouseAttack += Attack;
-        extractionSystem = GetComponent<PlayerExtractAssembleTower>();
+        private PlayerExtractAssembleTower extractionSystem;
+
+        private void Awake()
+        {
+            MergeAttackPlayerState.OnMiddleMouseAttack += Attack;
+            extractionSystem = GetComponent<PlayerExtractAssembleTower>();
+        }
+
+        private void Attack() // check if we have towers in extracted list
+        {
+            if (extractionSystem.ExtractedTowers.Count <= 0)
+                return;
+
+            var extractedTower = extractionSystem.ExtractedTowers.Peek().GetComponent<Obelisk>();
+
+            // create a new type 'PlayerAttack' based on the obelisk stats
+
+            throw new NotImplementedException();
+        }
     }
 
-    private void Attack() // check if we have towers in extracted list
+    public class PlayerAttack
     {
-        if(extractionSystem.ExtractedTowers.Count <= 0)
-            return;
-
-        var extractedTower = extractionSystem.ExtractedTowers.Peek().GetComponent<Obelisk>();
-
-        // create a new type 'PlayerAttack' based on the obelisk stats
-
-        throw new NotImplementedException();
+        private Damage damage;
+        private float interval;
+        private float range;
     }
-}
-
-public class PlayerAttack
-{
-    private Damage damage;
-    private float range;
-    private float interval;
-
-}
 
 /*
  *
@@ -44,4 +49,4 @@ public class PlayerAttack
     public float ProjectileSpeed;
     public int TargetLimit = 1;
  */
-
+}

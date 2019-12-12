@@ -1,55 +1,51 @@
 ﻿using System;
-using System.Linq;
+using DataBehaviors.Game.Entity.Targeting;
+using DataBehaviors.Game.Utility;
+using Monobehaviors.Game.Managers;
+using Monobehaviors.Player;
 using UnityEngine;
 
-public class PlacingBuildSpotPlayerState : PlayerState
+namespace DataBehaviors.Player.States
 {
-    public static event Action OnIncreaseBuildSpotHeight;
-    public static event Action OnDecreaseBuildSpotHeight;
-    public static event Action OnBuildSpotCreated;
-    public static event Action OnBuildSpotCancelled;
-    public static Action<Vector3, Vector3> PlacingBuildSpot;
-
-    private GameEntity[] buildSpotFloorColliders;
-    private GameEntity closestAvailableSpace;
-
-    private float lastColliderScanTime = 0;
-
-    public PlacingBuildSpotPlayerState(IPlayer playerC) : base(playerC)
+    public class PlacingBuildSpotPlayerState : PlayerState
     {
-        buildSpotFloorColliders = FloorColliderManager.FloorColliderEntities;
-        closestAvailableSpace = ClosestEntityFinder<GameEntity>.GetClosestTransform(buildSpotFloorColliders, playerC.HandTransform.position);
-    }
+        private readonly Transform[] buildSpotFloorColliders;
+        private Transform closestAvailableSpace;
 
-    public override void ListenToState()
-    {
-        if (GameTime.time - lastColliderScanTime >= 1f)
+        private float lastColliderScanTime;
+
+        public PlacingBuildSpotPlayerState(PlayerComponent playerC) : base(playerC)
         {
-            lastColliderScanTime = Time.time;
-            closestAvailableSpace = ClosestEntityFinder<GameEntity>.GetClosestTransform(buildSpotFloorColliders, playerC.HandTransform.position);
+            buildSpotFloorColliders = FloorColliderManager.Instance.BuildColliders;
+            closestAvailableSpace =
+                ClosestEntityFinder.GetClosestTransform(buildSpotFloorColliders,
+                    playerC.HandTransform.position);
         }
-        if(closestAvailableSpace == null)
-            return;
-        var closestPoint = closestAvailableSpace.GetComponent<Collider>()
-            .ClosestPointOnBounds(playerC.HandTransform.position);
-        var wheelInput = Input.GetAxis("Mouse ScrollWheel");
-        if (wheelInput > 0f)
-            OnIncreaseBuildSpotHeight();
-        if (wheelInput < 0f)
-            OnDecreaseBuildSpotHeight();
-        PlacingBuildSpot(closestPoint, playerC.HandTransform.position);
-        if (Input.GetMouseButtonDown(0))
+
+        public static event Action OnIncreaseBuildSpotHeight;
+        public static event Action OnDecreaseBuildSpotHeight;
+        public static event Action OnBuildSpotCreated;
+        public static event Action OnBuildSpotCancelled;
+
+        public override void ListenToState()
         {
-            OnBuildSpotCreated();
+            if (closestAvailableSpace == null)
+                return;
+            var closestPoint = closestAvailableSpace.GetComponent<Collider>()
+                .ClosestPointOnBounds(playerComponentC.HandTransform.position);
+            float wheelInput = Input.GetAxis("Mouse ScrollWheel");
+            if (wheelInput > 0f)
+                OnIncreaseBuildSpotHeight();
+            if (wheelInput < 0f)
+                OnDecreaseBuildSpotHeight();
+            if (Input.GetMouseButtonDown(0))
+                OnBuildSpotCreated();
+            else if (Input.GetMouseButtonDown(1)) OnBuildSpotCancelled();
         }
-        else if (Input.GetMouseButtonDown(1))
+
+        public override void OnStateExit()
         {
             OnBuildSpotCancelled();
         }
-    }
-
-    public override void OnStateExit()
-    {
-        OnBuildSpotCancelled();
     }
 }

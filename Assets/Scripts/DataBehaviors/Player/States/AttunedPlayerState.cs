@@ -1,53 +1,62 @@
 ﻿using System;
 using System.Linq;
+using Data.Interfaces.Game.Economy;
+using Data.Interfaces.Player;
+using DataBehaviors.Game.Entity.Targeting;
+using Monobehaviors.BuildSpot;
+using Monobehaviors.Player;
 using UnityEngine;
 
-public class AttunedPlayerState : PlayerState
+namespace DataBehaviors.Player.States
 {
-    public static event Action<IPlayer, BuildSpot> OnElementBuildingStarted;
-    public static event Action<IPlayer> OnElementBuildingFinished;
-    public static event Action<IPlayer> OnElementBuildingInterrupted;
-
-    private BuildSpot currentBuildSpot;
-    private float timeStarted;
-    private readonly IEconomyManager economyManager;
-
-    public AttunedPlayerState(IPlayer playerC, IEconomyManager economyManager) : base(playerC)
+    public class AttunedPlayerState : PlayerState
     {
-        this.economyManager = economyManager;
-    }
+        private readonly IEconomyManager economyManager;
 
-    public override void ListenToState()
-    {
-        if (economyManager.Essence < economyManager.Settings.EssencePerSummon)
-            return;
-        if (Input.GetMouseButtonDown(0))
+        private BuildSpotComponent currentBuildSpotComponent;
+        private float timeStarted;
+
+        public AttunedPlayerState(PlayerComponent playerComponentC, IEconomyManager economyManager) : base(playerComponentC)
         {
-            var potentialTargets = RangeTargetScanner<BuildSpot>.GetTargets(playerC.HandTransform.transform.position, BuildSpot.BuildSpots.ToArray(),
-                playerC.BuildingData.BuildSpotDetectionRange)?.Where(t => !t.IsOccupied).ToArray();
-            currentBuildSpot = ClosestEntityFinder<BuildSpot>.GetClosestTransform(potentialTargets, playerC.HandTransform.position);
-            if(currentBuildSpot != null)
+            this.economyManager = economyManager;
+        }
+
+        public static event Action<PlayerComponent, BuildSpotComponent> OnElementBuildingStarted;
+        public static event Action<PlayerComponent> OnElementBuildingFinished;
+        public static event Action<PlayerComponent> OnElementBuildingInterrupted;
+
+        public override void ListenToState()
+        {
+            if (economyManager.Essence < economyManager.Settings.EssencePerSummon)
+                return;
+            if (Input.GetMouseButtonDown(0))
             {
-                OnElementBuildingStarted(playerC, currentBuildSpot);
-                timeStarted = Time.time;
+                var potentialTargets = RangeTargetScanner.GetTargets(playerComponentC.HandTransform.transform.position,
+                    BuildSpotComponent.BuildSpots.ToArray(),
+                    playerComponentC.BuildingData.BuildSpotDetectionRange)?.Where(t => !t.GetComponent<BuildSpotComponent>().IsOccupied).ToArray();
+                currentBuildSpotComponent =
+                    ClosestEntityFinder.GetClosestTransform(potentialTargets, playerComponentC.HandTransform.position).GetComponent<BuildSpotComponent>();
+                if (currentBuildSpotComponent != null)
+                {
+                    OnElementBuildingStarted(playerComponentC, currentBuildSpotComponent);
+                    timeStarted = Time.time;
+                }
             }
-        }
-        if(Input.GetMouseButton(0))
-        if (Time.time - timeStarted > playerC.BuildingData.BuildTime && currentBuildSpot != null)
-        {
-            currentBuildSpot = null;
-            OnElementBuildingFinished(playerC);
+
+            if (Input.GetMouseButton(0))
+                if (Time.time - timeStarted > playerComponentC.BuildingData.BuildTime && currentBuildSpotComponent != null)
+                {
+                    currentBuildSpotComponent = null;
+                    OnElementBuildingFinished(playerComponentC);
+                }
+
+            if (Input.GetMouseButtonUp(0))
+                if (Time.time - timeStarted < playerComponentC.BuildingData.BuildTime)
+                    OnElementBuildingInterrupted(playerComponentC);
         }
 
-        if (Input.GetMouseButtonUp(0))
+        public override void OnStateExit()
         {
-            if(Time.time - timeStarted < playerC.BuildingData.BuildTime)
-                OnElementBuildingInterrupted(playerC);
         }
-    }
-
-    public override void OnStateExit()
-    {
-        
     }
 }

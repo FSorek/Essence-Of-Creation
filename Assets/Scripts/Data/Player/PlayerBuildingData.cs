@@ -1,12 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "Player Building Data", menuName = "Essence/Player/Building Data", order = 0)]
-public class PlayerBuildingData : ScriptableObject
+namespace Data.Player
 {
-    public float BuildSpotDetectionRange = 20f;
-    public float BuildTime = 2f;
+    [CreateAssetMenu(fileName = "Player Building Data", menuName = "Essence/Player/Building Data", order = 0)]
+    public class PlayerBuildingData : ScriptableObject
+    {
+        public float BuildSpotDetectionRange = 20f;
 
-    public GameObject BuildSpotFundamentals;
+        public GameObject BuildSpotFundamentals;
+        public float BuildTime = 2f;
+    }
 }

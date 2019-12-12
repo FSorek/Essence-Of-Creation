@@ -1,4 +1,9 @@
-﻿public interface IGameObjectPooled
+﻿using Monobehaviors.Pooling;
+
+namespace Data.Interfaces.Pooling
 {
-    ObjectPool Pool { get; set; }
+    public interface IGameObjectPooled
+    {
+        ObjectPool Pool { get; set; }
+    }
 }

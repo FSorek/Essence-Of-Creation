@@ -1,13 +1,19 @@
-﻿using UnityEngine;
+﻿using Data.Game;
+using Data.Unit;
+using Monobehaviors.Unit;
+using UnityEngine;
 
-public interface IWaveManager
+namespace Data.Interfaces.Game.Waves
 {
-    int CurrentWave { get; }
-    ITakeDamage[] EnemiesAlive { get; }
-    UnitData CurrentGeneratedUnit { get; }
-    Transform[] Reachpoints { get; }
-    WaveSettings WaveSettings { get; }
+    public interface IWaveManager
+    {
+        int CurrentWave { get; }
+        Transform[] UnitsAlive { get; }
+        UnitData CurrentGeneratedUnit { get; }
+        Transform[] Reachpoints { get; }
+        WaveSettings WaveSettings { get; }
 
-    void SetReachpoints(Transform reachpointsParent);
-    void NextWave();
+        void SetReachpoints(Transform reachpointsParent);
+        void NextWave();
+    }
 }

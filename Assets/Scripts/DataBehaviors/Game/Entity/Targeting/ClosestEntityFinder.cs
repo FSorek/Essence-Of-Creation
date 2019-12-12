@@ -1,28 +1,31 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
-public static class ClosestEntityFinder<T> where T : IEntity
+namespace DataBehaviors.Game.Entity.Targeting
 {
-    public static T GetClosestTransform(T[] nearbyTransforms, Vector3 currentPosition)
+    public static class ClosestEntityFinder
     {
-        if (nearbyTransforms == null || nearbyTransforms.Equals(null) || currentPosition == null)
-            return default(T);
-        if (nearbyTransforms.Length > 0)
+        public static Transform GetClosestTransform(Transform[] nearbyTransforms, Vector3 currentPosition)
         {
-            var closestDist = Mathf.Infinity;
-            T closest = default(T);
-            for (int i = 0; i < nearbyTransforms.Length; i++)
+            if (nearbyTransforms == null || nearbyTransforms.Equals(null))
+                return default;
+            if (nearbyTransforms.Length > 0)
             {
-                var currentDistance = Vector3.Distance(currentPosition, nearbyTransforms[i].Position);
-                if (currentDistance < closestDist)
+                float closestDist = Mathf.Infinity;
+                Transform closest = null;
+                for (int i = 0; i < nearbyTransforms.Length; i++)
                 {
-                    closestDist = currentDistance;
-                    closest = nearbyTransforms[i];
+                    float currentDistance = Vector3.Distance(currentPosition, nearbyTransforms[i].transform.position);
+                    if (currentDistance < closestDist)
+                    {
+                        closestDist = currentDistance;
+                        closest = nearbyTransforms[i];
+                    }
                 }
+
+                return closest;
             }
 
-            return closest;
+            return null;
         }
-        return default(T);
     }
 }

@@ -1,16 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-
+using System.Xml.Linq;
+using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
-using System.Xml.Linq;
-
 #if UNITY_EDITOR
-using UnityEditor;
+
 #endif
 
-namespace MeshBrush
+namespace Downloaded.MeshBrush.Scripts.Classes.Utilities
 {
     /// <summary>
     /// Utility class for migrating obsolete MeshBrush templates from previous versions to the newest format.
@@ -49,7 +48,7 @@ namespace MeshBrush
             try
             {
                 var templateDocument = XDocument.Load(filePath);
-                var meshBrush = new GameObject("MeshBrush Template Migration Utility") { hideFlags = HideFlags.HideAndDontSave }.AddComponent<MeshBrush>();
+                var meshBrush = new GameObject("MeshBrush Template Migration Utility") { hideFlags = HideFlags.HideAndDontSave }.AddComponent<Components.MeshBrush>();
 
                 foreach (var element in templateDocument.Descendants())
                 {
@@ -57,7 +56,7 @@ namespace MeshBrush
                     {
                         case "meshBrushTemplate":
                             var versionAttribute = element.Attribute("version");
-                            if (versionAttribute != null && MeshBrush.version <= float.Parse(versionAttribute.Value))
+                            if (versionAttribute != null && Components.MeshBrush.version <= float.Parse(versionAttribute.Value))
                             {
                                 Debug.LogWarning("MeshBrush: The template you tried to migrate actually is already up to date with the current format. Cancelling process...");
                                 return false;

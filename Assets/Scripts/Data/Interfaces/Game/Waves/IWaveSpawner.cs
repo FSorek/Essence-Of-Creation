@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
-public interface IWaveSpawner
+namespace Data.Interfaces.Game.Waves
 {
-    void Spawn(Vector3 position, int amount = 1);
+    public interface IWaveSpawner
+    {
+        void Spawn(Vector3 position, int amount = 1);
+    }
 }

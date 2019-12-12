@@ -1,29 +1,31 @@
-﻿using UnityEngine;
+﻿using Data.Extensions;
+using UnityEngine;
 using UnityEngine.Experimental.VFX;
 using UnityEngine.Experimental.VFX.Utility;
 
-public class BuildEffect : MonoBehaviour
+namespace Monobehaviors.Player.Particles
 {
-    private Transform effectPositionTransform;
-    internal void SetFollowedTransform(Transform effectPositionTransform, Vector3 buildSpotPosition)
+    public class BuildEffect : MonoBehaviour
     {
-        this.effectPositionTransform = effectPositionTransform;
+        private Transform effectPositionTransform;
 
-        var binders = GetComponents<VFXPositionBinder>();
-        foreach (var vfxPositionBinder in binders)
+        internal void SetFollowedTransform(Transform effectPositionTransform, Vector3 buildSpotPosition)
         {
-            if (vfxPositionBinder.Parameter == "HandPosition" && vfxPositionBinder.Target == null)
-                vfxPositionBinder.Target = effectPositionTransform;
-        }
-        transform.GetChild(0).position = buildSpotPosition;
-        gameObject.SetActive(true);
-        GetComponent<VisualEffect>().SendEvent("OnPlay");
-    }
+            this.effectPositionTransform = effectPositionTransform;
 
-    internal void Detach()
-    {
-        GetComponent<VisualEffect>().SendEvent("OnStop");
-        gameObject.ReturnToPool(10f);
+            var binders = GetComponents<VFXPositionBinder>();
+            foreach (var vfxPositionBinder in binders)
+                if (vfxPositionBinder.Parameter == "HandPosition" && vfxPositionBinder.Target == null)
+                    vfxPositionBinder.Target = effectPositionTransform;
+            transform.GetChild(0).position = buildSpotPosition;
+            gameObject.SetActive(true);
+            GetComponent<VisualEffect>().SendEvent("OnPlay");
+        }
+
+        internal void Detach()
+        {
+            GetComponent<VisualEffect>().SendEvent("OnStop");
+            gameObject.ReturnToPool(10f);
+        }
     }
 }
-

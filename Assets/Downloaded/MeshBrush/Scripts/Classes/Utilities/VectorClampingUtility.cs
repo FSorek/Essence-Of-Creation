@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MeshBrush
+namespace Downloaded.MeshBrush.Scripts.Classes.Utilities
 {
     /// <summary>
     /// Utility that provides simple clamping functionality for vectors.
