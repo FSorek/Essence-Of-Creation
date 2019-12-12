@@ -6,14 +6,12 @@ namespace Monobehaviors.BuildSpot
 {
     public class BuildSpotComponent : MonoBehaviour
     {
-        public static List<Transform> BuildSpots;
+        public static readonly List<Transform> BuildSpots = new List<Transform>();
         public bool IsOccupied => CurrentTower != null;
         public GameObject CurrentTower { get; private set; }
 
         private void Awake()
         {
-            if (BuildSpots == null)
-                BuildSpots = new List<Transform>();
             BuildSpots.Add(this.transform);
             PlayerBuildManager.OnTowerCreated += AssignTower;
         }

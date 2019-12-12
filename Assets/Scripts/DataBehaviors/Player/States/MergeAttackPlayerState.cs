@@ -64,6 +64,8 @@ namespace DataBehaviors.Player.States
                         BuildSpotComponent.BuildSpots.ToArray(),
                         playerComponentC.BuildingData.BuildSpotDetectionRange)?.Where(t => t.GetComponent<BuildSpotComponent>().IsOccupied)
                     .ToArray();
+                if(potentialTargets == null)
+                    return;
                 currentBuildSpotComponent =
                     ClosestEntityFinder.GetClosestTransform(potentialTargets, playerComponentC.HandTransform.position).GetComponent<BuildSpotComponent>();
                 if (currentBuildSpotComponent != null)
