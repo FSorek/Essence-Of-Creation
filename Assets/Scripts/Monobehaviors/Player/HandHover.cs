@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using Data.Data_Types;
+using Data.Interfaces.Player;
+using Data.Player;
 using DataBehaviors.Game.Utility;
 using DataBehaviors.Player;
 using DataBehaviors.Player.States;
@@ -11,25 +13,27 @@ namespace Monobehaviors.Player
 {
     public class HandHover : MonoBehaviour
     {
+        [SerializeField] private PlayerInput input;
+        [SerializeField] private PlayerBuildData buildData;
+        [SerializeField] private PlayerStateData stateData;
+        
         [SerializeField] private float heightAboveSurface = 2f;
         [SerializeField] private bool isCursorVisible;
         [SerializeField] private float updateSpeed;
         [SerializeField] private float heightAdjustmentScroll;
 
-        private float heightAdjustment = 0;
-        private PlayerComponent player;
+        private float heightAdjustment;
         private int pressCounter;
 
         private void Awake()
         {
-            player = GetComponentInParent<PlayerComponent>();
-            player.PlayerInput.OnIncreasePressed += PlayerInputOnIncreasePressed;
-            player.PlayerInput.OnDecreasePressed += PlayerInputOnDecreasePressed;
+            input.OnIncreasePressed += PlayerInputOnIncreasePressed;
+            input.OnDecreasePressed += PlayerInputOnDecreasePressed;
         }
 
         private void PlayerInputOnDecreasePressed()
         {
-            if(player.GetComponent<PlayerStateMachine>().CurrentState != PlayerStates.PLACE_OBELISK
+            if(stateData.CurrentState != PlayerStates.PLACE_OBELISK
                || pressCounter <= 0)
                 return;
             pressCounter--;
@@ -38,8 +42,8 @@ namespace Monobehaviors.Player
 
         private void PlayerInputOnIncreasePressed()
         {
-            if(player.GetComponent<PlayerStateMachine>().CurrentState != PlayerStates.PLACE_OBELISK
-               || pressCounter >= player.BuildData.MaxObeliskSize)
+            if(stateData.CurrentState != PlayerStates.PLACE_OBELISK
+               || pressCounter >= buildData.MaxObeliskSize)
                 return;
             pressCounter++;
             SetHoverHeight(heightAdjustment + heightAdjustmentScroll);

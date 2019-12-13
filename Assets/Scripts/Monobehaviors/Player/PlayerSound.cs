@@ -12,17 +12,16 @@ namespace DefaultNamespace
 {
     public class PlayerSound : MonoBehaviour
     {
-        [SerializeField]private PlayerBuildData buildData;
+        [SerializeField] private PlayerBuildData buildData;
+        [SerializeField] private PlayerStateData stateData;
         public PlayerSoundEffects SoundEffects;
         public AudioSource Source;
         public float Fade = 4f;
-        private PlayerStateMachine playerStateMachine;
 
         private void Awake()
         {
-            playerStateMachine = GetComponent<PlayerStateMachine>();
-            playerStateMachine.OnStateEntered += PlayerStateMachineOnStateEntered;
-            playerStateMachine.OnStateExit += PlayerStateMachineOnStateExit;
+            stateData.OnStateEntered += PlayerStateMachineOnStateEntered;
+            stateData.OnStateExit += PlayerStateMachineOnStateExit;
         }
 
         private void PlayerStateMachineOnStateExit(PlayerStates state)

@@ -1,12 +1,21 @@
 ﻿using System;
 using Data.Data_Types;
-using Data.Interfaces.Player;
 using UnityEngine;
 
-namespace DataBehaviors.Game.PlayerInput
+namespace Data.Interfaces.Player
 {
-    public class MouseKeyboardPlayerInput : IPlayerInput
+    [CreateAssetMenu(fileName = "Player Input", menuName = "Essence/Player/Input")]
+    public class PlayerInput : ScriptableObject
     {
+        public KeyCode FireKey;
+        public KeyCode AirKey;
+        public KeyCode WaterKey;
+        public KeyCode EarthKey;
+        public KeyCode PlaceObeliskKey;
+        public KeyCode PrimaryKey;
+        public KeyCode SecondaryKey;
+        public KeyCode UtilityKey;
+
         public event Action OnFirePressed = delegate {  };
         public event Action OnAirPressed = delegate {  };
         public event Action OnWaterPressed = delegate {  };
@@ -17,31 +26,33 @@ namespace DataBehaviors.Game.PlayerInput
         public event Action OnUtilityKeyPressed = delegate {  };
         public event Action OnIncreasePressed = delegate {  };
         public event Action OnDecreasePressed = delegate {  };
+        
         public event Action OnPrimaryKeyReleased = delegate {  };
         public event Action OnSecondaryKeyReleased = delegate {  };
         public event Action OnUtilityKeyReleased = delegate {  };
+        
 
-        public void Tick()
+        public void ListenToInput()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
+            if (Input.GetKeyDown(FireKey))
                 OnFirePressed();
-            if (Input.GetKeyDown(KeyCode.Alpha2))
+            if (Input.GetKeyDown(AirKey))
                 OnAirPressed();
-            if (Input.GetKeyDown(KeyCode.Alpha3))
+            if (Input.GetKeyDown(WaterKey))
                 OnWaterPressed();
-            if (Input.GetKeyDown(KeyCode.Alpha4))
+            if (Input.GetKeyDown(EarthKey))
                 OnEarthPressed();
-            if (Input.GetKeyDown(KeyCode.Alpha5))
+            if (Input.GetKeyDown(PlaceObeliskKey))
                 OnStartPlacingObeliskPressed();
             
             
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetKeyDown(PrimaryKey))
                 OnPrimaryKeyPressed();
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetKeyDown(SecondaryKey))
                 OnSecondaryKeyPressed();
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetKeyUp(PrimaryKey))
                 OnPrimaryKeyReleased();
-            if (Input.GetMouseButtonUp(0))
+            if (Input.GetKeyUp(SecondaryKey))
                 OnSecondaryKeyReleased();
 
             if (Input.GetAxis("Mouse ScrollWheel") > 0f)

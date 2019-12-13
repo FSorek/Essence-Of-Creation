@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using Data.Data_Types;
+using Data.Interfaces.Player;
+using Data.Player;
 using DataBehaviors.Game.Entity.Targeting;
 using Monobehaviors.BuildSpot;
 using Monobehaviors.Player;
@@ -9,44 +11,48 @@ namespace DataBehaviors.Player.States
 {
     public class ForgingPlayerState : PlayerState
     {
-        private readonly PlayerStateMachine stateMachine;
+        private readonly PlayerInput input;
+        private readonly PlayerBuildData buildData;
+        private readonly PlayerStateData stateData;
         private float timeStarted;
 
-        public ForgingPlayerState(PlayerComponent player, PlayerStateMachine stateMachine) : base(player)
+        public ForgingPlayerState(PlayerInput input, PlayerBuildData buildData, PlayerStateData stateData) : base(stateData)
         {
-            this.stateMachine = stateMachine;
+            this.input = input;
+            this.buildData = buildData;
+            this.stateData = stateData;
         }
 
         private void PlayerInputOnPrimaryKeyReleased()
         {
-            stateMachine.ChangeState(PlayerStates.AWAIT_BUILD);
+            stateData.ChangeState(PlayerStates.AWAIT_BUILD);
         }
 
         public override void ListenToState()
         {
-            if(Time.time - timeStarted > player.BuildData.BuildTime)
+            if(Time.time - timeStarted > buildData.BuildTime)
             {
                 ForgeEssence();
-                stateMachine.ChangeState(PlayerStates.AWAIT_BUILD);
+                stateData.ChangeState(PlayerStates.AWAIT_BUILD);
             }
         }
 
         public override void OnStateExit()
         {
-            player.PlayerInput.OnPrimaryKeyReleased -= PlayerInputOnPrimaryKeyReleased;
+            input.OnPrimaryKeyReleased -= PlayerInputOnPrimaryKeyReleased;
         }
 
         public override void OnStateEnter()
         {
-            player.PlayerInput.OnPrimaryKeyReleased += PlayerInputOnPrimaryKeyReleased;
+            input.OnPrimaryKeyReleased += PlayerInputOnPrimaryKeyReleased;
             timeStarted = Time.time;
         }
         
         private void ForgeEssence() //to-do: pool
         {
-            if(player.BuildData.CurrentEssence == null) return;
-            var essence = GameObject.Instantiate(player.BuildData.CurrentEssence, player.BuildData.TargetAttraction.transform.position, Quaternion.identity);
-            player.BuildData.TargetAttraction.AssignEssence(essence);
+            if(buildData.CurrentEssence == null) return;
+            var essence = GameObject.Instantiate(buildData.CurrentEssence, buildData.TargetAttraction.transform.position, Quaternion.identity);
+            buildData.TargetAttraction.AssignEssence(essence);
         }
     }
 }

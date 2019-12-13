@@ -6,11 +6,11 @@ namespace DataBehaviors.Player
 {
     public abstract class PlayerState
     {
-        protected PlayerComponent player;
+        protected PlayerStateData stateData;
 
-        public PlayerState(PlayerComponent player)
+        public PlayerState(PlayerStateData stateData)
         {
-            this.player = player;
+            this.stateData = stateData;
         }
 
         public abstract void ListenToState();

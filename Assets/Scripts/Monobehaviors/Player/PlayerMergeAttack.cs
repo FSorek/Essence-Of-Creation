@@ -13,8 +13,8 @@ namespace Monobehaviors.Player
 
         private void Awake()
         {
-            MergeAttackPlayerState.OnMiddleMouseAttack += Attack;
-            extractionSystem = GetComponent<PlayerExtractAssembleTower>();
+            //MergeAttackPlayerState.OnMiddleMouseAttack += Attack;
+            //extractionSystem = GetComponent<PlayerExtractAssembleTower>();
         }
 
         private void Attack() // check if we have towers in extracted list

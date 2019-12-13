@@ -13,8 +13,8 @@ namespace Monobehaviors.Player
 
         private void Awake()
         {
-            MergeAttackPlayerState.OnExtractTowerFinished += ExtractionFinished;
-            MergeAttackPlayerState.OnAssembleTowerFinished += AssembleFinished;
+            //MergeAttackPlayerState.OnExtractTowerFinished += ExtractionFinished;
+            //MergeAttackPlayerState.OnAssembleTowerFinished += AssembleFinished;
         }
 
         private void AssembleFinished(AttractionSpot spot)
