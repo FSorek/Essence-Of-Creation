@@ -28,7 +28,7 @@ namespace DataBehaviors.Player.States
 
         public static event Action OnMiddleMouseAttack = delegate { };
 
-        public override PlayerStates ListenToState()
+        public override void ListenToState()
         {
             ///-------- Left Mouse
 
@@ -66,7 +66,7 @@ namespace DataBehaviors.Player.States
                         player.BuildData.BuildSpotDetectionRange)?.Where(t => t.GetComponent<AttractionSpot>().IsOccupied)
                     .ToArray();
                 if(potentialTargets == null)
-                    return PlayerStates.WEAVE_ESSENCE;
+                    return;
                 currentAttractionSpot =
                     ClosestEntityFinder.GetClosestTransform(potentialTargets, player.HandTransform.position).GetComponent<AttractionSpot>();
                 if (currentAttractionSpot != null)
@@ -89,7 +89,7 @@ namespace DataBehaviors.Player.States
 
             ///-------- Middle Mouse
             if (Input.GetMouseButton(2)) OnMiddleMouseAttack();
-            return PlayerStates.WEAVE_ESSENCE;
+            return;
         }
 
         public override void OnStateExit()

@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using Monobehaviors.BuildSpot;
+using UnityEngine;
 
 namespace Data.Player
 {
     [CreateAssetMenu(fileName = "Player Building Data", menuName = "Essence/Player/Building Data", order = 0)]
     public class PlayerBuildData : ScriptableObject
     {
+        public GameObject CurrentEssence;
+        public AttractionSpot TargetAttraction;
+        
         public GameObject AirEssencePrefab;
         public GameObject EarthEssencePrefab;
         public GameObject FireEssencePrefab;

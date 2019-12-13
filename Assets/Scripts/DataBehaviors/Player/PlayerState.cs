@@ -13,7 +13,7 @@ namespace DataBehaviors.Player
             this.player = player;
         }
 
-        public abstract PlayerStates ListenToState();
+        public abstract void ListenToState();
         public abstract void OnStateExit();
         public abstract void OnStateEnter();
     }

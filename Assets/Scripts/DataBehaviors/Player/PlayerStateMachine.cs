@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Data.Data_Types;
 using Data.Interfaces.Player;
@@ -15,6 +16,8 @@ namespace DataBehaviors.Player
         private Dictionary<PlayerStates, PlayerState> availablePlayerStates;
         private PlayerState currentPlayerState;
         private PlayerStates currentState;
+        public event Action<PlayerStates> OnStateEntered = delegate{  };
+        public event Action<PlayerStates> OnStateExit = delegate { };
         public PlayerStates CurrentState => currentState;
 
         public void Awake()
@@ -22,7 +25,8 @@ namespace DataBehaviors.Player
             player = GetComponent<PlayerComponent>();
             availablePlayerStates = new Dictionary<PlayerStates, PlayerState>
             {
-                {PlayerStates.BUILD, new BuildPlayerState(player, this)}, // default state
+                {PlayerStates.AWAIT_BUILD, new AwaitBuildPlayerState(player, this)}, // default state
+                {PlayerStates.FORGING, new ForgingPlayerState(player, this)},
                 {PlayerStates.PLACE_OBELISK, new PlaceObeliskPlayerState(player, this)},
                 {PlayerStates.WEAVE_ESSENCE, new MergeAttackPlayerState(player, this)}
             };
@@ -32,21 +36,17 @@ namespace DataBehaviors.Player
         {
             if (currentPlayerState == null)
                 ChangeState(availablePlayerStates.Keys.First());
-
-            var nextState = currentPlayerState.ListenToState();
-
-            if (availablePlayerStates[nextState] != currentPlayerState)
-            {
-                ChangeState(nextState);
-            }
+            currentPlayerState.ListenToState();
         }
 
         public void ChangeState(PlayerStates state)
         {
             currentPlayerState?.OnStateExit();
+            OnStateExit(currentState);
             currentState = state;
             currentPlayerState = availablePlayerStates[state];
             currentPlayerState.OnStateEnter();
+            OnStateEntered(state);
         }
     }
 }

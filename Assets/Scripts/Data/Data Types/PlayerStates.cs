@@ -2,7 +2,8 @@
 {
     public enum PlayerStates
     {
-        BUILD,
+        AWAIT_BUILD,
+        FORGING,
         PLACE_OBELISK,
         WEAVE_ESSENCE,
     }

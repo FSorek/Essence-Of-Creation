@@ -35,7 +35,7 @@ namespace DataBehaviors.Player.States
             var peak = GameObject.Instantiate(playerBuildData.ObeliskAttractionPrefab, topBlockPosition + placePointBuildDirection, Quaternion.LookRotation(placePointBuildDirection));
             peak.AddComponent<AttractionSpot>();
             buildBlocks.Clear();
-            stateMachine.ChangeState(PlayerStates.BUILD);
+            stateMachine.ChangeState(PlayerStates.AWAIT_BUILD);
         }
 
         private void PlayerInputOnIncreasePressed()
@@ -57,11 +57,11 @@ namespace DataBehaviors.Player.States
             }
         }
 
-        public override PlayerStates ListenToState()
+        public override void ListenToState()
         {
             var closestBuildTransform = ClosestEntityFinder.GetClosestTransform(FloorColliderManager.Instance.BuildAreaTransforms, player.HandTransform.position);
             if (closestBuildTransform == null)
-                return PlayerStates.PLACE_OBELISK;
+                return;
 
             var position = player.HandTransform.position;
             var obeliskPlacePoint = closestBuildTransform.GetComponent<Collider>().ClosestPointOnBounds(position);
@@ -73,8 +73,6 @@ namespace DataBehaviors.Player.States
                 blockTransform.LookAt(position);
                 blockTransform.position = obeliskPlacePoint + ++distanceIndex * 3 * placePointBuildDirection;
             }
-
-            return PlayerStates.PLACE_OBELISK;
         }
 
         public override void OnStateExit()

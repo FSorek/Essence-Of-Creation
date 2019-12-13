@@ -26,57 +26,55 @@ namespace Monobehaviors.Player.Particles
         {
             player = GetComponent<PlayerComponent>();
             playerStateMachine = GetComponent<PlayerStateMachine>();
-            player.PlayerInput.OnPrimaryKeyPressed += PlayerInputOnPrimaryKeyPressed;
-            player.PlayerInput.OnPrimaryKeyReleased += PlayerInputOnPrimaryKeyReleased;
+            playerStateMachine.OnStateEntered += PlayerStateMachineOnStateEntered;
+            playerStateMachine.OnStateExit += PlayerStateMachineOnStateExit;
             player.PlayerInput.OnFirePressed += PlayerInputOnFirePressed;
             player.PlayerInput.OnAirPressed += PlayerInputOnAirPressed;
             player.PlayerInput.OnWaterPressed += PlayerInputOnWaterPressed;
             player.PlayerInput.OnEarthPressed += PlayerInputOnEarthPressed;
         }
 
-        private void PlayerInputOnPrimaryKeyReleased()
+        private void PlayerStateMachineOnStateExit(PlayerStates state)
         {
-            StopEffect();
+            if(state != PlayerStates.FORGING) return;
+                StopEffect();
+        }
+
+        private void PlayerStateMachineOnStateEntered(PlayerStates state)
+        {
+            if(state != PlayerStates.FORGING) return;
+            CancelInvoke();
+            if (player.BuildData.TargetAttraction == null) return;
+            SetTargetedPosition(player.BuildData.TargetAttraction.transform.position);
+            Invoke(nameof(StopEffect), player.BuildData.BuildTime);
         }
 
         private void PlayerInputOnEarthPressed()
         {
+            StopEffect();
             activeEffect = BuildEarthPool.Get().GetComponent<BuildEffect>();
             lastPoolUsed = BuildEarthPool;
         }
 
         private void PlayerInputOnWaterPressed()
         {
+            StopEffect();
             activeEffect = BuildWaterPool.Get().GetComponent<BuildEffect>();
             lastPoolUsed = BuildWaterPool;
         }
 
         private void PlayerInputOnAirPressed()
         {
+            StopEffect();
             activeEffect = BuildAirPool.Get().GetComponent<BuildEffect>();
             lastPoolUsed = BuildAirPool;
         }
 
         private void PlayerInputOnFirePressed()
         {
+            StopEffect();
             activeEffect = BuildFirePool.Get().GetComponent<BuildEffect>();
             lastPoolUsed = BuildFirePool;
-        }
-
-        private void PlayerInputOnPrimaryKeyPressed()
-        {
-            if(playerStateMachine.CurrentState != PlayerStates.BUILD) return;
-            CancelInvoke();
-            var handPos = player.HandTransform.transform.position;
-            var buildSpots = AttractionSpot.AttractionSpots.ToArray();
-            var buildRange = player.BuildData.BuildSpotDetectionRange;
-            
-            var openSpots = RangeTargetScanner.GetTargets(handPos, buildSpots, buildRange).Where(t => !t.GetComponent<AttractionSpot>().IsOccupied).ToArray();
-            if(openSpots.Length <= 0) return;
-            var targetAttractionSpotPosition = ClosestEntityFinder.GetClosestTransform(openSpots, handPos).position;
-            
-            SetTargetedPosition(targetAttractionSpotPosition);
-            Invoke(nameof(StopEffect), player.BuildData.BuildTime);
         }
 
         private void StopEffect()

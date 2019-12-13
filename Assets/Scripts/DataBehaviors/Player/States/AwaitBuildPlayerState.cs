@@ -8,18 +8,13 @@ using UnityEngine;
 
 namespace DataBehaviors.Player.States
 {
-    public class BuildPlayerState : PlayerState
+    public class AwaitBuildPlayerState : PlayerState
     {
         private readonly PlayerStateMachine stateMachine;
         private readonly PlayerBuildData buildData;
         private Vector3 latestBuildSpotDirection;
         private AttractionSpot spotOnFocus;
-        private bool isBuilding;
-        private GameObject currentEssence;
-        private float timeStarted;
-        private AttractionSpot targetAttractionSpot;
-
-        public BuildPlayerState(PlayerComponent player, PlayerStateMachine stateMachine) : base(player)
+        public AwaitBuildPlayerState(PlayerComponent player, PlayerStateMachine stateMachine) : base(player)
         {
             this.stateMachine = stateMachine;
             buildData = player.BuildData;
@@ -30,22 +25,13 @@ namespace DataBehaviors.Player.States
             stateMachine.ChangeState(PlayerStates.PLACE_OBELISK);
         }
 
-        public override PlayerStates ListenToState()
+        public override void ListenToState()
         {
-            if(!isBuilding) return PlayerStates.BUILD;
             
-            if (Time.time - timeStarted > player.BuildData.BuildTime)
-            {
-                ForgeEssence();
-                // Fire OnForgeFinished event?
-            }
-
-            return PlayerStates.BUILD;
         }
 
         public override void OnStateExit()
         {
-            isBuilding = false;
             player.PlayerInput.OnPrimaryKeyPressed -= PlayerInputOnPrimaryKeyPressed;
             player.PlayerInput.OnStartPlacingObeliskPressed -= PlayerInputOnPlaceObeliskPressed;
         }
@@ -58,69 +44,50 @@ namespace DataBehaviors.Player.States
             player.PlayerInput.OnEarthPressed += PlayerInputOnEarthPressed;
             player.PlayerInput.OnPrimaryKeyPressed += PlayerInputOnPrimaryKeyPressed;
             player.PlayerInput.OnStartPlacingObeliskPressed += PlayerInputOnPlaceObeliskPressed;
-            player.PlayerInput.OnPrimaryKeyReleased += PlayerInputOnPrimaryKeyReleased;
-        }
-
-        private void PlayerInputOnPrimaryKeyReleased()
-        {
-            isBuilding = false;
         }
 
         private void PlayerInputOnPrimaryKeyPressed()
         {
-            // <check if enough essence to build>
             var handPos = player.HandTransform.transform.position;
             var buildSpots = AttractionSpot.AttractionSpots.ToArray();
             var buildRange = player.BuildData.BuildSpotDetectionRange;
             
             var openSpots = RangeTargetScanner.GetTargets(handPos, buildSpots, buildRange).Where(t => !t.GetComponent<AttractionSpot>().IsOccupied).ToArray();
             if(openSpots.Length <= 0) return;
-            targetAttractionSpot = ClosestEntityFinder.GetClosestTransform(openSpots, handPos).GetComponent<AttractionSpot>();
-            
-            if (targetAttractionSpot != null)
-            {
-                timeStarted = Time.time;
-                isBuilding = true;
-            }
+            player.BuildData.TargetAttraction = ClosestEntityFinder.GetClosestTransform(openSpots, handPos).GetComponent<AttractionSpot>();
+
+            stateMachine.ChangeState(PlayerStates.FORGING);
         }
 
         private void PlayerInputOnEarthPressed()
         {
 
-            currentEssence = buildData.EarthEssencePrefab;
+            player.BuildData.CurrentEssence = buildData.EarthEssencePrefab;
             RefreshState();
         }
 
 
         private void PlayerInputOnWaterPressed()
         {
-            currentEssence = buildData.WaterEssencePrefab;
+            player.BuildData.CurrentEssence = buildData.WaterEssencePrefab;
             RefreshState();
         }
 
         private void PlayerInputOnAirPressed()
         {
-            currentEssence = buildData.AirEssencePrefab;
+            player.BuildData.CurrentEssence = buildData.AirEssencePrefab;
             RefreshState();
         }
 
         private void PlayerInputOnFirePressed()
         {
-            currentEssence = buildData.FireEssencePrefab;
+            player.BuildData.CurrentEssence = buildData.FireEssencePrefab;
             RefreshState();
-        }
-
-        private void ForgeEssence() //to-do: pool
-        {
-            var essence = GameObject.Instantiate(currentEssence, targetAttractionSpot.transform.position, Quaternion.identity);
-            targetAttractionSpot.AssignEssence(essence);
-            isBuilding = false;
         }
         private void RefreshState()
         {
-            if(stateMachine.CurrentState != PlayerStates.BUILD)
-                stateMachine.ChangeState(PlayerStates.BUILD);
-            timeStarted = Time.time;
+            if(stateMachine.CurrentState != PlayerStates.AWAIT_BUILD)
+                stateMachine.ChangeState(PlayerStates.AWAIT_BUILD);
         }
     }
 }

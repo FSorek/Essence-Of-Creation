@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Data.Data_Types;
+using Data.Player;
 using DataBehaviors.Player;
 using DataBehaviors.Player.States;
 using Monobehaviors.BuildSpot;
@@ -11,23 +12,32 @@ namespace DefaultNamespace
 {
     public class PlayerSound : MonoBehaviour
     {
+        [SerializeField]private PlayerBuildData buildData;
         public PlayerSoundEffects SoundEffects;
         public AudioSource Source;
         public float Fade = 4f;
-        private PlayerComponent player;
         private PlayerStateMachine playerStateMachine;
 
         private void Awake()
         {
-            player = GetComponent<PlayerComponent>();
             playerStateMachine = GetComponent<PlayerStateMachine>();
-            player.PlayerInput.OnPrimaryKeyPressed += PlayerInputOnPrimaryKeyPressed;
-            player.PlayerInput.OnPrimaryKeyReleased += PlayerInputOnPrimaryKeyReleased;
+            playerStateMachine.OnStateEntered += PlayerStateMachineOnStateEntered;
+            playerStateMachine.OnStateExit += PlayerStateMachineOnStateExit;
         }
 
-        private void PlayerInputOnPrimaryKeyReleased()
+        private void PlayerStateMachineOnStateExit(PlayerStates state)
         {
-            StopSound();
+            if(state != PlayerStates.FORGING) return;
+                StopSound();
+        }
+
+        private void PlayerStateMachineOnStateEntered(PlayerStates state)
+        {
+            if(state != PlayerStates.FORGING || buildData.CurrentEssence == null) return;
+            ResetSound();
+            Source.PlayOneShot(SoundEffects.SummonFireStart);
+            Source.Play();
+            Invoke(nameof(StopSound), buildData.BuildTime);
         }
 
         private void StopSound()
@@ -35,24 +45,20 @@ namespace DefaultNamespace
             StartCoroutine(FadeOut(Source, Fade));
         }
 
-        private void PlayerInputOnPrimaryKeyPressed()
+        private void ResetSound()
         {
-            if(playerStateMachine.CurrentState != PlayerStates.BUILD) return;
-            CancelInvoke();
             StopAllCoroutines();
+            CancelInvoke();
             Source.volume = 1f;
-            Source.PlayOneShot(SoundEffects.SummonFireStart);
             Source.clip = SoundEffects.Summoning;
             Source.loop = true;
-            Source.Play();
-            Invoke(nameof(StopSound), player.BuildData.BuildTime);
         }
 
-        private IEnumerator FadeOut (AudioSource audioSource, float FadeTime) {
+        private IEnumerator FadeOut (AudioSource audioSource, float fadeTime) {
             float startVolume = audioSource.volume;
  
             while (audioSource.volume > 0) {
-                audioSource.volume -= startVolume * Time.deltaTime / FadeTime;
+                audioSource.volume -= startVolume * Time.deltaTime / fadeTime;
  
                 yield return null;
             }
