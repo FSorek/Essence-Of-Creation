@@ -1,69 +1,52 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Data.Data_Types;
 using Data.Interfaces.Player;
 using DataBehaviors.Player.States;
 using Monobehaviors.Game.Managers;
 using Monobehaviors.Player;
+using UnityEngine;
 
 namespace DataBehaviors.Player
 {
-    public class PlayerStateMachine
+    public class PlayerStateMachine : MonoBehaviour
     {
-        private readonly PlayerComponent player;
-        private readonly Dictionary<PlayerStates, PlayerState> availablePlayerStates;
+        private PlayerComponent player;
+        private Dictionary<PlayerStates, PlayerState> availablePlayerStates;
         private PlayerState currentPlayerState;
-        private PlayerState lastPlayerState;
+        private PlayerStates currentState;
+        public PlayerStates CurrentState => currentState;
 
-        public PlayerStateMachine(PlayerComponent player)
+        public void Awake()
         {
-            this.player = player;
+            player = GetComponent<PlayerComponent>();
             availablePlayerStates = new Dictionary<PlayerStates, PlayerState>
             {
-                {PlayerStates.ATTUNED, new AttunedPlayerState(player, EconomyManager.Instance)},
-                {PlayerStates.PLACE_BUILD_SPOT, new PlacingBuildSpotPlayerState(player)},
-                {PlayerStates.WEAVE_ESSENCE, new MergeAttackPlayerState(player)}
+                {PlayerStates.BUILD, new BuildPlayerState(player, this)}, // default state
+                {PlayerStates.PLACE_OBELISK, new PlaceObeliskPlayerState(player, this)},
+                {PlayerStates.WEAVE_ESSENCE, new MergeAttackPlayerState(player, this)}
             };
-            currentPlayerState = availablePlayerStates[PlayerStates.WEAVE_ESSENCE];
-            this.player.OnElementExecuted += ChangeState;
         }
 
-        private void ChangeState(Elements element)
+        private void Update()
         {
-            switch (element)
+            if (currentPlayerState == null)
+                ChangeState(availablePlayerStates.Keys.First());
+
+            var nextState = currentPlayerState.ListenToState();
+
+            if (availablePlayerStates[nextState] != currentPlayerState)
             {
-                case Elements.Fire:
-                    currentPlayerState = availablePlayerStates[PlayerStates.ATTUNED];
-                    break;
-                case Elements.Earth:
-                    currentPlayerState = availablePlayerStates[PlayerStates.ATTUNED];
-                    break;
-                case Elements.Water:
-                    currentPlayerState = availablePlayerStates[PlayerStates.ATTUNED];
-                    break;
-                case Elements.Air:
-                    currentPlayerState = availablePlayerStates[PlayerStates.ATTUNED];
-                    break;
-                case Elements.Invocation:
-                    currentPlayerState = availablePlayerStates[PlayerStates.PLACE_BUILD_SPOT];
-                    break;
-                default:
-                    currentPlayerState = availablePlayerStates[PlayerStates.WEAVE_ESSENCE];
-                    break;
+                ChangeState(nextState);
             }
         }
 
-        public void Tick()
+        public void ChangeState(PlayerStates state)
         {
-            if (currentPlayerState != null)
-            {
-                if (lastPlayerState != currentPlayerState)
-                {
-                    lastPlayerState?.OnStateExit();
-                    lastPlayerState = currentPlayerState;
-                }
-
-                currentPlayerState.ListenToState();
-            }
+            currentPlayerState?.OnStateExit();
+            currentState = state;
+            currentPlayerState = availablePlayerStates[state];
+            currentPlayerState.OnStateEnter();
         }
     }
 }

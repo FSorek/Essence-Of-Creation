@@ -2,7 +2,7 @@
 using Data.Data_Types;
 using Data.Interfaces.Player;
 using Data.Player;
-using DataBehaviors.Game.Input;
+using DataBehaviors.Game.PlayerInput;
 using DataBehaviors.Player;
 using DataBehaviors.Player.Particles;
 using DefaultNamespace;
@@ -10,44 +10,29 @@ using UnityEngine;
 
 namespace Monobehaviors.Player
 {
-    public class PlayerComponent : MonoBehaviour, IPlayer
+    public class PlayerComponent : MonoBehaviour
     {
         [SerializeField] private GameObject Hand;
-
-        private IInputProcessor mouseKeyboardInput;
-        private PlayerStateMachine stateMachine;
+        private IPlayerInput playerInput = new MouseKeyboardPlayerInput();
         private SummonEffectController summonEffectController;
+        private Transform handTransform;
 
-        public PlayerState CurrentPlayerState { get; }
 
-        public event Action<Elements> OnElementExecuted = delegate { };
-
-        public Transform HandTransform => Hand.transform;
-        public Elements CurrentElement { get; private set; }
-
+        public Transform HandTransform => handTransform;
+        public IPlayerInput PlayerInput => playerInput;
         public PlayerVFXData VFXData;
-
-        public PlayerBuildingData BuildingData;
+        public PlayerBuildData BuildData;
 
 
         private void Awake()
         {
-            mouseKeyboardInput = new MouseKeyboardInput();
-            CurrentElement = Elements.None;
-            stateMachine = new PlayerStateMachine(this);
+            handTransform = Hand.GetComponent<Transform>();
             summonEffectController = new SummonEffectController(this);
         }
 
         private void Update()
         {
-            mouseKeyboardInput.GlobalControls();
-            if (mouseKeyboardInput.CurrentElement != CurrentElement)
-            {
-                OnElementExecuted(mouseKeyboardInput.CurrentElement);
-                CurrentElement = mouseKeyboardInput.CurrentElement;
-            }
-
-            stateMachine.Tick();
+            playerInput.Tick();
         }
     }
 }

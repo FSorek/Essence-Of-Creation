@@ -19,10 +19,10 @@ namespace Monobehaviors.Player
 
         private void Attack() // check if we have towers in extracted list
         {
-            if (extractionSystem.ExtractedTowers.Count <= 0)
+            if (extractionSystem.ExtractedEssences.Count <= 0)
                 return;
 
-            var extractedTower = extractionSystem.ExtractedTowers.Peek().GetComponent<Obelisk>();
+            var extractedTower = extractionSystem.ExtractedEssences.Peek().GetComponent<Obelisk>();
 
             // create a new type 'PlayerAttack' based on the obelisk stats
 

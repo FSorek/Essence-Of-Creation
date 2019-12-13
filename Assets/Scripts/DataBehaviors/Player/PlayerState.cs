@@ -1,18 +1,20 @@
-﻿using Data.Interfaces.Player;
+﻿using Data.Data_Types;
+using Data.Interfaces.Player;
 using Monobehaviors.Player;
 
 namespace DataBehaviors.Player
 {
     public abstract class PlayerState
     {
-        protected PlayerComponent playerComponentC;
+        protected PlayerComponent player;
 
-        public PlayerState(PlayerComponent playerComponentC)
+        public PlayerState(PlayerComponent player)
         {
-            this.playerComponentC = playerComponentC;
+            this.player = player;
         }
 
-        public abstract void ListenToState();
+        public abstract PlayerStates ListenToState();
         public abstract void OnStateExit();
+        public abstract void OnStateEnter();
     }
 }

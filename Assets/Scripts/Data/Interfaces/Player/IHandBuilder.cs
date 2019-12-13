@@ -6,6 +6,6 @@ namespace Data.Interfaces.Player
 {
     public interface IHandBuilder
     {
-        void Build(Elements element, PlayerBuildingData data, BuildSpotComponent buildSpotComponent);
+        void Build(Elements element, PlayerBuildData data, AttractionSpot attractionSpot);
     }
 }

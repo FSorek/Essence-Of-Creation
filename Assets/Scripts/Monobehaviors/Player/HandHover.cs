@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections;
+using Data.Data_Types;
+using DataBehaviors.Game.Utility;
+using DataBehaviors.Player;
 using DataBehaviors.Player.States;
 using Monobehaviors.Camera;
 using UnityEngine;
@@ -7,35 +11,59 @@ namespace Monobehaviors.Player
 {
     public class HandHover : MonoBehaviour
     {
-        [SerializeField]private float heightAboveSurface = 2f;
-        [SerializeField]private bool isCursorVisible;
-        [SerializeField] private float speed;
+        [SerializeField] private float heightAboveSurface = 2f;
+        [SerializeField] private bool isCursorVisible;
+        [SerializeField] private float updateSpeed;
+        [SerializeField] private float heightAdjustmentScroll;
 
         private float heightAdjustment = 0;
+        private PlayerComponent player;
+        private int pressCounter;
 
         private void Awake()
         {
-            PlacingBuildSpotPlayerState.OnIncreaseBuildSpotHeight += PlacingBuildSpotPlayerStateOnIncreaseBuildSpotHeight;
-            PlacingBuildSpotPlayerState.OnDecreaseBuildSpotHeight += PlacingBuildSpotPlayerStateOnDecreaseBuildSpotHeight;
-            PlacingBuildSpotPlayerState.OnBuildSpotCancelled += ResetHeightAdjustment;
-            PlacingBuildSpotPlayerState.OnBuildSpotCreated += ResetHeightAdjustment;
+            player = GetComponentInParent<PlayerComponent>();
+            player.PlayerInput.OnIncreasePressed += PlayerInputOnIncreasePressed;
+            player.PlayerInput.OnDecreasePressed += PlayerInputOnDecreasePressed;
         }
 
-        private void ResetHeightAdjustment()
+        private void PlayerInputOnDecreasePressed()
         {
-            heightAdjustment = 0;
+            if(player.GetComponent<PlayerStateMachine>().CurrentState != PlayerStates.PLACE_OBELISK
+               || pressCounter <= 0)
+                return;
+            pressCounter--;
+            SetHoverHeight(heightAdjustment - heightAdjustmentScroll);
         }
 
-        private void PlacingBuildSpotPlayerStateOnDecreaseBuildSpotHeight()
+        private void PlayerInputOnIncreasePressed()
         {
-            if(heightAdjustment > 0)
-                heightAdjustment--;
+            if(player.GetComponent<PlayerStateMachine>().CurrentState != PlayerStates.PLACE_OBELISK
+               || pressCounter >= player.BuildData.MaxObeliskSize)
+                return;
+            pressCounter++;
+            SetHoverHeight(heightAdjustment + heightAdjustmentScroll);
         }
 
-        private void PlacingBuildSpotPlayerStateOnIncreaseBuildSpotHeight()
+        private void SetHoverHeight(float height)
         {
-            if(heightAdjustment < 3)
-                heightAdjustment++;
+            StopAllCoroutines();
+            StartCoroutine(SmoothMove(height));
+        }
+        
+        private IEnumerator SmoothMove(float height)
+        {
+            float elapsed = 0f;
+            float initialAdjustment = heightAdjustment;
+
+            while (elapsed < updateSpeed)
+            {
+                elapsed += Time.deltaTime;
+                heightAdjustment = Mathf.Lerp(initialAdjustment, height, elapsed / updateSpeed);
+                yield return null;
+            }
+
+            heightAdjustment = height;
         }
 
         private void FixedUpdate()

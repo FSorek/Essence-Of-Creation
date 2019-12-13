@@ -3,6 +3,7 @@ using Data.Interfaces.Game.Economy;
 using Data.Interfaces.Game.Waves;
 using Data.Interfaces.Player;
 using DataBehaviors.Player.States;
+using Monobehaviors.Player;
 
 namespace DataBehaviors.Game.Economy
 {
@@ -16,8 +17,8 @@ namespace DataBehaviors.Game.Economy
             Settings = settings;
             this.waveManager = waveManager;
             Monobehaviors.Unit.UnitComponent.OnUnitDeath += AddEssence;
-            AttunedPlayerState.OnElementBuildingFinished += UseEssenceToBuild;
-            PlacingBuildSpotPlayerState.OnBuildSpotCreated += UseEssenceForBuildSpot;
+            //BuildPlayerState.OnElementBuildingFinished += UseEssenceToBuild;
+            //PlaceObeliskPlayerState.OnBuildSpotCreated += UseEssenceForBuildSpot;
             Essence = settings.StartingEssence;
             //essencePerEnemy = settings.EssencePerWave / waveManager.WaveSettings.EnemiesPerWave;
         }
@@ -31,7 +32,7 @@ namespace DataBehaviors.Game.Economy
             Essence -= Settings.EssencePerBuildspot;
         }
 
-        private void UseEssenceToBuild(IPlayer obj)
+        private void UseEssenceToBuild(PlayerComponent obj)
         {
             Essence -= Settings.EssencePerSummon;
         }

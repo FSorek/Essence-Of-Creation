@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Data.Data_Types;
+using DataBehaviors.Player;
 using DataBehaviors.Player.States;
 using Monobehaviors.BuildSpot;
 using Monobehaviors.Player;
@@ -11,28 +14,40 @@ namespace DefaultNamespace
         public PlayerSoundEffects SoundEffects;
         public AudioSource Source;
         public float Fade = 4f;
+        private PlayerComponent player;
+        private PlayerStateMachine playerStateMachine;
+
         private void Awake()
         {
-            AttunedPlayerState.OnElementBuildingStarted += AttunedPlayerStateOnElementBuildingStarted;
-            AttunedPlayerState.OnElementBuildingInterrupted += AttunedPlayerStateOnElementBuildingStopped;
-            AttunedPlayerState.OnElementBuildingFinished += AttunedPlayerStateOnElementBuildingStopped;
+            player = GetComponent<PlayerComponent>();
+            playerStateMachine = GetComponent<PlayerStateMachine>();
+            player.PlayerInput.OnPrimaryKeyPressed += PlayerInputOnPrimaryKeyPressed;
+            player.PlayerInput.OnPrimaryKeyReleased += PlayerInputOnPrimaryKeyReleased;
         }
 
-        private void AttunedPlayerStateOnElementBuildingStopped(PlayerComponent player)
+        private void PlayerInputOnPrimaryKeyReleased()
+        {
+            StopSound();
+        }
+
+        private void StopSound()
         {
             StartCoroutine(FadeOut(Source, Fade));
         }
 
-        private void AttunedPlayerStateOnElementBuildingStarted(PlayerComponent player, BuildSpotComponent spot)
+        private void PlayerInputOnPrimaryKeyPressed()
         {
+            if(playerStateMachine.CurrentState != PlayerStates.BUILD) return;
+            CancelInvoke();
             StopAllCoroutines();
             Source.volume = 1f;
             Source.PlayOneShot(SoundEffects.SummonFireStart);
             Source.clip = SoundEffects.Summoning;
             Source.loop = true;
             Source.Play();
+            Invoke(nameof(StopSound), player.BuildData.BuildTime);
         }
-        
+
         private IEnumerator FadeOut (AudioSource audioSource, float FadeTime) {
             float startVolume = audioSource.volume;
  

@@ -6,9 +6,9 @@ namespace Monobehaviors.Game.Managers
     {
         public static FloorColliderManager Instance;
         [SerializeField] private Transform floorColliderParent;
-        private Transform[] buildColliders = new Transform[0];
+        private Transform[] buildAreaTransforms = new Transform[0];
 
-        public Transform[] BuildColliders => buildColliders;
+        public Transform[] BuildAreaTransforms => buildAreaTransforms;
 
         public void Awake()
         {
@@ -17,7 +17,7 @@ namespace Monobehaviors.Game.Managers
             else
                 Instance = this;
 
-            buildColliders = GetFloorColliders();
+            buildAreaTransforms = GetFloorColliders();
         }
 
         private Transform[] GetFloorColliders()

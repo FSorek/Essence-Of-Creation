@@ -31,6 +31,7 @@ namespace Monobehaviors.Unit.HealthBar
             // later on add different visuals depending on the dominating type of damage
             if(!gameObject.activeSelf) return;
             float pct = attachedHealth.CurrentHealth / (float) attachedUnit.GetStat(StatName.MaxHealth);
+            StopAllCoroutines();
             StartCoroutine(ResizeToPercentage(pct));
         }
 

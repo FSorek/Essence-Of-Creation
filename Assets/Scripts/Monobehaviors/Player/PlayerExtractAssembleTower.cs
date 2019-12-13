@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DataBehaviors.Game.Systems;
 using DataBehaviors.Player.States;
+using Monobehaviors.BuildSpot;
 using Monobehaviors.Tower;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace Monobehaviors.Player
 {
     public class PlayerExtractAssembleTower : MonoBehaviour
     {
-        public Stack<GameObject> ExtractedTowers { get; } = new Stack<GameObject>(2);
+        public Stack<GameObject> ExtractedEssences { get; } = new Stack<GameObject>(2);
 
         private void Awake()
         {
@@ -16,27 +17,27 @@ namespace Monobehaviors.Player
             MergeAttackPlayerState.OnAssembleTowerFinished += AssembleFinished;
         }
 
-        private void AssembleFinished(BuildSpot.BuildSpotComponent spotComponent)
+        private void AssembleFinished(AttractionSpot spot)
         {
-            if (ExtractedTowers.Count <= 0)
+            if (ExtractedEssences.Count <= 0)
                 return;
-            var assembledTower = ExtractedTowers.Pop();
-            spotComponent.SetCurrentTower(assembledTower);
-            assembledTower.transform.position = spotComponent.transform.position;
-            assembledTower.SetActive(true);
+            var forgedEssence = ExtractedEssences.Pop();
+            spot.AssignEssence(forgedEssence);
+            forgedEssence.transform.position = spot.transform.position;
+            forgedEssence.SetActive(true);
         }
 
-        private void ExtractionFinished(BuildSpot.BuildSpotComponent spotComponent)
+        private void ExtractionFinished(BuildSpot.AttractionSpot spot)
         {
-            var extractedTower = spotComponent.CurrentTower;
+            var extractedTower = spot.CurrentEssence;
             extractedTower.SetActive(false);
-            ExtractedTowers.Push(extractedTower);
-            spotComponent.ClearCurrentTower();
+            ExtractedEssences.Push(extractedTower);
+            spot.ClearCurrentEssence();
 
-            if (ExtractedTowers.Count >= 2)
+            if (ExtractedEssences.Count >= 2)
             {
-                var inA = ExtractedTowers.Pop().GetComponent<Obelisk>();
-                var inB = ExtractedTowers.Peek().GetComponent<Obelisk>();
+                var inA = ExtractedEssences.Pop().GetComponent<Obelisk>();
+                var inB = ExtractedEssences.Peek().GetComponent<Obelisk>();
 
                 Obelisk result = null;
                 if (inB.InfusedElements.Count == 1)
@@ -45,14 +46,14 @@ namespace Monobehaviors.Player
                     result = RecipeManager.Instance.GetTowerFromPath(inB.InfusedElements, inA.InfusedElements[0]);
                 if (result == null)
                 {
-                    ExtractedTowers.Push(inA.gameObject);
+                    ExtractedEssences.Push(inA.gameObject);
                 }
                 else
                 {
-                    ExtractedTowers.Pop();
+                    ExtractedEssences.Pop();
                     var newTower = Instantiate(result);
                     newTower.gameObject.SetActive(false);
-                    ExtractedTowers.Push(newTower.gameObject);
+                    ExtractedEssences.Push(newTower.gameObject);
                 }
             }
         }

@@ -7,12 +7,8 @@ namespace Monobehaviors.Player.Particles
 {
     public class BuildEffect : MonoBehaviour
     {
-        private Transform effectPositionTransform;
-
         internal void SetFollowedTransform(Transform effectPositionTransform, Vector3 buildSpotPosition)
         {
-            this.effectPositionTransform = effectPositionTransform;
-
             var binders = GetComponents<VFXPositionBinder>();
             foreach (var vfxPositionBinder in binders)
                 if (vfxPositionBinder.Parameter == "HandPosition" && vfxPositionBinder.Target == null)
