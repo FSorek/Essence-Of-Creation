@@ -10,7 +10,6 @@ namespace Monobehaviors.Tower.Attack
 {
     public class AttackComponent : MonoBehaviour
     {
-        public event Action<Projectile> OnProjectileFired = delegate {  };
         [ScriptableObjectDropdown(typeof(TowerAttack))]public ScriptableObjectReference TowerAttack;
         private AttackController attackController;
         private TowerAttack towerAttack;
@@ -24,11 +23,6 @@ namespace Monobehaviors.Tower.Attack
         private void Update()
         {
             attackController.Tick();
-        }
-
-        public void FireOnProjectileFired(Projectile projectile)
-        {
-            OnProjectileFired(projectile);
         }
     }
 

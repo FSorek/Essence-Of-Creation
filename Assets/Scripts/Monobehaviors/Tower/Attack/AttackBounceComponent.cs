@@ -1,20 +1,19 @@
-﻿using Monobehaviors.Projectiles;
+﻿using Data.Tower;
+using Monobehaviors.Projectiles;
 using UnityEngine;
 
 namespace Monobehaviors.Tower.Attack
 {
-    [RequireComponent(typeof(AttackComponent))]
     public class AttackBounceComponent : MonoBehaviour
     {
+        [SerializeField] private TowerAttack attack;
         public int Bounces;
         [Range(0,1f)]
         public float DamageReductionPerBounce;
         public float JumpRadius;
         
-        private AttackComponent attack;
         private void Awake()
         {
-            attack = GetComponent<AttackComponent>();
             attack.OnProjectileFired += AttackOnProjectileFired;
         }
 

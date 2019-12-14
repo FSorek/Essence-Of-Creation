@@ -49,15 +49,8 @@ namespace DataBehaviors.Tower
             for (int i = 0; i < attack.TargetLimit; i++)
                 if (targets[i] != null)
                 {
-                    CreateProjectile(targets[i]);
+                    attack.CreateProjectile(owner.position, targets[i]);
                 }
-        }
-
-        private void CreateProjectile(Transform target)
-        {
-            var projectile = GameObject.Instantiate(attack.ProjectileModel, owner.position, Quaternion.identity).AddComponent<Projectile>();
-            projectile.Initialize(attack, target);
-            owner.GetComponent<AttackComponent>().FireOnProjectileFired(projectile);
         }
 
         protected Transform[] GetTargets()

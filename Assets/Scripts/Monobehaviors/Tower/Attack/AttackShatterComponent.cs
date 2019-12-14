@@ -4,19 +4,16 @@ using UnityEngine;
 
 namespace Monobehaviors.Tower.Attack
 {
-    [RequireComponent(typeof(AttackComponent))]
     public class AttackShatterComponent : MonoBehaviour
     {
+        [SerializeField] private TowerAttack attack;
         public int Shatters;
         [Range(0,1f)]
         public float DamageReductionPerBounce;
         public float JumpRadius;
         public TowerAttack ShatterTowerAttack;
-        
-        private AttackComponent attack;
         private void Awake()
         {
-            attack = GetComponent<AttackComponent>();
             attack.OnProjectileFired += AttackOnProjectileFired;
         }
 
