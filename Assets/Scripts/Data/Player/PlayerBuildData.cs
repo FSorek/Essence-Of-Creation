@@ -19,6 +19,7 @@ namespace Data.Player
         public GameObject ObeliskAttractionPrefab;
         public GameObject ObeliskBlockPrefab;
         public GameObject ObeliskBasePrefab;
+        public float BuildDistanceOffset;
         
         
         public float BuildSpotDetectionRange = 20f;

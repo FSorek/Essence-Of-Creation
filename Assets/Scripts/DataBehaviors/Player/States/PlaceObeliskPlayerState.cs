@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Data.Data_Types;
 using Data.Interfaces.Player;
@@ -33,8 +32,8 @@ namespace DataBehaviors.Player.States
         private void PlayerInputOnPrimaryKeyPressed()
         {
             var topBlockPosition = buildBlocks.Last().transform.position;
-            var peak = GameObject.Instantiate(buildData.ObeliskAttractionPrefab, topBlockPosition + placePointBuildDirection, Quaternion.LookRotation(placePointBuildDirection), parent);
-            peak.AddComponent<AttractionSpot>();
+            var peak = GameObject.Instantiate(buildData.ObeliskAttractionPrefab, topBlockPosition + placePointBuildDirection * buildData.BuildDistanceOffset, Quaternion.LookRotation(placePointBuildDirection), parent);
+            GameObject.Instantiate(new GameObject("Essence"), peak.transform.position + placePointBuildDirection * 2, Quaternion.LookRotation(placePointBuildDirection), parent).AddComponent<AttractionSpot>();
             buildBlocks.Clear();
             parent = null;
             stateData.ChangeState(PlayerStates.AWAIT_BUILD);
@@ -44,9 +43,10 @@ namespace DataBehaviors.Player.States
         {
             if (buildBlocks.Count < buildData.MaxObeliskSize + 1) // +1 to not count the initial Base block
             {
-                var block = GameObject.Instantiate(buildData.ObeliskBlockPrefab, parent);
+                var block = GameObject.Instantiate(buildData.ObeliskBlockPrefab, parent.position + placePointBuildDirection * buildBlocks.Count * buildData.BuildDistanceOffset, Quaternion.identity, parent);
                 var scale = block.transform.lossyScale.x * Mathf.Pow(.8f, buildBlocks.Count);
                 block.transform.localScale = new Vector3(scale,scale, scale);
+                block.transform.Rotate(block.transform.forward, Random.Range(30,270));
                 buildBlocks.Add(block);
             }
         }
@@ -80,13 +80,12 @@ namespace DataBehaviors.Player.States
             
             placePointBuildDirection = (position - point).normalized;
             Debug.DrawLine(position, point, Color.blue);
-            var distanceIndex = 1;
-            foreach (var block in buildBlocks)
+            if (parent != null)
             {
-                var blockTransform = block.transform;
-                blockTransform.LookAt(position);
-                blockTransform.position = point + 2f * distanceIndex++ * placePointBuildDirection;
+                parent.LookAt(position);
+                parent.position = point + placePointBuildDirection * buildData.BuildDistanceOffset;
             }
+
         }
 
         public override void OnStateExit()
@@ -111,7 +110,7 @@ namespace DataBehaviors.Player.States
             input.OnSecondaryKeyPressed += PlayerInputOnSecondaryKeyPressed;
 
             parent = GameObject.Instantiate(new GameObject("Obelisk")).transform;
-            var block = GameObject.Instantiate(buildData.ObeliskBasePrefab, parent);
+            var block = GameObject.Instantiate(buildData.ObeliskBasePrefab, parent.transform.position, Quaternion.identity, parent);
             buildBlocks.Add(block);
         }
 
