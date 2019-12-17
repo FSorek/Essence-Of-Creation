@@ -21,6 +21,7 @@ namespace DataBehaviors.Player.States
         private readonly PlayerInput input;
         private readonly List<GameObject> buildBlocks;
         private Vector3 placePointBuildDirection;
+        private Transform parent;
 
         public PlaceObeliskPlayerState(PlayerBuildData buildData, PlayerInput input, PlayerStateData stateData) : base(stateData)
         {
@@ -29,13 +30,13 @@ namespace DataBehaviors.Player.States
             buildBlocks = new List<GameObject>();
         }
 
-
         private void PlayerInputOnPrimaryKeyPressed()
         {
             var topBlockPosition = buildBlocks.Last().transform.position;
-            var peak = GameObject.Instantiate(buildData.ObeliskAttractionPrefab, topBlockPosition + placePointBuildDirection, Quaternion.LookRotation(placePointBuildDirection));
+            var peak = GameObject.Instantiate(buildData.ObeliskAttractionPrefab, topBlockPosition + placePointBuildDirection, Quaternion.LookRotation(placePointBuildDirection), parent);
             peak.AddComponent<AttractionSpot>();
             buildBlocks.Clear();
+            parent = null;
             stateData.ChangeState(PlayerStates.AWAIT_BUILD);
         }
 
@@ -43,7 +44,7 @@ namespace DataBehaviors.Player.States
         {
             if (buildBlocks.Count < buildData.MaxObeliskSize + 1) // +1 to not count the initial Base block
             {
-                var block = GameObject.Instantiate(buildData.ObeliskBlockPrefab);
+                var block = GameObject.Instantiate(buildData.ObeliskBlockPrefab, parent);
                 var scale = block.transform.lossyScale.x * Mathf.Pow(.8f, buildBlocks.Count);
                 block.transform.localScale = new Vector3(scale,scale, scale);
                 buildBlocks.Add(block);
@@ -61,20 +62,30 @@ namespace DataBehaviors.Player.States
 
         public override void ListenToState()
         {
-            var closestBuildTransform = ClosestEntityFinder.GetClosestTransform(FloorColliderManager.Instance.BuildAreaTransforms, buildData.ConstructorObject.position);
-            if (closestBuildTransform == null)
-                return;
-
             var position = buildData.ConstructorObject.position;
-            var obeliskPlacePoint = closestBuildTransform.GetComponent<Collider>().ClosestPointOnBounds(position);
-            placePointBuildDirection = (position - obeliskPlacePoint).normalized;
-            Debug.DrawRay(position, placePointBuildDirection * 10f, Color.blue);
+            float lastDistance = float.MaxValue;
+            Vector3 point = Vector3.zero;
+            foreach (var collider in FloorColliderManager.Instance.BuildAreaTransforms)
+            {
+                var currentPoint = collider.GetComponent<Collider>().ClosestPoint(position);
+                float currentDistance = Vector3.Distance(currentPoint, position);
+                if (currentDistance < lastDistance)
+                {
+                    point = currentPoint;
+                    lastDistance = currentDistance;
+                }
+            }
+            if (point == Vector3.zero)
+                return;
+            
+            placePointBuildDirection = (position - point).normalized;
+            Debug.DrawLine(position, point, Color.blue);
             var distanceIndex = 1;
             foreach (var block in buildBlocks)
             {
                 var blockTransform = block.transform;
                 blockTransform.LookAt(position);
-                blockTransform.position = obeliskPlacePoint + 2f * distanceIndex++ * placePointBuildDirection;
+                blockTransform.position = point + 2f * distanceIndex++ * placePointBuildDirection;
             }
         }
 
@@ -83,11 +94,12 @@ namespace DataBehaviors.Player.States
             input.OnIncreasePressed -= PlayerInputOnIncreasePressed;
             input.OnDecreasePressed -= PlayerInputOnDecreasePressed;
             input.OnPrimaryKeyPressed -= PlayerInputOnPrimaryKeyPressed;
-            for (int i = 0; i < buildBlocks.Count; i++)
+            input.OnSecondaryKeyPressed -= PlayerInputOnSecondaryKeyPressed;
+
+            if(parent != null)
             {
-                var block = buildBlocks.Last();
-                buildBlocks.Remove(block);
-                GameObject.Destroy(block);
+                buildBlocks.Clear();
+                GameObject.Destroy(parent.gameObject);
             }
         }
 
@@ -96,9 +108,16 @@ namespace DataBehaviors.Player.States
             input.OnIncreasePressed += PlayerInputOnIncreasePressed;
             input.OnDecreasePressed += PlayerInputOnDecreasePressed;
             input.OnPrimaryKeyPressed += PlayerInputOnPrimaryKeyPressed;
-            
-            var block = GameObject.Instantiate(buildData.ObeliskBasePrefab);
+            input.OnSecondaryKeyPressed += PlayerInputOnSecondaryKeyPressed;
+
+            parent = GameObject.Instantiate(new GameObject("Obelisk")).transform;
+            var block = GameObject.Instantiate(buildData.ObeliskBasePrefab, parent);
             buildBlocks.Add(block);
+        }
+
+        private void PlayerInputOnSecondaryKeyPressed()
+        {
+            stateData.ChangeState(PlayerStates.AWAIT_BUILD);
         }
     }
 }

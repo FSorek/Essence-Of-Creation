@@ -21,7 +21,8 @@ namespace Monobehaviors.Player.Particles
         internal void Detach()
         {
             GetComponent<VisualEffect>().SendEvent("OnStop");
-            gameObject.ReturnToPool(10f);
+            if(gameObject.activeSelf)
+                StartCoroutine(gameObject.DelayedReturnToPool(6f));
         }
     }
 }

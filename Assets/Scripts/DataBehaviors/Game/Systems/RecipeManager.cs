@@ -9,9 +9,9 @@ namespace DataBehaviors.Game.Systems
     public class RecipeManager : MonoBehaviour // static ?
     {
         public static RecipeManager Instance;
-        public Obelisk[] PlayableObelisks;
-        private readonly Dictionary<int, Obelisk> recipes = new Dictionary<int, Obelisk>();
-        public static Dictionary<int, Obelisk> Recipes => Instance.recipes;
+        public ForgedEssence[] PlayableObelisks;
+        private readonly Dictionary<int, ForgedEssence> recipes = new Dictionary<int, ForgedEssence>();
+        public static Dictionary<int, ForgedEssence> Recipes => Instance.recipes;
 
 
         private void Awake()
@@ -28,13 +28,13 @@ namespace DataBehaviors.Game.Systems
             }
         }
 
-        public Obelisk GetTowerFromPath(List<BaseElement> path)
+        public ForgedEssence GetTowerFromPath(List<BaseElement> path)
         {
             int id = TowerRecipeId.GetID(path);
             return recipes.ContainsKey(id) ? recipes[id] : null;
         }
 
-        public Obelisk GetTowerFromPath(List<BaseElement> currentPath, BaseElement element)
+        public ForgedEssence GetTowerFromPath(List<BaseElement> currentPath, BaseElement element)
         {
             int id = TowerRecipeId.GetID(currentPath, element);
             return recipes.ContainsKey(id) ? recipes[id] : null;

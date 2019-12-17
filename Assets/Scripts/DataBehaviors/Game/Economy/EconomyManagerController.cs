@@ -1,21 +1,16 @@
 ﻿using Data.Game;
 using Data.Interfaces.Game.Economy;
-using Data.Interfaces.Game.Waves;
-using Data.Interfaces.Player;
-using DataBehaviors.Player.States;
 using Monobehaviors.Player;
 
 namespace DataBehaviors.Game.Economy
 {
     public class EconomyManagerController : IEconomyManager
     {
-        private readonly IWaveManager waveManager;
         private readonly int essencePerEnemy = 10;
 
-        public EconomyManagerController(EconomySettings settings, IWaveManager waveManager)
+        public EconomyManagerController(EconomySettings settings)
         {
             Settings = settings;
-            this.waveManager = waveManager;
             Monobehaviors.Unit.UnitComponent.OnUnitDeath += AddEssence;
             //BuildPlayerState.OnElementBuildingFinished += UseEssenceToBuild;
             //PlaceObeliskPlayerState.OnBuildSpotCreated += UseEssenceForBuildSpot;

@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Data.Data_Types;
 using Data.Tower;
 using DataBehaviors.Game.Entity.Targeting;
 using Monobehaviors.Game.Managers;
-using Monobehaviors.Projectiles;
 using UnityEngine;
 
-namespace Monobehaviors.Tower.Attack
+namespace Monobehaviors.Projectiles
 {
     [RequireComponent(typeof(Projectile))]
     public class ProjectileShatter : MonoBehaviour, IProjectileDeathBehaviour
@@ -16,18 +14,21 @@ namespace Monobehaviors.Tower.Attack
         private float damageReductionOnShatter;
         private float jumpRadius;
         private Transform currentTarget;
-        private bool initialized = false;
+        private bool initialized;
         private TowerAttack shatterTowerAttack;
 
         private Projectile projectile;
         
         private readonly Stack<Transform> previousTargets = new Stack<Transform>();
-        public void Initialize(int shatterAmount, float jumpRadius, float damageReductionOnShatter, TowerAttack shatterTowerAttack)
+        private TransformList enemiesAlive;
+
+        public void Initialize(int shatterAmount, float jumpRadius, float damageReductionOnShatter, TowerAttack shatterTowerAttack, TransformList enemiesAlive)
         {
             this.shatterAmount = shatterAmount;
             this.damageReductionOnShatter = damageReductionOnShatter;
             this.jumpRadius = jumpRadius;
             this.shatterTowerAttack = shatterTowerAttack;
+            this.enemiesAlive = enemiesAlive;
             
             projectile = GetComponent<Projectile>();
             projectile.SetDeathBehaviour(this);
@@ -44,7 +45,7 @@ namespace Monobehaviors.Tower.Attack
             if (currentTarget != null)
                 previousTargets.Push(currentTarget);
             
-            var enemies = WaveManager.Instance.UnitsAlive.Except(previousTargets);
+            var enemies = enemiesAlive.Items.Except(previousTargets);
             var availableTargets = RangeTargetScanner.GetTargets(projectile.transform.position, enemies.ToArray(), jumpRadius);
             var shatters = availableTargets.Length >= shatterAmount ? shatterAmount : availableTargets.Length;
             

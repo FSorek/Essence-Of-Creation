@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using Data.Game;
-using Data.Interfaces.Game.Waves;
+﻿using Data.Game;
 using DataBehaviors.Game.Waves;
 using Monobehaviors.Pooling;
 using UnityEngine;
@@ -9,46 +7,38 @@ namespace Monobehaviors.Game.Managers
 {
     public class WaveManager : MonoBehaviour
     {
-        public Transform ReachpointsParent;
-        public int Seed;
-        public IWaveSpawner Spawner;
-        public Transform SpawnPosition;
+        [SerializeField] private TransformList enemiesAlive;
+        [SerializeField] private TransformList reachPoints;
+        [SerializeField] private ObjectPool unitPool;
+        [SerializeField] private GameSettings gameSettings;
+        [SerializeField] private Transform reachPointParent;
+        [SerializeField] private Transform spawnPoint;
+        
+        private WaveSpawner spawner;
         private float timer;
-        public ObjectPool UnitPool;
-        public WaveSettings WaveSettings;
-        public static IWaveManager Instance { get; private set; }
-
+        
         private void Awake()
         {
-            if (Spawner == null || Spawner.Equals(null))
-                Spawner = new WaveSpawner(WaveSettings, UnitPool);
-            if (Instance == null || Instance.Equals(null))
-                Instance = new WaveManagerController(Seed, WaveSettings);
-            Instance.SetReachpoints(ReachpointsParent);
-            timer = WaveSettings.TimeToFirstWave;
+            spawner = new WaveSpawner(unitPool, enemiesAlive);
+            SetReachpoints();
+            timer = gameSettings.TimeToFirstWave;
         }
 
+        private void SetReachpoints()
+        {
+            for (int i = 0; i < reachPointParent.childCount; i++)
+            {
+                reachPoints.Add(reachPointParent.GetChild(i));
+            }
+        }
         private void Update()
         {
-            timer -= Time.deltaTime;
-            if (timer <= 0)
-            {
-                StartCoroutine(SpawnWave());
-                Instance.NextWave();
-                timer = WaveSettings.TimeBetweenWaves;
-            }
-        }
-
-        private IEnumerator SpawnWave()
-        {
-            int enemiesPerSpawn = Random.Range(1, 4);
-            int numberOfSpawns = WaveSettings.EnemiesPerWave / enemiesPerSpawn;
-            float timeBetweenSpawns = WaveSettings.TimeBetweenWaves / numberOfSpawns;
-            for (int i = 0; i < numberOfSpawns; i++)
-            {
-                Spawner.Spawn(SpawnPosition.position, enemiesPerSpawn);
-                yield return new WaitForSeconds(timeBetweenSpawns);
-            }
+            //timer -= Time.deltaTime;
+            //if (timer <= 0)
+            //{
+            //    StartCoroutine(spawner.SpawnWave(spawnPoint.position));
+            //    timer = gameSettings.TimeBetweenWaves;
+            //}
         }
     }
 }

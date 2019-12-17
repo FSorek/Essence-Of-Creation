@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using Data.Interfaces.Game.Waves;
-using Data.Tower;
+﻿using Data.Tower;
 using DataBehaviors.Game.Entity.Targeting;
 using DataBehaviors.Game.Utility;
 using Monobehaviors.Projectiles;
@@ -11,17 +9,20 @@ namespace DataBehaviors.Tower
 {
     public class AttackController
     {
-        private float lastRecordedAttackTime;
         private readonly Transform owner;
         private readonly TowerAttack attack;
+        private readonly TransformList enemiesList;
+        private readonly AttackProjectileModifier projectileModifier;
+        private float lastRecordedAttackTime;
         private Transform[] targets;
-        private readonly IWaveManager waveManager;
 
-        public AttackController(Transform owner, TowerAttack attack, IWaveManager waveManager)
+        public AttackController(Transform owner, TowerAttack attack, TransformList enemiesList,
+            AttackProjectileModifier projectileModifier)
         {
             this.owner = owner;
             this.attack = attack;
-            this.waveManager = waveManager;
+            this.enemiesList = enemiesList;
+            this.projectileModifier = projectileModifier;
             targets = new Transform[attack.TargetLimit];
         }
 
@@ -49,18 +50,27 @@ namespace DataBehaviors.Tower
             for (int i = 0; i < attack.TargetLimit; i++)
                 if (targets[i] != null)
                 {
-                    attack.CreateProjectile(owner.position, targets[i]);
+                    FireProjectile(targets[i]);
                 }
         }
 
-        protected Transform[] GetTargets()
+        private void FireProjectile(Transform target)
         {
-            var enemies = waveManager.UnitsAlive;
+            var projectile = GameObject.Instantiate(attack.ProjectileModel, owner.position, Quaternion.identity)
+                .AddComponent<Projectile>();
+            projectile.Initialize(attack, target);
+            if(projectileModifier != null)
+                projectileModifier.ApplyModification(projectile);
+        }
+
+        private Transform[] GetTargets()
+        {
+            var enemies = enemiesList.Items.ToArray();
             if (enemies.Length <= 0)
                 return null;
             var availableTargets = new Transform[attack.TargetLimit];
             var enemiesInRange =
-                RangeTargetScanner.GetTargets(owner.transform.position, enemies, attack.Range);
+                RangeTargetScanner.GetTargets(owner.position, enemies, attack.Range);
 
             if (enemiesInRange.Length <= 0) return availableTargets;
             for (int i = 0; i < Mathf.Min(attack.TargetLimit, enemiesInRange.Length); i++)

@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Data.Data_Types;
 using DataBehaviors.Game.Entity.Targeting;
 using Monobehaviors.Game.Managers;
-using Monobehaviors.Projectiles;
 using UnityEngine;
 
-namespace Monobehaviors.Tower.Attack
+namespace Monobehaviors.Projectiles
 {
+    
     [RequireComponent(typeof(Projectile))]
     public class ProjectileBounce : MonoBehaviour, IProjectileDeathBehaviour
     {
@@ -21,12 +20,15 @@ namespace Monobehaviors.Tower.Attack
         private int totalBounces;
         
         private readonly Stack<Transform> previousTargets = new Stack<Transform>();
-        public void Initialize(int bounces, float damageReductionPerBounce, float jumpRadius)
+        private TransformList enemiesAlive;
+
+        public void Initialize(int bounces, float damageReductionPerBounce, float jumpRadius, TransformList enemiesAlive)
         {
             totalBounces = bounces;
             currentBounce = 1;
             this.damageReductionPerBounce = damageReductionPerBounce;
             this.jumpRadius = jumpRadius;
+            this.enemiesAlive = enemiesAlive;
             
             projectile = GetComponent<Projectile>();
             projectile.SetDeathBehaviour(this);
@@ -41,7 +43,7 @@ namespace Monobehaviors.Tower.Attack
 
             if (currentTarget != null)
                 previousTargets.Push(currentTarget);
-            var enemies = WaveManager.Instance.UnitsAlive.Except(previousTargets);
+            var enemies = enemiesAlive.Items.Except(previousTargets);
             currentTarget = RangeTargetScanner.GetTargets(projectile.transform.position, enemies.ToArray(), jumpRadius).LastOrDefault();
             projectile.SetTarget(currentTarget);
             projectile.DamageScale = Mathf.Pow(damageReductionPerBounce, currentBounce);

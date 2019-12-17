@@ -48,7 +48,7 @@ namespace DefaultNamespace
         {
             StopAllCoroutines();
             CancelInvoke();
-            Source.volume = 1f;
+            Source.volume = .4f;
             Source.clip = SoundEffects.Summoning;
             Source.loop = true;
         }

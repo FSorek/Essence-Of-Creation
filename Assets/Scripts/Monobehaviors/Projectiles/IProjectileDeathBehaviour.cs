@@ -1,4 +1,4 @@
-﻿namespace Monobehaviors.Tower.Attack
+﻿namespace Monobehaviors.Projectiles
 {
     public interface IProjectileDeathBehaviour
     {

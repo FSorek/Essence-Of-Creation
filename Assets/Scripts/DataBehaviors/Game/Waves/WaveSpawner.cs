@@ -1,21 +1,21 @@
-﻿using Data.Game;
-using Data.Interfaces.Game.Waves;
+﻿using System.Collections;
+using Data.Game;
 using DataBehaviors.Game.Entity.Targeting;
-using Monobehaviors.Game.Managers;
 using Monobehaviors.Pooling;
 using UnityEngine;
 
 namespace DataBehaviors.Game.Waves
 {
-    public class WaveSpawner : IWaveSpawner
+    public class WaveSpawner
     {
         private readonly ObjectPool currentPool;
-        private readonly WaveSettings settings;
+        private readonly TransformList enemiesAlive;
+        private readonly GameSettings settings;
 
-        public WaveSpawner(WaveSettings settings, ObjectPool currentPool)
+        public WaveSpawner(ObjectPool currentPool, TransformList enemiesAlive)
         {
-            this.settings = settings;
             this.currentPool = currentPool;
+            this.enemiesAlive = enemiesAlive;
         }
 
         public void Spawn(Vector3 position, int amount = 1)
@@ -34,10 +34,16 @@ namespace DataBehaviors.Game.Waves
             if (amount <= 1) return position;
 
             var newPosition = position;
-            while (RangeTargetScanner.GetTargets(newPosition, WaveManager.Instance.UnitsAlive, 1f).Length > 0
+            while (RangeTargetScanner.GetTargets(newPosition, enemiesAlive.Items.ToArray(), 1f).Length > 0
             ) newPosition = newPosition + new Vector3(0, 0, -1f);
 
             return newPosition;
+        }
+        
+        public IEnumerator SpawnWave(Vector3 spawnPosition)
+        {
+            //spawn
+            yield return null;
         }
     }
 }

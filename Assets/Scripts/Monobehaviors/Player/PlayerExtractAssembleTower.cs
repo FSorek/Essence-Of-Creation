@@ -36,10 +36,10 @@ namespace Monobehaviors.Player
 
             if (ExtractedEssences.Count >= 2)
             {
-                var inA = ExtractedEssences.Pop().GetComponent<Obelisk>();
-                var inB = ExtractedEssences.Peek().GetComponent<Obelisk>();
+                var inA = ExtractedEssences.Pop().GetComponent<ForgedEssence>();
+                var inB = ExtractedEssences.Peek().GetComponent<ForgedEssence>();
 
-                Obelisk result = null;
+                ForgedEssence result = null;
                 if (inB.InfusedElements.Count == 1)
                     result = RecipeManager.Instance.GetTowerFromPath(inA.InfusedElements, inB.InfusedElements[0]);
                 else if (inB.InfusedElements.Count > 1 && inA.InfusedElements.Count == 1)

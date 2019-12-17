@@ -1,29 +1,21 @@
 ﻿using System.Collections.Generic;
-using Data.Game;
-using Data.Interfaces.Game.Waves;
 using Data.Unit;
-using Monobehaviors.Unit;
 using UnityEngine;    
 
 namespace DataBehaviors.Game.Waves
 {
-    public class WaveManagerController : IWaveManager
+    public class WaveManagerController
     {
-        private readonly IWaveGenerator generator;
-        private readonly List<Transform> unitsAlive;
+        private readonly TransformList enemyList;
         private Stack<Transform> reachpoints;
         private readonly List<UnitData> waves;
 
-        public WaveManagerController(int seed, WaveSettings settings)
+        public WaveManagerController(int seed, Data.Game.GameSettings settings, TransformList enemyList)
         {
-            generator = new WaveGenerator(seed);
+            //generator = new WaveGenerator(seed);
             waves = new List<UnitData>();
-            unitsAlive = new List<Transform>();
-            for (int i = 0; i < settings.WaveCount; i++) waves.Add(generator.Generate(settings.WavesPowerPoints[i]));
-            WaveSettings = settings;
-
-            UnitComponent.OnUnitDeath += u => unitsAlive.Remove(u.transform);
-            UnitComponent.OnUnitSpawn += u => unitsAlive.Add(u.transform);
+            //for (int i = 0; i < settings.WaveCount; i++) waves.Add(generator.Generate(settings.WavesPowerPoints[i]));
+            GameSettings = settings;
         }
 
         public void SetReachpoints(Transform reachpointsParent)
@@ -37,19 +29,18 @@ namespace DataBehaviors.Game.Waves
         public void NextWave() // later make it generate a new wave for infinite levels
         {
             CurrentWave++;
-            if (CurrentWave >= WaveSettings.WaveCount - 1)
+            if (CurrentWave >= GameSettings.WaveCount - 1)
             {
-                int generatedPP = WaveSettings.WavesPowerPoints[WaveSettings.WaveCount - 1] +
-                                  10 * (CurrentWave - WaveSettings.WaveCount);
-                waves.Add(generator.Generate(generatedPP));
+                int generatedPP = GameSettings.WavesPowerPoints[GameSettings.WaveCount - 1] +
+                                  10 * (CurrentWave - GameSettings.WaveCount);
+                //waves.Add(generator.Generate(generatedPP));
             }
         }
 
         public int CurrentWave { get; private set; }
 
         public Transform[] Reachpoints => reachpoints.ToArray();
-        public Transform[] UnitsAlive => unitsAlive.ToArray();
         public UnitData CurrentGeneratedUnit => waves[CurrentWave];
-        public WaveSettings WaveSettings { get; }
+        public Data.Game.GameSettings GameSettings { get; }
     }
 }

@@ -16,19 +16,26 @@ namespace Monobehaviors.Player
         [SerializeField] private PlayerInput input;
         [SerializeField] private PlayerBuildData buildData;
         [SerializeField] private PlayerStateData stateData;
+        [SerializeField]private UnityEngine.Camera playerCamera;
         
         [SerializeField] private float heightAboveSurface = 2f;
         [SerializeField] private bool isCursorVisible;
         [SerializeField] private float updateSpeed;
         [SerializeField] private float heightAdjustmentScroll;
 
+        [SerializeField] private float cameraViewMargin;
+        [SerializeField] private float handSpeed = 5f;
+
         private float heightAdjustment;
         private int pressCounter;
+        private Vector3 screenPosition;
+        private Transform handTransform;
 
         private void Awake()
         {
             input.OnIncreasePressed += PlayerInputOnIncreasePressed;
             input.OnDecreasePressed += PlayerInputOnDecreasePressed;
+            handTransform = transform;
         }
 
         private void PlayerInputOnDecreasePressed()
@@ -72,12 +79,31 @@ namespace Monobehaviors.Player
 
         private void FixedUpdate()
         {
-            var hit = MouseWorldPoint.RaycastHit;
-            if (hit.HasValue)
+            var transformPosition = handTransform.position;
+            screenPosition = playerCamera.WorldToViewportPoint(transformPosition);
+            
+            if((screenPosition.x < 1 - cameraViewMargin && input.Horizontal > 0) || (screenPosition.x > 0 + cameraViewMargin && input.Horizontal < 0))
+                MoveHand(Vector3.right * input.Horizontal);
+            if((screenPosition.y < 1 - cameraViewMargin && input.Vertical > 0) || (screenPosition.y > 0 + cameraViewMargin && input.Vertical < 0))
+                MoveHand(Vector3.forward * input.Vertical);
+
+            if ((screenPosition.x > 1 - cameraViewMargin && input.Vertical < 0))
             {
-                transform.position = hit.Value.point + new Vector3(0, heightAboveSurface + heightAdjustment, -heightAboveSurface-heightAdjustment);
-                Cursor.visible = isCursorVisible;
+                MoveHand(Vector3.right * input.Vertical);
             }
+            if (screenPosition.x < 0 + cameraViewMargin && input.Vertical < 0)
+            {
+                MoveHand(Vector3.left * input.Vertical);
+            }
+
+            transformPosition = handTransform.position;
+            transformPosition = new Vector3(transformPosition.x, heightAboveSurface + heightAdjustment, transformPosition.z);
+            handTransform.position = transformPosition;
+        }
+
+        private void MoveHand(Vector3 direction)
+        {
+            handTransform.Translate(handSpeed * Time.deltaTime * direction);
         }
     }
 }

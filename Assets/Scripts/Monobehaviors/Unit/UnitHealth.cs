@@ -1,33 +1,34 @@
-﻿using Data.Data_Types;
+﻿using System;
+using Data.Data_Types;
 using DataBehaviors.Game.Systems;
 using UnityEngine;
 
 namespace Monobehaviors.Unit
 {
-    [RequireComponent(typeof(UnitComponent))]
+    [RequireComponent(typeof(StatController))]
     public class UnitHealth : MonoBehaviour
     {
-        public float CurrentHealth => currentHealth;
+        public event Action<Damage> OnTakeDamage = delegate {  };
 
-        private ArmorType armorType;
-        [SerializeField] private float maxHealth;
-        private UnitComponent unit;
-        private float currentHealth;
+        [SerializeField]private ArmorType armorType;
+        private Stat currentHealth;
+        private Stat maxHealth;
+        private StatController statController;
+        public Stat CurrentHealth => currentHealth;
+        public Stat MaxHealth => maxHealth;
         private void Awake()
         {
-            unit = GetComponent<UnitComponent>();
-            unit.OnTakeDamage += UnitOnTakeDamage;
-            unit.RegisterStat(StatName.MaxHealth, maxHealth);
-            currentHealth = unit.GetStat(StatName.MaxHealth);
+            statController = GetComponent<StatController>();
+            maxHealth = statController.GetStat(StatName.HealthPool);
+            if(maxHealth == null)
+                return;
+            currentHealth = new Stat(maxHealth);
         }
-        private void UnitOnTakeDamage(Damage damage)
+
+        public void TakeDamage(Damage damage)
         {
             currentHealth -= damage.GetDamageToArmor(armorType);
-
-            if (currentHealth <= 0)
-            {
-                gameObject.SetActive(false);
-            }
+            OnTakeDamage(damage);
         }
     }
 }

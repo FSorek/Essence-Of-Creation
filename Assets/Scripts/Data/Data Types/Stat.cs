@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Data.Data_Types
@@ -8,8 +9,8 @@ namespace Data.Data_Types
     public class Stat
     {
         private readonly List<StatModifier> statModifiers;
-        [SerializeField] private float _baseValue;
-        private float _value;
+        [SerializeField] private float baseValue;
+        private float value;
         private bool isDirty = true;
         private float lastBaseValue = float.MinValue;
 
@@ -22,16 +23,14 @@ namespace Data.Data_Types
         {
             statModifiers = new List<StatModifier>();
         }
-
-        public StatModifier[] AppliedModifiers => statModifiers.ToArray();
-
+        
         /// <summary>
         ///     The original value of the stat - without modifiers.
         /// </summary>
         public float BaseValue
         {
-            get => _baseValue;
-            set => _baseValue = value;
+            get => baseValue;
+            set => baseValue = value;
         }
 
         /// <summary>
@@ -44,13 +43,12 @@ namespace Data.Data_Types
                 if (isDirty || lastBaseValue != BaseValue)
                 {
                     lastBaseValue = BaseValue;
-                    _value = CalculateFinalValue();
+                    value = CalculateFinalValue();
                     isDirty = false;
                 }
 
-                return _value;
+                return value;
             }
-            set => throw new NotImplementedException();
         }
 
         public static Stat operator +(Stat stat, StatModifier modifier)

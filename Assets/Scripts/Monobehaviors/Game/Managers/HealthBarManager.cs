@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Data.Extensions;
 using Monobehaviors.Pooling;
 using Monobehaviors.Unit;
@@ -10,29 +11,30 @@ namespace Monobehaviors.Game.Managers
 {
     public class HealthBarManager : MonoBehaviour
     {
-        private readonly Dictionary<UnitComponent, HealthBar> healthBars = new Dictionary<UnitComponent, HealthBar>();
-        [SerializeField] private ObjectPool Pool;
+        private readonly Dictionary<Transform, HealthBar> healthBars = new Dictionary<Transform, HealthBar>();
+        [SerializeField] private TransformList enemiesAlive;
+        [SerializeField] private ObjectPool HealthbarPool;
 
         private void Awake()
         {
-            UnitComponent.OnUnitSpawn += AddHealthBar;
-            UnitComponent.OnUnitDeath += RemoveHealthBar;
+            enemiesAlive.OnItemAdded += AddHealthBar;
+            enemiesAlive.OnItemRemoved += RemoveHealthBar;
         }
 
-        private void RemoveHealthBar(UnitComponent obj)
+        private void RemoveHealthBar(Transform obj)
         {
             if (!healthBars.ContainsKey(obj) || healthBars[obj] == null) return;
             healthBars[obj].gameObject.ReturnToPool();
             healthBars.Remove(obj);
         }
 
-        private void AddHealthBar(UnitComponent obj)
+        private void AddHealthBar(Transform obj)
         {
             if (!healthBars.ContainsKey(obj))
             {
-                var hpBar = Pool.Get().GetComponent<HealthBar>();
+                var hpBar = HealthbarPool.Get().GetComponent<HealthBar>();
                 healthBars.Add(obj, hpBar);
-                hpBar.SetHealth(obj);
+                hpBar.SetHealth(obj.GetComponent<UnitHealth>());
                 hpBar.gameObject.SetActive(obj.gameObject.activeSelf);
             }
         }

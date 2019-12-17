@@ -9,12 +9,13 @@ namespace Data.Tower
     [CreateAssetMenu(fileName = "Area Target", menuName = "Essence/TowerAttack/Area")]
     public class AreaTowerAttack : TowerAttack
     {
+        [SerializeField] private TransformList enemiesAlive;
         public float ExplosionRadius = 5f;
         public AnimationCurve DamageDistributionPercentage;
- 
+        
         public override void AttackTarget(Transform target, Damage damage)
         {
-            var targetsHit = RangeTargetScanner.GetTargets(target.transform.position, WaveManager.Instance.UnitsAlive,
+            var targetsHit = RangeTargetScanner.GetTargets(target.transform.position, enemiesAlive.Items.ToArray(),
                 ExplosionRadius);
             foreach (var aoeTarget in targetsHit)
             {

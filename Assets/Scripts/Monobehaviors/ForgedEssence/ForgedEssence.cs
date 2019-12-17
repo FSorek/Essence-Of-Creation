@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace Monobehaviors.Tower
 {
-    public class Obelisk : MonoBehaviour
+    public class ForgedEssence : MonoBehaviour
     {
-        public static List<Obelisk> ObeliskEntities = new List<Obelisk>();
+        public static List<ForgedEssence> ObeliskEntities = new List<ForgedEssence>();
         public List<BaseElement> InfusedElements = new List<BaseElement>();
         public Vector3 AttackSpawnPosition => transform.position;
 

@@ -1,20 +1,14 @@
-﻿using System;
-using Data.Data_Types;
-using Data.Interfaces.Game.Waves;
+﻿using Data.Data_Types;
 using Data.Unit;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace DataBehaviors.Game.Waves
 {
-    internal class WaveGenerator : IWaveGenerator
+    public class WaveGenerator 
     {
-        private Func<Stat>[] rollFunctions;
-        private int seed;
-
         public WaveGenerator(int seed)
         {
-            this.seed = seed;
             Random.InitState(seed);
         }
 
@@ -22,7 +16,7 @@ namespace DataBehaviors.Game.Waves
         {
             var uData = LoadBaseStats();
             var pointDistribution = new int[6];
-            uData.Type = RollArmorType();
+            //uData.Type = RollArmorType();
             for (int i = powerPoints; i > 0; i--) pointDistribution[Random.Range(0, pointDistribution.Length)]++;
 
             uData.Health += RollHealth(pointDistribution[0]);
@@ -50,20 +44,6 @@ namespace DataBehaviors.Game.Waves
             return Mathf.RoundToInt(v * .1f);
         }
 
-        private ArmorType RollArmorType()
-        {
-            float roll = Random.Range(0f, 100f);
-            if (roll <= 22.5f)
-                return ArmorType.Armoured;
-            if (roll > 22.5 && roll <= 45f)
-                return ArmorType.Carapace;
-            if (roll > 45f && roll <= 67.5f)
-                return ArmorType.Ethereal;
-            if (roll > 67.5f && roll <= 90)
-                return ArmorType.Flesh;
-            return ArmorType.Elemental;
-        }
-
         private int RollArmorLayers(int v) // wasting some PP rolling
         {
             return Mathf.FloorToInt(v / 2f);
@@ -86,7 +66,7 @@ namespace DataBehaviors.Game.Waves
             uData.Health = 20;
             uData.MoveSpeed = 4f;
             uData.HealthRegen = 0;
-            uData.Type = ArmorType.None;
+            //uData.Type = ArmorType.None;
             uData.ArmorLayers = 0;
             uData.CrystallineLayers = 0;
             //uData.Abilities = null;

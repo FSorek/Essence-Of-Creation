@@ -22,7 +22,7 @@ namespace Monobehaviors.Player
             if (extractionSystem.ExtractedEssences.Count <= 0)
                 return;
 
-            var extractedTower = extractionSystem.ExtractedEssences.Peek().GetComponent<Obelisk>();
+            var extractedTower = extractionSystem.ExtractedEssences.Peek().GetComponent<ForgedEssence>();
 
             // create a new type 'PlayerAttack' based on the obelisk stats
 

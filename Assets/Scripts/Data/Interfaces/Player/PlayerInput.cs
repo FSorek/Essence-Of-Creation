@@ -1,5 +1,6 @@
 ﻿using System;
 using Data.Data_Types;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Data.Interfaces.Player
@@ -15,6 +16,12 @@ namespace Data.Interfaces.Player
         public KeyCode PrimaryKey;
         public KeyCode SecondaryKey;
         public KeyCode UtilityKey;
+
+        [ShowInInspector] private string VerticalAxis;
+        [ShowInInspector] private string HorizontalAxis;
+
+        public float Vertical => Input.GetAxis(VerticalAxis);
+        public float Horizontal => Input.GetAxis(HorizontalAxis);
 
         public event Action OnFirePressed = delegate {  };
         public event Action OnAirPressed = delegate {  };

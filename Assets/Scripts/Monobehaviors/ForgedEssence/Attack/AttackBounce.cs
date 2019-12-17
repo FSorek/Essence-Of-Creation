@@ -4,10 +4,11 @@ using UnityEngine;
 
 namespace Monobehaviors.Tower.Attack
 {
+    [CreateAssetMenu(fileName = "Attack Bounce", menuName = "Essence/TowerAttack/Attack Bounce")]
+
     public class AttackBounce : AttackProjectileModifier
     {
         [SerializeField] private TransformList enemiesList;
-        public AttackComponent attack;
         public int Bounces;
         [Range(0,1f)]
         public float DamageReductionPerBounce;

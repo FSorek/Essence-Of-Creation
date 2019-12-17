@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Data.Data_Types;
 using DataBehaviors.Game.Utility;
 using UnityEngine;
@@ -8,29 +9,31 @@ namespace Monobehaviors.Unit.HealthBar
 {
     internal class HealthBar : MonoBehaviour
     {
-        private UnitComponent attachedUnit;
-        private UnitHealth attachedHealth;
         [SerializeField] private Image foregroundImg;
-        private UnityEngine.Camera mainCamera;
         [SerializeField] private float positionOffset;
         [SerializeField] private float updateSpeed = 0.5f;
+        private UnityEngine.Camera mainCamera;
+        private UnitHealth attachedHealth;
 
-        internal void SetHealth(UnitComponent entity)
+        private void Awake()
         {
-            if (attachedUnit != null)
-                attachedUnit.OnTakeDamage -= HandleHealthChanged;
-            attachedUnit = entity;
-            attachedHealth = attachedUnit.GetComponent<UnitHealth>();
-            foregroundImg.fillAmount = 1f;
             mainCamera = UnityEngine.Camera.main;
-            attachedUnit.OnTakeDamage += HandleHealthChanged;
+        }
+
+        internal void SetHealth(UnitHealth entity)
+        {
+            attachedHealth = entity;
+            if (attachedHealth != null)
+                attachedHealth.OnTakeDamage -= HandleHealthChanged;
+            foregroundImg.fillAmount = 1f;
+            attachedHealth.OnTakeDamage += HandleHealthChanged;
         }
 
         private void HandleHealthChanged(Damage damage)
         {
             // later on add different visuals depending on the dominating type of damage
             if(!gameObject.activeSelf) return;
-            float pct = attachedHealth.CurrentHealth / (float) attachedUnit.GetStat(StatName.MaxHealth);
+            float pct = attachedHealth.CurrentHealth / (float) attachedHealth.MaxHealth;
             StopAllCoroutines();
             StartCoroutine(ResizeToPercentage(pct));
         }
@@ -52,8 +55,8 @@ namespace Monobehaviors.Unit.HealthBar
 
         private void LateUpdate()
         {
-            if (attachedUnit != null)
-                transform.position = mainCamera.WorldToScreenPoint(attachedUnit.transform.position + Vector3.up * positionOffset);
+            if (attachedHealth != null)
+                transform.position = mainCamera.WorldToScreenPoint(attachedHealth.transform.position + Vector3.up * positionOffset);
         }
     }
 }

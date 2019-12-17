@@ -8,6 +8,7 @@ namespace Monobehaviors.Unit
     [RequireComponent(typeof(UnitComponent))]
     public class UnitMove : MonoBehaviour
     {
+        [SerializeField] private TransformList reachPoints;
         [SerializeField] private float baseMovementSpeed;
         
         private SimpleMove move;
@@ -41,13 +42,13 @@ namespace Monobehaviors.Unit
         {
             if (movePosition == Vector3.zero)
             {
-                movePosition = WaveManager.Instance.Reachpoints[reachpoint].position;
+                movePosition = reachPoints.Items[reachpoint].position;
             }
 
             if (Vector3.Distance(transform.position, movePosition) <= 1f)
             {
-                reachpoint = reachpoint >= WaveManager.Instance.Reachpoints.Length - 1 ? 0 : reachpoint + 1;
-                movePosition = WaveManager.Instance.Reachpoints[reachpoint].position;
+                reachpoint = reachpoint >= reachPoints.Items.Count - 1 ? 0 : reachpoint + 1;
+                movePosition = reachPoints.Items[reachpoint].position;
             }
             move.Move(movePosition, unit.GetStat(StatName.MovementSpeed));
         }

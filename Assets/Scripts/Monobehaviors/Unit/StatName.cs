@@ -2,7 +2,9 @@
 {
     public enum StatName
     {
+        HealthPool,
         MovementSpeed,
-        MaxHealth,
+        ArmorToughness,
+        Crystallization,
     }
 }
