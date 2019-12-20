@@ -13,14 +13,12 @@ namespace DataBehaviors.Player.States
     {
         private readonly PlayerInput input;
         private readonly PlayerBuildData buildData;
-        private readonly PlayerStateData stateData;
         private float timeStarted;
 
         public ForgingPlayerState(PlayerInput input, PlayerBuildData buildData, PlayerStateData stateData) : base(stateData)
         {
             this.input = input;
             this.buildData = buildData;
-            this.stateData = stateData;
         }
 
         private void PlayerInputOnPrimaryKeyReleased()

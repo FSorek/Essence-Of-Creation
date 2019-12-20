@@ -1,30 +1,27 @@
 ﻿using System;
+using Data.Data_Types;
 using Monobehaviors.Game.Managers;
 using Monobehaviors.Projectiles;
 using UnityEngine;
 
 namespace Monobehaviors.Unit
 {
-    [RequireComponent(typeof(UnitComponent))]
+    [RequireComponent(typeof(StatController))]
     public class UnitMove : MonoBehaviour
     {
         [SerializeField] private TransformList reachPoints;
-        [SerializeField] private float baseMovementSpeed;
         
-        private SimpleMove move;
+        private IMover move;
         private int reachpoint;
         private Vector3 movePosition;
-        private UnitComponent unit;
+        private float moveSpeed;
+        private StatController stats;
         
         private void Awake()
         {
-            move = new SimpleMove(transform);
-            unit = GetComponent<UnitComponent>();
-        }
-        
-        private void Start()
-        {
-            unit.RegisterStat(StatName.MovementSpeed, baseMovementSpeed);
+            move = new NavMeshMove(transform);
+            stats = GetComponent<StatController>();
+            InvokeRepeating(nameof(UpdateMoveSpeed), 0f, 0.1f);
         }
 
         private void OnEnable()
@@ -36,6 +33,14 @@ namespace Monobehaviors.Unit
         private void Update()
         {
             Run();
+        }
+
+        public void UpdateMoveSpeed()
+        {
+            var currentSpeed = stats.GetStat(StatName.MovementSpeed);
+            if(currentSpeed != null && moveSpeed == currentSpeed) return;
+
+            moveSpeed = currentSpeed;
         }
 
         private void Run()
@@ -50,7 +55,7 @@ namespace Monobehaviors.Unit
                 reachpoint = reachpoint >= reachPoints.Items.Count - 1 ? 0 : reachpoint + 1;
                 movePosition = reachPoints.Items[reachpoint].position;
             }
-            move.Move(movePosition, unit.GetStat(StatName.MovementSpeed));
+            move.Move(movePosition, moveSpeed);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Data.Player
     {
         public GameObject CurrentEssence { get; set; }
         public AttractionSpot TargetAttraction { get; set; }
-        public Transform ConstructorObject;
+        public Transform ConstructorObject { get; private set; }
         
         public GameObject AirEssencePrefab;
         public GameObject EarthEssencePrefab;

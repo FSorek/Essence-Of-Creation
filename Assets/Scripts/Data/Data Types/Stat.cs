@@ -1,29 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using Sirenix.OdinInspector;
+﻿using System.Collections.Generic;
+using Sirenix.Serialization;
 using UnityEngine;
+
+// ReSharper disable CompareOfFloatsByEqualityOperator
+#pragma warning disable 660,661
+// Stat should never be used as a key in dictionary or in hashtable
 
 namespace Data.Data_Types
 {
-    [Serializable]
     public class Stat
     {
+        [OdinSerialize] private float testValue;
+        private float baseValue;
+        
         private readonly List<StatModifier> statModifiers;
-        [SerializeField] private float baseValue;
+        
         private float value;
         private bool isDirty = true;
         private float lastBaseValue = float.MinValue;
 
-        public Stat(float baseValue) : this()
-        {
-            BaseValue = baseValue;
-        }
-
-        public Stat()
-        {
-            statModifiers = new List<StatModifier>();
-        }
-        
         /// <summary>
         ///     The original value of the stat - without modifiers.
         /// </summary>
@@ -50,6 +45,17 @@ namespace Data.Data_Types
                 return value;
             }
         }
+
+        public Stat(float baseValue) : this()
+        {
+            BaseValue = baseValue;
+        }
+
+        public Stat()
+        {
+            statModifiers = new List<StatModifier>();
+        }
+        
 
         public static Stat operator +(Stat stat, StatModifier modifier)
         {

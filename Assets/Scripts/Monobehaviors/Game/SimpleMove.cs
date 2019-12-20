@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Monobehaviors.Projectiles
 {
-    public class SimpleMove
+    public class SimpleMove : IMover
     {
         private Transform owner;
         public SimpleMove(Transform owner)

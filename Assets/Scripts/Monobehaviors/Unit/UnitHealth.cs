@@ -19,7 +19,7 @@ namespace Monobehaviors.Unit
         private void Awake()
         {
             statController = GetComponent<StatController>();
-            maxHealth = statController.GetStat(StatName.HealthPool);
+            //maxHealth = statController.GetStat(StatName.HealthPool);
             if(maxHealth == null)
                 return;
             currentHealth = new Stat(maxHealth);
