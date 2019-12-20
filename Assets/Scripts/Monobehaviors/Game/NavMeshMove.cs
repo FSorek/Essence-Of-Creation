@@ -16,6 +16,7 @@ namespace Monobehaviors.Projectiles
         }
         public void Move(Vector3 position, float speed)
         {
+            agent.speed = speed;
             if(agent== null || lastTargetPosition == position) return;
 
             agent.SetDestination(position);
