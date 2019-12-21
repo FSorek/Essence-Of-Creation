@@ -8,14 +8,14 @@ namespace Data.Interfaces.Player
     [CreateAssetMenu(fileName = "Player Input", menuName = "Essence/Player/Input")]
     public class PlayerInput : ScriptableObject
     {
-        public KeyCode FireKey;
-        public KeyCode AirKey;
-        public KeyCode WaterKey;
-        public KeyCode EarthKey;
-        public KeyCode PlaceObeliskKey;
-        public KeyCode PrimaryKey;
-        public KeyCode SecondaryKey;
-        public KeyCode UtilityKey;
+        [SerializeField] private KeyCode FireKey;
+        [SerializeField] private KeyCode AirKey;
+        [SerializeField] private KeyCode WaterKey;
+        [SerializeField] private KeyCode EarthKey;
+        [SerializeField] private KeyCode PlaceObeliskKey;
+        [SerializeField] private KeyCode PrimaryKey;
+        [SerializeField] private KeyCode SecondaryKey;
+        [SerializeField] private KeyCode UtilityKey;
 
         [ShowInInspector] private string VerticalAxis;
         [ShowInInspector] private string HorizontalAxis;

@@ -4,21 +4,24 @@ using Data.Interfaces.Player;
 using Data.Player;
 using DataBehaviors.Game.Entity.Targeting;
 using Monobehaviors.BuildSpot;
+using Monobehaviors.Game.Managers;
 using Monobehaviors.Player;
 using UnityEngine;
 
 namespace DataBehaviors.Player.States
 {
-    public class AwaitBuildPlayerState : PlayerState
+    public class AwaitBuildPlayerState : IState
     {
+        private readonly PlayerStateData stateData;
         private readonly PlayerInput input;
         private readonly PlayerBuildData buildData;
         private Vector3 latestBuildSpotDirection;
         private AttractionSpot spotOnFocus;
-        public AwaitBuildPlayerState(PlayerInput input, PlayerBuildData buildData, PlayerStateData stateData) : base(stateData)
+        public AwaitBuildPlayerState(PlayerInput input, PlayerBuildData buildData, PlayerStateData stateData)
         {
             this.input = input;
             this.buildData = buildData;
+            this.stateData = stateData;
         }
 
         private void PlayerInputOnPlaceObeliskPressed()
@@ -26,18 +29,18 @@ namespace DataBehaviors.Player.States
             stateData.ChangeState(PlayerStates.PLACE_OBELISK);
         }
 
-        public override void ListenToState()
+        public void ListenToState()
         {
             
         }
 
-        public override void OnStateExit()
+        public void StateExit()
         {
             input.OnPrimaryKeyPressed -= PlayerInputOnPrimaryKeyPressed;
             input.OnStartPlacingObeliskPressed -= PlayerInputOnPlaceObeliskPressed;
         }
 
-        public override void OnStateEnter()
+        public void StateEnter()
         {
             input.OnFirePressed += PlayerInputOnFirePressed;
             input.OnAirPressed += PlayerInputOnAirPressed;

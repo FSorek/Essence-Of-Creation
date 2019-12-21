@@ -1,5 +1,8 @@
-﻿using Data.Game;
+﻿using Data.Data_Types;
+using Data.Game;
 using DataBehaviors.Game.Waves;
+using DataBehaviors.Player;
+using DataBehaviors.Player.States;
 using Monobehaviors.Pooling;
 using UnityEngine;
 
@@ -39,6 +42,6 @@ namespace Monobehaviors.Game.Managers
             //    StartCoroutine(spawner.SpawnWave(spawnPoint.position));
             //    timer = gameSettings.TimeBetweenWaves;
             //}
-        }
+        }  
     }
 }

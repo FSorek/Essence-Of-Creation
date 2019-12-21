@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+namespace Monobehaviors.Game.Managers
+{
+    public class StateMachine<T>
+    {
+        private Dictionary<T, IState> availablePlayerStates = new Dictionary<T, IState>();
+        private StateData<T> data;
+        private IState currentState;
+
+        public StateMachine(StateData<T> stateData)
+        {
+            data = stateData;
+            data.OnStateEntered += DataOnStateEntered;
+            data.OnStateExit += DataOnStateExit;
+            currentState = availablePlayerStates[data.CurrentState];
+        }
+        public void Tick()
+        {
+            currentState?.ListenToState();
+        }
+
+
+        public void RegisterState(T key, IState state)
+        {
+            availablePlayerStates.Add(key, state);
+        }
+
+        private void DataOnStateEntered(T key)
+        {
+            if (!ValidateState(key)) return;
+            currentState = availablePlayerStates[key];
+            currentState.StateEnter();
+        }
+
+        private void DataOnStateExit(T key)
+        {
+            if (!ValidateState(key)) return;
+            currentState.StateExit();
+        }
+        
+        private bool ValidateState(T key)
+        {
+            bool condition = (availablePlayerStates.ContainsKey(key) ||
+                              currentState == availablePlayerStates[key]);
+            return condition;
+        }
+    }
+}

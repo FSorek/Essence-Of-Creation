@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Data.Game
 {
@@ -10,5 +11,16 @@ namespace Data.Game
         public int[] WavesPowerPoints;
         public float TimeToFirstWave;
         public float TimeBetweenWaves;
+        public GameStates CurrentState;
+        public event Action<GameStates> OnStateEntered = delegate {  };
+        public event Action<GameStates> OnStateExit = delegate {  };
+
+
+        public void ChangeState(GameStates state)
+        {
+            OnStateExit(CurrentState);
+            CurrentState = state;
+            OnStateEntered(CurrentState);
+        }
     }
 }

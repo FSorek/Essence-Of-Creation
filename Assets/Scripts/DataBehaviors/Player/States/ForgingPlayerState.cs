@@ -4,21 +4,24 @@ using Data.Interfaces.Player;
 using Data.Player;
 using DataBehaviors.Game.Entity.Targeting;
 using Monobehaviors.BuildSpot;
+using Monobehaviors.Game.Managers;
 using Monobehaviors.Player;
 using UnityEngine;
 
 namespace DataBehaviors.Player.States
 {
-    public class ForgingPlayerState : PlayerState
+    public class ForgingPlayerState : IState
     {
+        private readonly PlayerStateData stateData;
         private readonly PlayerInput input;
         private readonly PlayerBuildData buildData;
         private float timeStarted;
 
-        public ForgingPlayerState(PlayerInput input, PlayerBuildData buildData, PlayerStateData stateData) : base(stateData)
+        public ForgingPlayerState(PlayerInput input, PlayerBuildData buildData, PlayerStateData stateData)
         {
             this.input = input;
             this.buildData = buildData;
+            this.stateData = stateData;
         }
 
         private void PlayerInputOnPrimaryKeyReleased()
@@ -26,7 +29,7 @@ namespace DataBehaviors.Player.States
             stateData.ChangeState(PlayerStates.AWAIT_BUILD);
         }
 
-        public override void ListenToState()
+        public void ListenToState()
         {
             if(Time.time - timeStarted > buildData.BuildTime)
             {
@@ -35,12 +38,12 @@ namespace DataBehaviors.Player.States
             }
         }
 
-        public override void OnStateExit()
+        public void StateExit()
         {
             input.OnPrimaryKeyReleased -= PlayerInputOnPrimaryKeyReleased;
         }
 
-        public override void OnStateEnter()
+        public void StateEnter()
         {
             input.OnPrimaryKeyReleased += PlayerInputOnPrimaryKeyReleased;
             timeStarted = Time.time;

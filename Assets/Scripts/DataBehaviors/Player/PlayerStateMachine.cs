@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Data.Data_Types;
+using Data.Game;
 using Data.Interfaces.Player;
 using Data.Player;
 using DataBehaviors.Player.States;
+using Monobehaviors.Game.Managers;
 using Monobehaviors.Player;
 using UnityEngine;
 
@@ -15,39 +17,26 @@ namespace DataBehaviors.Player
         [SerializeField] private PlayerStateData stateData;
         [SerializeField] private PlayerBuildData buildData;
         
-        private Dictionary<PlayerStates, PlayerState> availablePlayerStates;
-        private PlayerState currentPlayerState;
+        private StateMachine<PlayerStates> stateMachine;
         public void Awake()
         {
-            availablePlayerStates = new Dictionary<PlayerStates, PlayerState>
-            {
-                {PlayerStates.AWAIT_BUILD, new AwaitBuildPlayerState(playerInput, buildData, stateData)},
-                {PlayerStates.FORGING, new ForgingPlayerState(playerInput, buildData, stateData)},
-                {PlayerStates.PLACE_OBELISK, new PlaceObeliskPlayerState(buildData, playerInput, stateData)},
-            };
+            stateMachine = new StateMachine<PlayerStates>(stateData);
+
+            var awaitBuild = new AwaitBuildPlayerState(playerInput, buildData, stateData);
+            var forging = new ForgingPlayerState(playerInput, buildData, stateData);
+            var placeObelisk = new PlaceObeliskPlayerState(buildData, playerInput, stateData);
+
+            stateMachine.RegisterState(PlayerStates.AWAIT_BUILD, awaitBuild);
+            stateMachine.RegisterState(PlayerStates.FORGING, forging);
+            stateMachine.RegisterState(PlayerStates.PLACE_OBELISK, placeObelisk);
+
             
-            stateData.OnStateEntered += StateDataOnStateEntered;
-            stateData.OnStateExit += StateDataOnStateExit;
-            stateData.ChangeState(availablePlayerStates.First().Key);
-        }
-
-        private void StateDataOnStateExit(PlayerStates state)
-        {
-            currentPlayerState?.OnStateExit();
-        }
-
-        private void StateDataOnStateEntered(PlayerStates state)
-        {
-            currentPlayerState = availablePlayerStates[state];
-            currentPlayerState.OnStateEnter();
+            stateData.ChangeState(PlayerStates.AWAIT_BUILD);
         }
 
         private void Update()
         {
-            if (currentPlayerState == null)
-                currentPlayerState = availablePlayerStates[stateData.CurrentState];
-            currentPlayerState.ListenToState();
+            stateMachine.Tick();
         }
-
     }
 }

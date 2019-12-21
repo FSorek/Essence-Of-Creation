@@ -14,18 +14,20 @@ namespace DataBehaviors.Player.States
 {
     /// to-do:
     /// Pooling 
-    public class PlaceObeliskPlayerState : PlayerState
+    public class PlaceObeliskPlayerState : IState
     {
+        private readonly PlayerStateData stateData;
         private readonly PlayerBuildData buildData;
         private readonly PlayerInput input;
         private readonly List<GameObject> buildBlocks;
         private Vector3 placePointBuildDirection;
         private Transform parent;
 
-        public PlaceObeliskPlayerState(PlayerBuildData buildData, PlayerInput input, PlayerStateData stateData) : base(stateData)
+        public PlaceObeliskPlayerState(PlayerBuildData buildData, PlayerInput input, PlayerStateData stateData)
         {
             this.buildData = buildData;
             this.input = input;
+            this.stateData = stateData;
             buildBlocks = new List<GameObject>();
         }
 
@@ -60,7 +62,7 @@ namespace DataBehaviors.Player.States
             }
         }
 
-        public override void ListenToState()
+        public void ListenToState()
         {
             var position = buildData.ConstructorObject.position;
             float lastDistance = float.MaxValue;
@@ -88,7 +90,7 @@ namespace DataBehaviors.Player.States
 
         }
 
-        public override void OnStateExit()
+        public void StateExit()
         {
             input.OnIncreasePressed -= PlayerInputOnIncreasePressed;
             input.OnDecreasePressed -= PlayerInputOnDecreasePressed;
@@ -102,7 +104,7 @@ namespace DataBehaviors.Player.States
             }
         }
 
-        public override void OnStateEnter()
+        public void StateEnter()
         {
             input.OnIncreasePressed += PlayerInputOnIncreasePressed;
             input.OnDecreasePressed += PlayerInputOnDecreasePressed;
