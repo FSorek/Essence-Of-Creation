@@ -16,11 +16,12 @@ namespace Monobehaviors.Game.Managers
             data = stateData;
             data.OnStateEntered += DataOnStateEntered;
             data.OnStateExit += DataOnStateExit;
-            currentState = availablePlayerStates[data.CurrentState];
         }
         public void Tick()
         {
-            currentState?.ListenToState();
+            if(currentState == null)
+                currentState = availablePlayerStates[data.CurrentState];
+            currentState.ListenToState();
         }
 
 
@@ -38,8 +39,8 @@ namespace Monobehaviors.Game.Managers
 
         private void DataOnStateExit(T key)
         {
-            if (!ValidateState(key)) return;
-            currentState.StateExit();
+            if (currentState != null && ValidateState(key))
+                currentState.StateExit();
         }
         
         private bool ValidateState(T key)

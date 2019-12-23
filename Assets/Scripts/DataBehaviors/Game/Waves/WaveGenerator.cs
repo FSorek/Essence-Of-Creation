@@ -1,5 +1,4 @@
-﻿using Data.Data_Types;
-using Data.Unit;
+﻿using Data.Unit;
 using UnityEngine;
 using Random = UnityEngine.Random;
 

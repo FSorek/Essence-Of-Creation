@@ -5,6 +5,7 @@
         HealthPool,
         MovementSpeed,
         ArmorToughness,
-        Crystallization,
+        HealthRegeneration,
+        CrystallineLayers,
     }
 }

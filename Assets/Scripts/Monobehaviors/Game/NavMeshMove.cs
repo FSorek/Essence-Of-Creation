@@ -16,10 +16,13 @@ namespace Monobehaviors.Projectiles
         }
         public void Move(Vector3 position, float speed)
         {
+            Debug.DrawLine(agent.transform.position, position, Color.magenta);
+            Debug.DrawLine(agent.transform.position + Vector3.up, agent.destination, Color.yellow);
             agent.speed = speed;
-            if(agent== null || lastTargetPosition == position) return;
+            if(agent == null || lastTargetPosition == position) return;
 
             agent.SetDestination(position);
+            lastTargetPosition = position;
         }
     }
 }

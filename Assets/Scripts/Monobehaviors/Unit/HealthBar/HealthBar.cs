@@ -22,9 +22,10 @@ namespace Monobehaviors.Unit.HealthBar
 
         internal void SetHealth(UnitHealth entity)
         {
-            attachedHealth = entity;
             if (attachedHealth != null)
                 attachedHealth.OnTakeDamage -= HandleHealthChanged;
+            
+            attachedHealth = entity;
             foregroundImg.fillAmount = 1f;
             attachedHealth.OnTakeDamage += HandleHealthChanged;
         }

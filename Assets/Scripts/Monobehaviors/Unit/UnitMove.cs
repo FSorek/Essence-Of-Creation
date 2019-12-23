@@ -50,7 +50,7 @@ namespace Monobehaviors.Unit
                 movePosition = reachPoints.Items[reachpoint].position;
             }
 
-            if (Vector3.Distance(transform.position, movePosition) <= 1f)
+            if (Vector3.Distance(transform.position, movePosition) <= 15f)
             {
                 reachpoint = reachpoint >= reachPoints.Items.Count - 1 ? 0 : reachpoint + 1;
                 movePosition = reachPoints.Items[reachpoint].position;

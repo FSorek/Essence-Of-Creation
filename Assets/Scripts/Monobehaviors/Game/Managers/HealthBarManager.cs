@@ -32,10 +32,13 @@ namespace Monobehaviors.Game.Managers
         {
             if (!healthBars.ContainsKey(obj))
             {
+                var unitHealth = obj.GetComponent<UnitHealth>();
+                if(unitHealth == null) return;
+                
                 var hpBar = HealthbarPool.Get().GetComponent<HealthBar>();
                 healthBars.Add(obj, hpBar);
                 hpBar.SetHealth(obj.GetComponent<UnitHealth>());
-                hpBar.gameObject.SetActive(obj.gameObject.activeSelf);
+                hpBar.gameObject.SetActive(true);
             }
         }
     }

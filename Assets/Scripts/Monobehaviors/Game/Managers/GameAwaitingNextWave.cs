@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace Monobehaviors.Game.Managers
 {
-    public class GameStarted : IState
+    public class GameAwaitingNextWave : IState
     {
         private readonly GameStateData stateData;
         private readonly GameSettings gameSettings;
-
         private float timeStarted;
-        public GameStarted(GameSettings gameSettings, GameStateData stateData)
+
+        public GameAwaitingNextWave(GameSettings gameSettings, GameStateData stateData)
         {
             this.gameSettings = gameSettings;
             this.stateData = stateData;
@@ -22,7 +22,7 @@ namespace Monobehaviors.Game.Managers
 
         public void ListenToState()
         {
-            if (Time.time - timeStarted > gameSettings.TimeToFirstWave)
+            if (Time.time - timeStarted > gameSettings.TimeBetweenWaves)
             {
                 stateData.ChangeState(GameStates.SpawningWave);
             }
