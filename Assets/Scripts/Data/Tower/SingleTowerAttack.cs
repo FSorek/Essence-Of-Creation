@@ -9,7 +9,10 @@ namespace Data.Tower
     {
         public override void AttackTarget(Transform target, Damage damage)
         {
-            target.GetComponent<UnitComponent>().TakeDamage(damage);
+            var unitHealth = target.GetComponent<UnitHealth>();
+            if(unitHealth == null) return;
+            
+            unitHealth.TakeDamage(damage);
         }
     }
 }

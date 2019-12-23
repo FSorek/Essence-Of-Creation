@@ -1,5 +1,7 @@
 ﻿using System;
 using Data.Data_Types;
+using Data.Extensions;
+using Data.Tower;
 using DataBehaviors.Game.Systems;
 using UnityEngine;
 
@@ -16,9 +18,14 @@ namespace Monobehaviors.Unit
         private StatController statController;
         public Stat CurrentHealth => currentHealth;
         public Stat MaxHealth => maxHealth;
+
         private void Awake()
         {
             statController = GetComponent<StatController>();
+        }
+
+        private void OnEnable()
+        {
             maxHealth = statController.GetStat(StatName.HealthPool);
             if(maxHealth == null)
                 return;
@@ -27,8 +34,19 @@ namespace Monobehaviors.Unit
 
         public void TakeDamage(Damage damage)
         {
-            currentHealth -= damage.GetDamageToArmor(armorType);
+            foreach (var damagePair in damage.Damages)
+            {
+                var finalDamage = damagePair.Value.ModValue;
+                if (damagePair.Key.ArmorMultipliers.ContainsKey(armorType))
+                    finalDamage *= damagePair.Key.ArmorMultipliers[armorType];
+
+                currentHealth -= finalDamage;
+                Debug.Log($"Took {finalDamage} yamag!");
+            }
+            
             OnTakeDamage(damage);
+            if(currentHealth <= 0)
+                gameObject.ReturnToPool();
         }
     }
 }

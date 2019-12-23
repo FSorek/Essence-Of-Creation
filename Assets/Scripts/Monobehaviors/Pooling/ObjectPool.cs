@@ -13,11 +13,14 @@ namespace Monobehaviors.Pooling
         public GameObject prefab;
         public int prespawnAmount;
 
+        private void Awake()
+        {
+            if (poolRoot == null)
+                poolRoot = transform;
+        }
 
         private void OnEnable()
         {
-            if (poolRoot == null)
-                poolRoot = this.transform;
             AddObjects(prespawnAmount);
         }
         
@@ -32,7 +35,7 @@ namespace Monobehaviors.Pooling
         {
             for (int i = 0; i < v; i++)
             {
-                var obj = Instantiate(prefab, poolRoot, true);
+                var obj = Instantiate(prefab, transform, true);
                 objects.Enqueue(obj);
                 if (obj.GetComponent<IGameObjectPooled>() == null)
                     obj.AddComponent<PooledGameObject>().Pool = this;

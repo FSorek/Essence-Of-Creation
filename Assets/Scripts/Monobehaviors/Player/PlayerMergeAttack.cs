@@ -30,13 +30,6 @@ namespace Monobehaviors.Player
         }
     }
 
-    public class PlayerAttack
-    {
-        private Damage damage;
-        private float interval;
-        private float range;
-    }
-
 /*
  *
  *  public string Name;

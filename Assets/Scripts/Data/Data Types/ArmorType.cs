@@ -6,9 +6,6 @@ namespace Data.Data_Types
 
     public class ArmorType : ScriptableObject
     {
-        public float FireResistance;
-        public float WaterResistance;
-        public float EarthResistance;
-        public float AirResistance;
+        // prolly add a sprite :)
     }
 }

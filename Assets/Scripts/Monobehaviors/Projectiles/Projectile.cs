@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Data.Data_Types;
 using Data.Tower;
 using Monobehaviors.Tower.Attack;
@@ -10,23 +11,20 @@ namespace Monobehaviors.Projectiles
 {
     public class Projectile : MonoBehaviour
     {
-        public event Action<Transform> OnTargetHit = delegate {  };
-
-        public float DamageScale
-        {
-            get => damageScale;
-            set => damageScale = value;
-        }
 
         private TowerAttack attackBehaviour;
         private bool initialized;
         private Transform target;
-        private SimpleMove move;
-        private IProjectileDeathBehaviour DeathBehaviour;
+        private IMover move;
+        private IProjectileDeathBehaviour deathBehaviour;
+        private float damagePercentage;
         private Damage damage;
-        private float damageScale;
         public TowerAttack AttackBehaviour => attackBehaviour;
         public Transform Target => target;
+        public float DamageScale
+        {
+            set => damagePercentage = value;
+        }
 
         private void Update()
         {
@@ -40,17 +38,11 @@ namespace Monobehaviors.Projectiles
             
             if (dir.magnitude <= distThisFrame)
             {
-                attackBehaviour.AttackTarget(target, CalculateDamage());
-                OnTargetHit(target);
+                attackBehaviour.AttackTarget(target, damage * damagePercentage);
                 Die();
             }
             if(target != null)
                 move.Move(target.transform.position, attackBehaviour.ProjectileSpeed);
-        }
-
-        private Damage CalculateDamage()
-        {
-            return damage * damageScale;
         }
 
         public void Initialize(TowerAttack attackBehaviour, Transform target)
@@ -58,9 +50,9 @@ namespace Monobehaviors.Projectiles
             this.target = target;
             this.attackBehaviour = attackBehaviour;
             move = new SimpleMove(transform);
-            DeathBehaviour = new ProjectileSimpleDeath();
-            damage = attackBehaviour.Damage;
-            damageScale = 1f;
+            deathBehaviour = new ProjectileSimpleDeath();
+            damagePercentage = 1f;
+            damage = new Damage(attackBehaviour.DamageData);
             initialized = true;
         }
 
@@ -71,13 +63,13 @@ namespace Monobehaviors.Projectiles
 
         public void Die()
         {
-            if(DeathBehaviour.CanDestroy() || target == null)
+            if(deathBehaviour.CanDestroy() || target == null)
                 Destroy(gameObject);
         }
 
         public void SetDeathBehaviour(IProjectileDeathBehaviour behaviour)
         {
-            DeathBehaviour = behaviour;
+            deathBehaviour = behaviour;
         }
     }
 }

@@ -21,7 +21,10 @@ namespace Data.Tower
             {
                 float proximity = (target.transform.position - aoeTarget.transform.position).magnitude;
                 var damageScale = DamageDistributionPercentage.Evaluate((proximity / ExplosionRadius));
-                aoeTarget.GetComponent<UnitComponent>().TakeDamage(damage * damageScale);
+                var unitHealth = aoeTarget.GetComponent<UnitHealth>();
+                if(unitHealth == null) return;
+                
+                unitHealth.TakeDamage(damage);
             }
         }
     }

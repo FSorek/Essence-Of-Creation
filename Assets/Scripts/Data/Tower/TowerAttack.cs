@@ -1,18 +1,16 @@
 ﻿using System;
+using Boo.Lang;
 using Data.Data_Types;
 using Monobehaviors.Projectiles;
 using Monobehaviors.Tower.Attack;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Data.Tower
 {
     public abstract class TowerAttack : ScriptableObject
     {
-
-        [SerializeField] protected FireDamage fireDamage;
-        [SerializeField] protected WaterDamage waterDamage;
-        [SerializeField] protected EarthDamage earthDamage;
-        [SerializeField] protected AirDamage airDamage;
+        [SerializeField] protected DamageData damageData;
         [SerializeField] protected int targetLimit = 1;
         [SerializeField] protected float attackTimer = 1f;
         [SerializeField] protected float range = 40f;
@@ -26,6 +24,6 @@ namespace Data.Tower
         public int TargetLimit => targetLimit;
         public float AttackTimer => attackTimer;
         public GameObject ProjectileModel => projectileModel;
-        public Damage Damage => fireDamage;
+        public DamageData DamageData => damageData;
     }
 }

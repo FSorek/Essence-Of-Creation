@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sirenix.Serialization;
 using UnityEngine;
 
@@ -8,12 +9,12 @@ using UnityEngine;
 
 namespace Data.Data_Types
 {
+    [Serializable]
     public class Stat
     {
-        [OdinSerialize] private float testValue;
-        private float baseValue;
+        [SerializeField]private float baseValue;
         
-        private readonly List<StatModifier> statModifiers;
+        private readonly List<StatModifier> statModifiers = new List<StatModifier>();
         
         private float value;
         private bool isDirty = true;
@@ -31,7 +32,7 @@ namespace Data.Data_Types
         /// <summary>
         ///     The final value of the stat - with modifiers.
         /// </summary>
-        public float Value
+        public float ModValue
         {
             get
             {
@@ -48,14 +49,24 @@ namespace Data.Data_Types
 
         public Stat(float baseValue) : this()
         {
-            BaseValue = baseValue;
+            this.baseValue = baseValue;
         }
 
         public Stat()
         {
-            statModifiers = new List<StatModifier>();
         }
         
+        public void AddModifier(StatModifier mod)
+        {
+            isDirty = true;
+            statModifiers.Add(mod);
+        }
+
+        public void RemoveModifier(StatModifier mod)
+        {
+            isDirty = true;
+            statModifiers.Remove(mod);
+        }
 
         public static Stat operator +(Stat stat, StatModifier modifier)
         {
@@ -71,56 +82,45 @@ namespace Data.Data_Types
             return stat;
         }
 
-        public void AddModifier(StatModifier mod)
-        {
-            isDirty = true;
-            statModifiers.Add(mod);
-        }
-
-        public void RemoveModifier(StatModifier mod)
-        {
-            isDirty = true;
-            statModifiers.Remove(mod);
-        }
 
         public static bool operator ==(Stat stat, float value)
         {
-            return (stat?.Value ?? default) == value;
+            return (stat?.ModValue ?? default) == value;
         }
 
         public static bool operator !=(Stat stat, float value)
         {
-            return (stat?.Value ?? default) != value;
+            return (stat?.ModValue ?? default) != value;
         }
 
         public static bool operator >(Stat stat, float value)
         {
-            return (stat?.Value ?? default) > value;
+            return (stat?.ModValue ?? default) > value;
         }
 
         public static bool operator <(Stat stat, float value)
         {
-            return (stat?.Value ?? default) < value;
+            return (stat?.ModValue ?? default) < value;
         }
 
         public static bool operator <=(Stat stat, float value)
         {
-            return (stat?.Value ?? default) <= value;
+            return (stat?.ModValue ?? default) <= value;
         }
 
         public static bool operator >=(Stat stat, float value)
         {
-            return (stat?.Value ?? default) >= value;
+            return (stat?.ModValue ?? default) >= value;
         }
 
         public static implicit operator int(Stat stat)
         {
-            return stat != null ? Mathf.RoundToInt(stat.Value) : default;
+            return stat != null ? Mathf.RoundToInt(stat.ModValue) : default;
         }
 
         public static implicit operator float(Stat stat)
         {
-            return stat?.Value ?? default;
+            return stat?.ModValue ?? default;
         }
 
         public static implicit operator Stat(float f)
@@ -132,6 +132,7 @@ namespace Data.Data_Types
         {
             float finalValue = BaseValue;
             float percentageModification = 1f;
+            if (statModifiers == null) return finalValue;
             for (int i = 0; i < statModifiers.Count; i++)
                 if (statModifiers[i].Type == StatModifierType.Flat)
                     finalValue += statModifiers[i].Value;

@@ -13,7 +13,7 @@ namespace Monobehaviors.Projectiles
         
         public void Move(Vector3 position, float speed)
         {
-            owner.transform.position += (position - owner.transform.position).normalized * GameTime.deltaTime * speed;
+            owner.transform.position += speed * GameTime.deltaTime * (position - owner.transform.position).normalized;
         }
     }
 }

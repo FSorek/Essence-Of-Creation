@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Data.Data_Types;
+using Data.Tower;
 using DataBehaviors.Game.Utility;
 using UnityEngine;
 using UnityEngine.UI;
