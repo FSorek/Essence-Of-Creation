@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DataBehaviors.Game.Waves;
+using UnityEngine;
 
 namespace Data.Game
 {
@@ -10,12 +11,8 @@ namespace Data.Game
         public int SpawnAmount;
         public Vector3 SpawnPosition;
         public int EnemiesPerSpawn;
-        
-        // temporary defined stats
-        public int hp;
-        public float moveSpeed;
-        public int toughness;
-        public float hpRegen;
-        public int crystal;
+
+        public StatConversionRates ConversionRates;
+        public int EnemyPower;
     }
 }

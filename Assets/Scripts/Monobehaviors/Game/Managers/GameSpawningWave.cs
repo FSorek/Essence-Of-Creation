@@ -49,7 +49,7 @@ namespace Monobehaviors.Game.Managers
         {
             for (int i = 0; i < waveSettings.EnemiesPerSpawn; i++)
             {
-                var enemy = enemyFactory.CreateEnemy(waveSettings.hp, waveSettings.moveSpeed, waveSettings.toughness, waveSettings.hpRegen, waveSettings.crystal);
+                var enemy = enemyFactory.CreateEnemy(waveSettings.EnemyPower, waveSettings.ConversionRates);
                 enemy.transform.position = waveSettings.SpawnPosition;
                 enemy.SetActive(true);
             }

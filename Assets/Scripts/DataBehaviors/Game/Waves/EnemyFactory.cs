@@ -15,24 +15,39 @@ namespace DataBehaviors.Game.Waves
             this.enemyPool = enemyPool;
         }
 
-        public GameObject CreateEnemy(int hp, float moveSpeed, int toughness, float hpRegen, int crystal)
+        public GameObject CreateEnemy(int power, StatConversionRates conversionRates)
         {
             var enemy = enemyPool.Get();
             var stats = enemy.GetComponent<StatController>();
-//
-            var health = new Stat(hp);
-            var movementSpeed = new Stat(moveSpeed);
-            var armorToughness = new Stat(toughness);
-            var healthRegen = new Stat(hpRegen);
-            var crystallineLayers = new Stat(crystal);
-//
-            stats.SetStat(StatName.HealthPool, health);
-            stats.SetStat(StatName.MovementSpeed, movementSpeed);
-            stats.SetStat(StatName.ArmorToughness, armorToughness);
-            stats.SetStat(StatName.HealthRegeneration, healthRegen);
-            stats.SetStat(StatName.CrystallineLayers, crystallineLayers);
 
+            float movementSpeed = Random.Range(conversionRates.MovementSpeedRange.x, conversionRates.MovementSpeedRange.y);
+            int effectiveHealth = Random.Range(conversionRates.EffectiveHealthRange.x, conversionRates.EffectiveHealthRange.y);
+            float healthRegen = Random.Range(conversionRates.HealthRegenRange.x, conversionRates.HealthRegenRange.y);
+
+            float movementWeight = movementSpeed * conversionRates.MovementSpeedRatio;
+            float healthWeight = effectiveHealth * conversionRates.EffectiveHealthRatio;
+            float hpRegenWeight = healthRegen * conversionRates.HealthRegenRatio;
+
+            float currentPower =   movementWeight
+                                 + healthWeight
+                                 + hpRegenWeight;
+            
+            movementSpeed = RescaleStat(power, movementWeight, currentPower) / conversionRates.MovementSpeedRatio;
+            effectiveHealth = Mathf.CeilToInt(RescaleStat(power, healthWeight, currentPower) / conversionRates.EffectiveHealthRatio);
+            healthRegen = RescaleStat(power, hpRegenWeight, currentPower) / conversionRates.HealthRegenRatio;
+            
+            stats.SetStat(StatName.MovementSpeed, movementSpeed);
+            stats.SetStat(StatName.HealthPool, effectiveHealth);
+            //stats.SetStat(StatName.ArmorToughness, armorToughness);
+            stats.SetStat(StatName.HealthRegeneration, healthRegen);
+
+            //stats.SetStat(StatName.CrystallineLayers, crystallineLayers);
             return enemy;
+        }
+
+        private float RescaleStat(int power, float ratio, float currentPower)
+        {
+            return power * ratio / currentPower;
         }
     }
 }

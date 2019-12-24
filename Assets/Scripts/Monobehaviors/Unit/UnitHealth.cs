@@ -4,6 +4,7 @@ using Data.Extensions;
 using Data.Tower;
 using DataBehaviors.Game.Systems;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Monobehaviors.Unit
 {
@@ -41,7 +42,6 @@ namespace Monobehaviors.Unit
                     finalDamage *= damagePair.Key.ArmorMultipliers[armorType];
 
                 currentHealth -= finalDamage;
-                Debug.Log($"Took {finalDamage} yamag!");
             }
             
             OnTakeDamage(damage);
