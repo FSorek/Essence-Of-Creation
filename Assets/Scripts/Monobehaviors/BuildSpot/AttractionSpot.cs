@@ -6,18 +6,12 @@ namespace Monobehaviors.BuildSpot
 {
     public class AttractionSpot : MonoBehaviour
     {
-        public static readonly List<Transform> AttractionSpots = new List<Transform>();
         public bool IsOccupied => CurrentEssence != null;
         public GameObject CurrentEssence { get; private set; }
 
-        private void Awake()
+        public void AssignEssence(GameObject essence)
         {
-            AttractionSpots.Add(transform);
-        }
-
-        public void AssignEssence(GameObject tower)
-        {
-            CurrentEssence = tower;
+            CurrentEssence = essence;
         }
 
         public void ClearCurrentEssence()

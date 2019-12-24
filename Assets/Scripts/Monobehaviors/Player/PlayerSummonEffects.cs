@@ -13,6 +13,7 @@ namespace DataBehaviors.Player.Particles
         [SerializeField] private PlayerInput input;
         [SerializeField] private PlayerVFXData vfxData;
         [SerializeField] private PlayerBuildData buildData;
+        [SerializeField] private PlayerStateData playerStateData;
         
         private VisualEffect summonAir;
         private VisualEffect summonEarth;
@@ -36,7 +37,15 @@ namespace DataBehaviors.Player.Particles
             summonEarth.GetComponent<VFXPositionBinder>().Target = buildData.ConstructorObject;
             summonWater.GetComponent<VFXPositionBinder>().Target = buildData.ConstructorObject;
             
+            playerStateData.OnStateEntered += PlayerStateDataOnStateEntered;
+            
             Debug.Log(buildData.ConstructorObject.position);
+        }
+
+        private void PlayerStateDataOnStateEntered(PlayerStates state)
+        {
+            if(state == PlayerStates.WEAVE_ESSENCE)
+                DisableAllSummons();
         }
 
         private void PlayerInputOnWaterPressed()

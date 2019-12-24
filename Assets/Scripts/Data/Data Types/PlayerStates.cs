@@ -6,5 +6,6 @@
         FORGING,
         PLACE_OBELISK,
         WEAVE_ESSENCE,
+        EXTRACTING,
     }
 }

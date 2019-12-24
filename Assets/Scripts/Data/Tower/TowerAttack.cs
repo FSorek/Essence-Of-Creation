@@ -16,6 +16,7 @@ namespace Data.Tower
         [SerializeField] protected float range = 40f;
         [SerializeField] protected GameObject projectileModel;
         [SerializeField] protected float projectileSpeed = 35;
+        [SerializeField] protected AttackProjectileModifier projectileModifier;
 
         public abstract void AttackTarget(Transform target, Damage damage);
 
@@ -25,5 +26,6 @@ namespace Data.Tower
         public float AttackTimer => attackTimer;
         public GameObject ProjectileModel => projectileModel;
         public DamageData DamageData => damageData;
+        public AttackProjectileModifier ProjectileModifier => projectileModifier;
     }
 }

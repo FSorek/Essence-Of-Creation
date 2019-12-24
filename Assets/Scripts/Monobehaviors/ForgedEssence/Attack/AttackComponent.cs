@@ -8,16 +8,14 @@ namespace Monobehaviors.Tower.Attack
 {
     public class AttackComponent : MonoBehaviour
     {
-        public event Action<Projectile> OnProjectileFired;
         [SerializeField] private TransformList enemiesList;
         [SerializeField] private TowerAttack towerAttack;
-        [SerializeField] private AttackProjectileModifier projectileModifier;
         private AttackController attackController;
 
 
         private void Awake()
         {
-            attackController = new AttackController(transform, towerAttack, enemiesList, projectileModifier);
+            attackController = new AttackController(transform, towerAttack, enemiesList);
         }
 
         private void Update()

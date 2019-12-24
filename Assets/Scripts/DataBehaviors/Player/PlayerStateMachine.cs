@@ -24,13 +24,16 @@ namespace DataBehaviors.Player
 
             var awaitBuild = new AwaitBuildPlayerState(playerInput, buildData, stateData);
             var forging = new ForgingPlayerState(playerInput, buildData, stateData);
-            var placeObelisk = new PlaceObeliskPlayerState(buildData, playerInput, stateData);
-
+            var extracting = new ExtractingPlayerState(playerInput, buildData, stateData);
+            var placeObelisk = new PlaceObeliskPlayerState(playerInput, buildData, stateData);
+            var weaveEssence = new WeaveEssencePlayerState(playerInput, buildData, stateData);
+            
             stateMachine.RegisterState(PlayerStates.AWAIT_BUILD, awaitBuild);
             stateMachine.RegisterState(PlayerStates.FORGING, forging);
+            stateMachine.RegisterState(PlayerStates.EXTRACTING, extracting);
+            stateMachine.RegisterState(PlayerStates.WEAVE_ESSENCE, weaveEssence);
             stateMachine.RegisterState(PlayerStates.PLACE_OBELISK, placeObelisk);
 
-            
             stateData.ChangeState(PlayerStates.AWAIT_BUILD);
         }
 

@@ -12,17 +12,14 @@ namespace DataBehaviors.Tower
         private readonly Transform owner;
         private readonly TowerAttack attack;
         private readonly TransformList enemiesList;
-        private readonly AttackProjectileModifier projectileModifier;
         private float lastRecordedAttackTime;
         private Transform[] targets;
 
-        public AttackController(Transform owner, TowerAttack attack, TransformList enemiesList,
-            AttackProjectileModifier projectileModifier)
+        public AttackController(Transform owner, TowerAttack attack, TransformList enemiesList)
         {
             this.owner = owner;
             this.attack = attack;
             this.enemiesList = enemiesList;
-            this.projectileModifier = projectileModifier;
             targets = new Transform[attack.TargetLimit];
         }
 
@@ -59,8 +56,8 @@ namespace DataBehaviors.Tower
             var projectile = GameObject.Instantiate(attack.ProjectileModel, owner.position, Quaternion.identity)
                 .AddComponent<Projectile>();
             projectile.Initialize(attack, target);
-            if(projectileModifier != null)
-                projectileModifier.ApplyModification(projectile);
+            if(attack.ProjectileModifier != null)
+                attack.ProjectileModifier.ApplyModification(projectile);
         }
 
         private Transform[] GetTargets()

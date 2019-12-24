@@ -23,7 +23,7 @@ namespace DataBehaviors.Player.States
         private Vector3 placePointBuildDirection;
         private Transform parent;
 
-        public PlaceObeliskPlayerState(PlayerBuildData buildData, PlayerInput input, PlayerStateData stateData)
+        public PlaceObeliskPlayerState(PlayerInput input, PlayerBuildData buildData, PlayerStateData stateData)
         {
             this.buildData = buildData;
             this.input = input;
@@ -35,7 +35,7 @@ namespace DataBehaviors.Player.States
         {
             var topBlockPosition = buildBlocks.Last().transform.position;
             var peak = GameObject.Instantiate(buildData.ObeliskAttractionPrefab, topBlockPosition + placePointBuildDirection * buildData.BuildDistanceOffset, Quaternion.LookRotation(placePointBuildDirection), parent);
-            GameObject.Instantiate(new GameObject("Essence"), peak.transform.position + placePointBuildDirection * 2, Quaternion.LookRotation(placePointBuildDirection), parent).AddComponent<AttractionSpot>();
+            GameObject.Instantiate(buildData.EssenceAttractionPointPrefab, peak.transform.position + placePointBuildDirection * 2, Quaternion.LookRotation(placePointBuildDirection), parent);
             buildBlocks.Clear();
             parent = null;
             stateData.ChangeState(PlayerStates.AWAIT_BUILD);
@@ -45,7 +45,7 @@ namespace DataBehaviors.Player.States
         {
             if (buildBlocks.Count < buildData.MaxObeliskSize + 1) // +1 to not count the initial Base block
             {
-                var block = GameObject.Instantiate(buildData.ObeliskBlockPrefab, parent.position + placePointBuildDirection * buildBlocks.Count * buildData.BuildDistanceOffset, Quaternion.identity, parent);
+                var block = GameObject.Instantiate(buildData.ObeliskBlockPrefab, parent.position + buildData.BuildDistanceOffset * buildBlocks.Count * placePointBuildDirection, Quaternion.identity, parent);
                 var scale = block.transform.lossyScale.x * Mathf.Pow(.8f, buildBlocks.Count);
                 block.transform.localScale = new Vector3(scale,scale, scale);
                 block.transform.Rotate(block.transform.forward, Random.Range(30,270));

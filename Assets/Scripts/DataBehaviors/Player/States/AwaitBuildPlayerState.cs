@@ -22,6 +22,11 @@ namespace DataBehaviors.Player.States
             this.input = input;
             this.buildData = buildData;
             this.stateData = stateData;
+            
+            input.OnFirePressed += PlayerInputOnFirePressed;
+            input.OnAirPressed += PlayerInputOnAirPressed;
+            input.OnWaterPressed += PlayerInputOnWaterPressed;
+            input.OnEarthPressed += PlayerInputOnEarthPressed;
         }
 
         private void PlayerInputOnPlaceObeliskPressed()
@@ -37,23 +42,20 @@ namespace DataBehaviors.Player.States
         public void StateExit()
         {
             input.OnPrimaryKeyPressed -= PlayerInputOnPrimaryKeyPressed;
+            input.OnSecondaryKeyPressed -= PlayerInputOnSecondaryKeyPressed;
             input.OnStartPlacingObeliskPressed -= PlayerInputOnPlaceObeliskPressed;
         }
 
         public void StateEnter()
         {
-            input.OnFirePressed += PlayerInputOnFirePressed;
-            input.OnAirPressed += PlayerInputOnAirPressed;
-            input.OnWaterPressed += PlayerInputOnWaterPressed;
-            input.OnEarthPressed += PlayerInputOnEarthPressed;
             input.OnPrimaryKeyPressed += PlayerInputOnPrimaryKeyPressed;
+            input.OnSecondaryKeyPressed += PlayerInputOnSecondaryKeyPressed;
             input.OnStartPlacingObeliskPressed += PlayerInputOnPlaceObeliskPressed;
         }
-
         private void PlayerInputOnPrimaryKeyPressed()
         {
             var handPos = buildData.ConstructorObject.position;
-            var buildSpots = AttractionSpot.AttractionSpots.ToArray();
+            var buildSpots = buildData.AttractionSpots.Items.ToArray();
             var buildRange = buildData.BuildSpotDetectionRange;
             
             var openSpots = RangeTargetScanner.GetTargets(handPos, buildSpots, buildRange).Where(t => !t.GetComponent<AttractionSpot>().IsOccupied).ToArray();
@@ -62,6 +64,19 @@ namespace DataBehaviors.Player.States
 
             stateData.ChangeState(PlayerStates.FORGING);
         }
+        private void PlayerInputOnSecondaryKeyPressed()
+        {
+            var handPos = buildData.ConstructorObject.position;
+            var buildSpots = buildData.AttractionSpots.Items.ToArray();
+            var buildRange = buildData.BuildSpotDetectionRange;
+            
+            var occupiedSpots = RangeTargetScanner.GetTargets(handPos, buildSpots, buildRange).Where(t => t.GetComponent<AttractionSpot>().IsOccupied).ToArray();
+            if(occupiedSpots.Length <= 0) return;
+            buildData.TargetAttraction = ClosestEntityFinder.GetClosestTransform(occupiedSpots, handPos).GetComponent<AttractionSpot>();
+
+            stateData.ChangeState(PlayerStates.EXTRACTING);
+        }
+
 
         private void PlayerInputOnEarthPressed()
         {

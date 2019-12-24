@@ -13,12 +13,13 @@ namespace Data.Interfaces.Player
         [SerializeField] private KeyCode WaterKey;
         [SerializeField] private KeyCode EarthKey;
         [SerializeField] private KeyCode PlaceObeliskKey;
+        [SerializeField] private KeyCode WeaveEssenceKey;
         [SerializeField] private KeyCode PrimaryKey;
         [SerializeField] private KeyCode SecondaryKey;
         [SerializeField] private KeyCode UtilityKey;
 
-        [ShowInInspector] private string VerticalAxis;
-        [ShowInInspector] private string HorizontalAxis;
+        [SerializeField] private string VerticalAxis;
+        [SerializeField] private string HorizontalAxis;
 
         public float Vertical => Input.GetAxis(VerticalAxis);
         public float Horizontal => Input.GetAxis(HorizontalAxis);
@@ -28,6 +29,7 @@ namespace Data.Interfaces.Player
         public event Action OnWaterPressed = delegate {  };
         public event Action OnEarthPressed = delegate {  };
         public event Action OnStartPlacingObeliskPressed = delegate {  };
+        public event Action OnWeaveEssencePressed = delegate {  };
         public event Action OnPrimaryKeyPressed = delegate {  };
         public event Action OnSecondaryKeyPressed = delegate {  };
         public event Action OnUtilityKeyPressed = delegate {  };
@@ -51,6 +53,8 @@ namespace Data.Interfaces.Player
                 OnEarthPressed();
             if (Input.GetKeyDown(PlaceObeliskKey))
                 OnStartPlacingObeliskPressed();
+            if (Input.GetKeyDown(WeaveEssenceKey))
+                OnWeaveEssencePressed();
             
             
             if (Input.GetKeyDown(PrimaryKey))
