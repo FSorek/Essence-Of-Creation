@@ -27,8 +27,8 @@ namespace DataBehaviors.Player
 
         private void InputOnWeaveEssencePressed()
         {
-            if (stateData.CurrentState != PlayerStates.AWAIT_BUILD)
-                stateData.ChangeState(PlayerStates.AWAIT_BUILD);
+            if (buildData.ExtractedEssences.Count > 0 && stateData.CurrentState != PlayerStates.WEAVE_ESSENCE)
+                stateData.ChangeState(PlayerStates.WEAVE_ESSENCE);
         }
 
         public void StateEnter()
