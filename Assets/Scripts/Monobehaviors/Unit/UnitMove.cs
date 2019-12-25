@@ -38,7 +38,7 @@ namespace Monobehaviors.Unit
         public void UpdateMoveSpeed()
         {
             var currentSpeed = stats.GetStat(StatName.MovementSpeed);
-            if(currentSpeed != null && moveSpeed == currentSpeed) return;
+            if(currentSpeed == null || moveSpeed == currentSpeed) return;
 
             moveSpeed = currentSpeed;
         }
