@@ -22,16 +22,6 @@ namespace DataBehaviors.Player.States
             this.input = input;
             this.buildData = buildData;
             this.stateData = stateData;
-            
-            input.OnFirePressed += PlayerInputOnFirePressed;
-            input.OnAirPressed += PlayerInputOnAirPressed;
-            input.OnWaterPressed += PlayerInputOnWaterPressed;
-            input.OnEarthPressed += PlayerInputOnEarthPressed;
-        }
-
-        private void PlayerInputOnPlaceObeliskPressed()
-        {
-            stateData.ChangeState(PlayerStates.PLACE_OBELISK);
         }
 
         public void ListenToState()
@@ -43,14 +33,12 @@ namespace DataBehaviors.Player.States
         {
             input.OnPrimaryKeyPressed -= PlayerInputOnPrimaryKeyPressed;
             input.OnSecondaryKeyPressed -= PlayerInputOnSecondaryKeyPressed;
-            input.OnStartPlacingObeliskPressed -= PlayerInputOnPlaceObeliskPressed;
         }
 
         public void StateEnter()
         {
             input.OnPrimaryKeyPressed += PlayerInputOnPrimaryKeyPressed;
             input.OnSecondaryKeyPressed += PlayerInputOnSecondaryKeyPressed;
-            input.OnStartPlacingObeliskPressed += PlayerInputOnPlaceObeliskPressed;
         }
         private void PlayerInputOnPrimaryKeyPressed()
         {
@@ -75,38 +63,6 @@ namespace DataBehaviors.Player.States
             buildData.TargetAttraction = ClosestEntityFinder.GetClosestTransform(occupiedSpots, handPos).GetComponent<AttractionSpot>();
 
             stateData.ChangeState(PlayerStates.EXTRACTING);
-        }
-
-
-        private void PlayerInputOnEarthPressed()
-        {
-
-            buildData.CurrentEssence = buildData.EarthEssencePrefab;
-            RefreshState();
-        }
-
-
-        private void PlayerInputOnWaterPressed()
-        {
-            buildData.CurrentEssence = buildData.WaterEssencePrefab;
-            RefreshState();
-        }
-
-        private void PlayerInputOnAirPressed()
-        {
-            buildData.CurrentEssence = buildData.AirEssencePrefab;
-            RefreshState();
-        }
-
-        private void PlayerInputOnFirePressed()
-        {
-            buildData.CurrentEssence = buildData.FireEssencePrefab;
-            RefreshState();
-        }
-        private void RefreshState()
-        {
-            if(stateData.CurrentState != PlayerStates.AWAIT_BUILD)
-                stateData.ChangeState(PlayerStates.AWAIT_BUILD);
         }
     }
 }

@@ -21,14 +21,6 @@ namespace DataBehaviors.Player
             this.input = input;
             this.buildData = buildData;
             this.stateData = stateData;
-            
-            input.OnWeaveEssencePressed += InputOnWeaveEssencePressed;
-        }
-
-        private void InputOnWeaveEssencePressed()
-        {
-            if (buildData.ExtractedEssences.Count > 0 && stateData.CurrentState != PlayerStates.WEAVE_ESSENCE)
-                stateData.ChangeState(PlayerStates.WEAVE_ESSENCE);
         }
 
         public void StateEnter()

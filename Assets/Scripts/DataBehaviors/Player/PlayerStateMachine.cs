@@ -35,6 +35,48 @@ namespace DataBehaviors.Player
             stateMachine.RegisterState(PlayerStates.PLACE_OBELISK, placeObelisk);
 
             stateData.ChangeState(PlayerStates.AWAIT_BUILD);
+            
+            playerInput.OnFirePressed += PlayerInputOnFirePressed;
+            playerInput.OnAirPressed += PlayerInputOnAirPressed;
+            playerInput.OnWaterPressed += PlayerInputOnWaterPressed;
+            playerInput.OnEarthPressed += PlayerInputOnEarthPressed;
+            playerInput.OnStartPlacingObeliskPressed += PlayerInputOnPlaceObeliskPressed;
+            playerInput.OnWeaveEssencePressed += PlayerInputOnWeaveEssencePressed;
+        }
+
+        private void PlayerInputOnWeaveEssencePressed()
+        {
+            if (buildData.ExtractedEssences.Count > 0)
+                stateData.ChangeState(PlayerStates.WEAVE_ESSENCE);
+        }
+
+        private void PlayerInputOnPlaceObeliskPressed()
+        {
+            stateData.ChangeState(PlayerStates.PLACE_OBELISK);
+        }
+
+        private void PlayerInputOnEarthPressed()
+        {
+            buildData.CurrentEssence = buildData.EarthEssencePrefab;
+            stateData.ChangeState(PlayerStates.AWAIT_BUILD);
+        }
+
+        private void PlayerInputOnWaterPressed()
+        {
+            buildData.CurrentEssence = buildData.WaterEssencePrefab;
+            stateData.ChangeState(PlayerStates.AWAIT_BUILD);
+        }
+
+        private void PlayerInputOnAirPressed()
+        {
+            buildData.CurrentEssence = buildData.AirEssencePrefab;
+            stateData.ChangeState(PlayerStates.AWAIT_BUILD);
+        }
+
+        private void PlayerInputOnFirePressed()
+        {
+            buildData.CurrentEssence = buildData.FireEssencePrefab;
+            stateData.ChangeState(PlayerStates.AWAIT_BUILD);
         }
 
         private void Update()
