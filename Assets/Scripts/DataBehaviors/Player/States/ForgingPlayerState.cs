@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using Data.Data_Types;
-using Data.Interfaces.Player;
-using Data.Player;
-using DataBehaviors.Game.Entity.Targeting;
-using Monobehaviors.BuildSpot;
+using Data.Data_Types.Enums;
+using Data.Interfaces.StateMachines;
+using Data.ScriptableObjects.Player;
+using Monobehaviors.AttractionSpots;
 using Monobehaviors.Game.Managers;
-using Monobehaviors.Player;
 using UnityEngine;
 
 namespace DataBehaviors.Player.States
@@ -52,7 +51,7 @@ namespace DataBehaviors.Player.States
         private void ForgeEssence() //to-do: pool
         {
             if(buildData.CurrentEssence == null) return;
-            var essence = GameObject.Instantiate(buildData.CurrentEssence, buildData.TargetAttraction.transform.position, Quaternion.identity);
+            var essence = Object.Instantiate(buildData.CurrentEssence, buildData.TargetAttraction.transform.position, Quaternion.identity);
             buildData.TargetAttraction.AssignEssence(essence);
         }
     }

@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections;
-using Monobehaviors.Unit;
+﻿using Data.ScriptableObjects.Globals;
 using UnityEngine;
 
-public class ManageGlobalList : MonoBehaviour
+namespace Monobehaviors.Game
 {
-    public TransformList ListAsset;
-
-    private void OnEnable()
+    public class ManageGlobalList : MonoBehaviour
     {
-        ListAsset.Add(transform);
-    }
+        public TransformList ListAsset;
 
-    private void OnDisable()
-    {
-        ListAsset.Remove(transform);
+        private void OnEnable()
+        {
+            ListAsset.Add(transform);
+        }
+
+        private void OnDisable()
+        {
+            ListAsset.Remove(transform);
+        }
     }
 }

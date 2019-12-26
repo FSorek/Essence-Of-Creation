@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Data.ScriptableObjects.Globals;
 using UnityEngine;
 
 public class ManageReachPointsList : MonoBehaviour

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Data.Data_Types;
+using Data.Data_Types.Enums;
 using UnityEngine;
 
 namespace DataBehaviors.Recipes

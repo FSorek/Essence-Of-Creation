@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Data.Data_Types;
-using Data.Tower;
-using Monobehaviors.Tower.Attack;
-using Monobehaviors.Unit;
+using Data.Game;
+using Data.Interfaces.Game;
+using Data.Interfaces.Projectiles;
+using Data.ScriptableObjects.Attacks;
+using DataBehaviors.Game.Movements;
+using DataBehaviors.Projectiles;
+using Monobehaviors.Units;
 using UnityEngine;
 
 namespace Monobehaviors.Projectiles

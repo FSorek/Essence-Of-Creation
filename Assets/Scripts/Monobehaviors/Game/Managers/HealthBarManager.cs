@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Data.Extensions;
+using Data.ScriptableObjects.Globals;
 using Monobehaviors.Pooling;
-using Monobehaviors.Unit;
-using Monobehaviors.Unit.HealthBar;
+using Monobehaviors.Units;
+using Monobehaviors.Units.HealthBar;
 using UnityEngine;
 using UnityEngine.UI;
 

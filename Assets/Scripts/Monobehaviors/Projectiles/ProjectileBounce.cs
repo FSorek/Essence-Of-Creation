@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DataBehaviors.Game.Entity.Targeting;
+using Data.Interfaces.Projectiles;
+using Data.ScriptableObjects.Globals;
+using DataBehaviors.Game.Targeting;
 using Monobehaviors.Game.Managers;
 using UnityEngine;
 

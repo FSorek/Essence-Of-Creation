@@ -1,4 +1,4 @@
-﻿using Data.Game;
+﻿using Data.ScriptableObjects.Game;
 
 namespace Data.Interfaces.Game.Economy
 {

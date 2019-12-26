@@ -1,4 +1,6 @@
-﻿namespace Data.Data_Types
+﻿using Data.Data_Types.Enums;
+
+namespace Data.Data_Types
 {
     public class StatModifier
     {

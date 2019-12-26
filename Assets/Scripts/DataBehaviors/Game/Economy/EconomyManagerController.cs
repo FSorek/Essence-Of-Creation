@@ -1,6 +1,6 @@
-﻿using Data.Game;
-using Data.Interfaces.Game.Economy;
-using Monobehaviors.Player;
+﻿using Data.Interfaces.Game.Economy;
+using Data.ScriptableObjects.Game;
+using Monobehaviors.Players;
 
 namespace DataBehaviors.Game.Economy
 {
@@ -11,7 +11,6 @@ namespace DataBehaviors.Game.Economy
         public EconomyManagerController(EconomySettings settings)
         {
             Settings = settings;
-            Monobehaviors.Unit.UnitComponent.OnUnitDeath += AddEssence;
             //BuildPlayerState.OnElementBuildingFinished += UseEssenceToBuild;
             //PlaceObeliskPlayerState.OnBuildSpotCreated += UseEssenceForBuildSpot;
             Essence = settings.StartingEssence;
@@ -32,7 +31,7 @@ namespace DataBehaviors.Game.Economy
             Essence -= Settings.EssencePerSummon;
         }
 
-        private void AddEssence(Monobehaviors.Unit.UnitComponent unitComponent)
+        private void AddEssence()
         {
             Essence += essencePerEnemy;
         }

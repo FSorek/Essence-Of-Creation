@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Data.Data_Types.Enums;
 using Sirenix.Serialization;
 using UnityEngine;
 

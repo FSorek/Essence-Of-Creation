@@ -1,14 +1,12 @@
 ﻿using System.Linq;
-using Data.Data_Types;
-using Data.Interfaces.Player;
-using Data.Player;
-using DataBehaviors.Game.Entity.Targeting;
-using Monobehaviors.BuildSpot;
-using Monobehaviors.Game.Managers;
-using Monobehaviors.Player;
-using Monobehaviors.Tower.Attack;
+using Data.Data_Types.Enums;
+using Data.Interfaces.StateMachines;
+using Data.ScriptableObjects.Player;
+using DataBehaviors.Game.Targeting;
+using Monobehaviors.AttractionSpots;
+using Monobehaviors.Essences.Attacks;
 
-namespace DataBehaviors.Player
+namespace DataBehaviors.Player.States
 {
     public class WeaveEssencePlayerState : IState
     {

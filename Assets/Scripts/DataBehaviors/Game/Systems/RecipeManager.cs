@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using Data.Data_Types;
+using Data.Data_Types.Enums;
 using DataBehaviors.Recipes;
-using Monobehaviors.Tower;
+using Monobehaviors.Essences;
 using UnityEngine;
 
 namespace DataBehaviors.Game.Systems

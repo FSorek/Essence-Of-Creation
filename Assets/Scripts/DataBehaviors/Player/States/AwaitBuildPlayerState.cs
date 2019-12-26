@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using Data.Data_Types;
-using Data.Interfaces.Player;
-using Data.Player;
-using DataBehaviors.Game.Entity.Targeting;
-using Monobehaviors.BuildSpot;
+using Data.Data_Types.Enums;
+using Data.Interfaces.StateMachines;
+using Data.ScriptableObjects.Player;
+using DataBehaviors.Game.Targeting;
+using Monobehaviors.AttractionSpots;
 using Monobehaviors.Game.Managers;
-using Monobehaviors.Player;
 using UnityEngine;
 
 namespace DataBehaviors.Player.States

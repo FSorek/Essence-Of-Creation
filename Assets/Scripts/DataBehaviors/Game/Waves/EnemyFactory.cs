@@ -1,6 +1,8 @@
 ﻿using Data.Data_Types;
+using Data.ScriptableObjects.Waves;
+using Monobehaviors.Game;
 using Monobehaviors.Pooling;
-using Monobehaviors.Unit;
+using Monobehaviors.Units;
 using UnityEngine;
 
 namespace DataBehaviors.Game.Waves
