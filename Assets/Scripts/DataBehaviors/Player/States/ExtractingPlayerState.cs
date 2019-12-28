@@ -44,7 +44,7 @@ namespace DataBehaviors.Player.States
             
             essence.transform.SetParent(buildData.ConstructorObject);
             essence.transform.position = buildData.ConstructorObject.position + Vector3.down * 3f;
-            var attacks = essence.GetComponents<AttackComponent>();
+            var attacks = essence.GetComponents<Attack>();
 
             for (int i = 0; i < attacks.Length; i++)
             {

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Data.ScriptableObjects.Attacks
 {
     [CreateAssetMenu(fileName = "Single Target", menuName = "Essence/TowerAttack/Single")]
-    public class SingleTowerAttack : TowerAttack
+    public class SingleAttackBehaviour : AttackBehaviour
     {
         public override void AttackTarget(Transform target, Damage damage)
         {

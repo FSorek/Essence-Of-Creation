@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Data.ScriptableObjects.Attacks
 {
-    public abstract class TowerAttack : ScriptableObject
+    public abstract class AttackBehaviour : ScriptableObject
     {
         [SerializeField] protected DamageData damageData;
         [SerializeField] protected int targetLimit = 1;

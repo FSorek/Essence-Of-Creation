@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Data.ScriptableObjects.Attacks
 {
     [CreateAssetMenu(fileName = "Area Target", menuName = "Essence/TowerAttack/Area")]
-    public class AreaTowerAttack : TowerAttack
+    public class AreaAttackBehaviour : AttackBehaviour
     {
         [SerializeField] private TransformList enemiesAlive;
         public float ExplosionRadius = 5f;

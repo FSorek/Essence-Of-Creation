@@ -10,17 +10,17 @@ namespace DataBehaviors.Essences
     public class AttackController
     {
         private readonly Transform owner;
-        private readonly TowerAttack attack;
+        private readonly AttackBehaviour attackBehaviour;
         private readonly TransformList enemiesList;
         private float lastRecordedAttackTime;
         private Transform[] targets;
 
-        public AttackController(Transform owner, TowerAttack attack, TransformList enemiesList)
+        public AttackController(Transform owner, AttackBehaviour attackBehaviour, TransformList enemiesList)
         {
             this.owner = owner;
-            this.attack = attack;
+            this.attackBehaviour = attackBehaviour;
             this.enemiesList = enemiesList;
-            targets = new Transform[attack.TargetLimit];
+            targets = new Transform[attackBehaviour.TargetLimit];
         }
 
         public void Tick()
@@ -30,7 +30,7 @@ namespace DataBehaviors.Essences
 
         public bool CanAttack()
         {
-            if (GameTime.time - lastRecordedAttackTime >= attack.AttackTimer)
+            if (GameTime.time - lastRecordedAttackTime >= attackBehaviour.AttackTimer)
             {
                 targets = GetTargets();
                 if (targets == null || targets[0] == null)
@@ -44,7 +44,7 @@ namespace DataBehaviors.Essences
 
         private void DoAttack()
         {
-            for (int i = 0; i < attack.TargetLimit; i++)
+            for (int i = 0; i < attackBehaviour.TargetLimit; i++)
                 if (targets[i] != null)
                 {
                     FireProjectile(targets[i]);
@@ -53,11 +53,11 @@ namespace DataBehaviors.Essences
 
         private void FireProjectile(Transform target)
         {
-            var projectile = GameObject.Instantiate(attack.ProjectileModel, owner.position, Quaternion.identity)
+            var projectile = GameObject.Instantiate(attackBehaviour.ProjectileModel, owner.position, Quaternion.identity)
                 .AddComponent<Projectile>();
-            projectile.Initialize(attack, target);
-            if(attack.ProjectileModifier != null)
-                attack.ProjectileModifier.ApplyModification(projectile);
+            projectile.Initialize(attackBehaviour, target);
+            if(attackBehaviour.ProjectileModifier != null)
+                attackBehaviour.ProjectileModifier.ApplyModification(projectile);
         }
 
         private Transform[] GetTargets()
@@ -65,12 +65,12 @@ namespace DataBehaviors.Essences
             var enemies = enemiesList.Items.ToArray();
             if (enemies.Length <= 0)
                 return null;
-            var availableTargets = new Transform[attack.TargetLimit];
+            var availableTargets = new Transform[attackBehaviour.TargetLimit];
             var enemiesInRange =
-                RangeTargetScanner.GetTargets(owner.position, enemies, attack.Range);
+                RangeTargetScanner.GetTargets(owner.position, enemies, attackBehaviour.Range);
 
             if (enemiesInRange.Length <= 0) return availableTargets;
-            for (int i = 0; i < Mathf.Min(attack.TargetLimit, enemiesInRange.Length); i++)
+            for (int i = 0; i < Mathf.Min(attackBehaviour.TargetLimit, enemiesInRange.Length); i++)
                 availableTargets[i] = enemiesInRange[i];
 
             return availableTargets;

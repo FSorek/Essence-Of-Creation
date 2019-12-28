@@ -1,10 +1,15 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Data.Data_Types.Enums;
 using Data.Interfaces.StateMachines;
 using Data.ScriptableObjects.Player;
+using DataBehaviors.Game.Systems;
 using DataBehaviors.Game.Targeting;
 using Monobehaviors.AttractionSpots;
+using Monobehaviors.Essences;
 using Monobehaviors.Essences.Attacks;
+using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace DataBehaviors.Player.States
 {
@@ -13,12 +18,14 @@ namespace DataBehaviors.Player.States
         private readonly PlayerInput input;
         private readonly PlayerBuildData buildData;
         private readonly PlayerStateData stateData;
+        private readonly RecipeData recipes;
 
-        public WeaveEssencePlayerState(PlayerInput input, PlayerBuildData buildData, PlayerStateData stateData)
+        public WeaveEssencePlayerState(PlayerInput input, PlayerBuildData buildData, PlayerStateData stateData, RecipeData recipes)
         {
             this.input = input;
             this.buildData = buildData;
             this.stateData = stateData;
+            this.recipes = recipes;
         }
 
         public void StateEnter()
@@ -47,7 +54,7 @@ namespace DataBehaviors.Player.States
             attractionSpot.AssignEssence(essence);
             buildData.ExtractedEssences.Remove(essence);
             
-            var attacks = essence.GetComponents<AttackComponent>();
+            var attacks = essence.GetComponents<Attack>();
             for (int i = 0; i < attacks.Length; i++)
             {
                 attacks[i].enabled = true;
@@ -69,9 +76,15 @@ namespace DataBehaviors.Player.States
 
         public void ListenToState()
         {
+            if (buildData.ExtractedEssences == null) return;
             if (buildData.ExtractedEssences.Count >= 2)
             {
-                // check if can be merged then merge
+                var firstEssence = buildData.ExtractedEssences[0].GetComponent<Essence>();
+                var secondEssence = buildData.ExtractedEssences[1].GetComponent<Essence>();
+                var result = recipes.TryMerge(firstEssence, secondEssence);
+                if(result == null) return;
+                
+                //to-do: replace held essence
             }
         }
 

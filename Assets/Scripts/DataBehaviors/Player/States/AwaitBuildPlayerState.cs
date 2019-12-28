@@ -54,6 +54,8 @@ namespace DataBehaviors.Player.States
         }
         private void PlayerInputOnSecondaryKeyPressed()
         {
+            if (buildData.ExtractedEssences.Count >= 2) return;
+            
             var handPos = buildData.ConstructorObject.position;
             var buildSpots = buildData.AttractionSpots.Items.ToArray();
             var buildRange = buildData.BuildSpotDetectionRange;

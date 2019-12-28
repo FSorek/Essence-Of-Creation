@@ -17,19 +17,19 @@ namespace Monobehaviors.Projectiles
         private float jumpRadius;
         private Transform currentTarget;
         private bool initialized;
-        private TowerAttack shatterTowerAttack;
+        private AttackBehaviour shatterAttackBehaviour;
 
         private Projectile projectile;
         
         private readonly Stack<Transform> previousTargets = new Stack<Transform>();
         private TransformList enemiesAlive;
 
-        public void Initialize(int shatterAmount, float jumpRadius, float damageReductionOnShatter, TowerAttack shatterTowerAttack, TransformList enemiesAlive)
+        public void Initialize(int shatterAmount, float jumpRadius, float damageReductionOnShatter, AttackBehaviour shatterAttackBehaviour, TransformList enemiesAlive)
         {
             this.shatterAmount = shatterAmount;
             this.damageReductionOnShatter = damageReductionOnShatter;
             this.jumpRadius = jumpRadius;
-            this.shatterTowerAttack = shatterTowerAttack;
+            this.shatterAttackBehaviour = shatterAttackBehaviour;
             this.enemiesAlive = enemiesAlive;
             
             projectile = GetComponent<Projectile>();
@@ -54,8 +54,8 @@ namespace Monobehaviors.Projectiles
             for (int i = 0; i < shatters; i++)
             {
                 // spawn new projectiles, to-do: pool
-                var proj = Instantiate(projectile.AttackBehaviour.ProjectileModel, transform.position, Quaternion.identity).AddComponent<Projectile>();
-                proj.Initialize(shatterTowerAttack, availableTargets[i]);
+                var proj = Instantiate(projectile.AttackBehaviourBehaviour.ProjectileModel, transform.position, Quaternion.identity).AddComponent<Projectile>();
+                proj.Initialize(shatterAttackBehaviour, availableTargets[i]);
                 proj.DamageScale = damageReductionOnShatter;
             }
             

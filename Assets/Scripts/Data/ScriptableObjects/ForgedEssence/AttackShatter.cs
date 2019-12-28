@@ -14,12 +14,12 @@ namespace Data.ScriptableObjects.ForgedEssence
         [Range(0,1f)]
         public float DamageReductionPerBounce;
         public float JumpRadius;
-        public TowerAttack ShatterTowerAttack;
+        public AttackBehaviour shatterAttackBehaviour;
 
         public override void ApplyModification(Projectile projectile)
         {
             var bounceComponent = projectile.gameObject.AddComponent<ProjectileShatter>();
-            bounceComponent.Initialize(Shatters, JumpRadius, DamageReductionPerBounce, ShatterTowerAttack, enemiesList);
+            bounceComponent.Initialize(Shatters, JumpRadius, DamageReductionPerBounce, shatterAttackBehaviour, enemiesList);
         }
     }
 }

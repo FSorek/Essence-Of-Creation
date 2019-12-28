@@ -5,16 +5,16 @@ using UnityEngine;
 
 namespace Monobehaviors.Essences.Attacks
 {
-    public class AttackComponent : MonoBehaviour
+    public class Attack : MonoBehaviour
     {
         [SerializeField] private TransformList enemiesList;
-        [SerializeField] private TowerAttack towerAttack;
+        [SerializeField] private AttackBehaviour attackBehaviour;
         private AttackController attackController;
 
 
         private void Awake()
         {
-            attackController = new AttackController(transform, towerAttack, enemiesList);
+            attackController = new AttackController(transform, attackBehaviour, enemiesList);
         }
 
         private void Update()

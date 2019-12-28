@@ -1,5 +1,6 @@
 ﻿using Data.Data_Types.Enums;
 using Data.ScriptableObjects.Player;
+using DataBehaviors.Game.Systems;
 using DataBehaviors.Player.States;
 using DataBehaviors.StateMachines;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Monobehaviors.Players
         [SerializeField] private PlayerInput playerInput;
         [SerializeField] private PlayerStateData stateData;
         [SerializeField] private PlayerBuildData buildData;
+        [SerializeField] private RecipeData recipeData;
         
         private StateMachine<PlayerStates> stateMachine;
         public void Awake()
@@ -21,7 +23,7 @@ namespace Monobehaviors.Players
             var forging = new ForgingPlayerState(playerInput, buildData, stateData);
             var extracting = new ExtractingPlayerState(playerInput, buildData, stateData);
             var placeObelisk = new PlaceObeliskPlayerState(playerInput, buildData, stateData);
-            var weaveEssence = new WeaveEssencePlayerState(playerInput, buildData, stateData);
+            var weaveEssence = new WeaveEssencePlayerState(playerInput, buildData, stateData, recipeData);
             
             stateMachine.RegisterState(PlayerStates.AWAIT_BUILD, awaitBuild);
             stateMachine.RegisterState(PlayerStates.FORGING, forging);

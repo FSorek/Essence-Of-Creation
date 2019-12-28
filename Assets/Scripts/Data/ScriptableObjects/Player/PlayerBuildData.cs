@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Data.ScriptableObjects.Globals;
 using Monobehaviors.AttractionSpots;
 using Monobehaviors.Players;
@@ -26,7 +27,7 @@ namespace Data.ScriptableObjects.Player
         public float BuildSpotDetectionRange = 20f;
         public float BuildTime = 2f;
         public int MaxObeliskSize = 3;
-        private List<GameObject> extractedEssences = new List<GameObject>();
+        [SerializeField]private List<GameObject> extractedEssences;
         private Transform constructorObject;
 
         public GameObject CurrentEssence { get; set; }
@@ -41,6 +42,19 @@ namespace Data.ScriptableObjects.Player
             }
         }
 
-        public List<GameObject> ExtractedEssences => extractedEssences;
+        public List<GameObject> ExtractedEssences        
+        {
+            get 
+            {            
+                if (extractedEssences == null)
+                    extractedEssences = new List<GameObject>();
+                return extractedEssences; 
+            }
+        }
+
+        private void OnEnable()
+        {
+            extractedEssences = null;
+        }
     }
  }

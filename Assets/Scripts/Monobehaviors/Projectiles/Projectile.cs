@@ -16,14 +16,14 @@ namespace Monobehaviors.Projectiles
     public class Projectile : MonoBehaviour
     {
 
-        private TowerAttack attackBehaviour;
+        private AttackBehaviour attackBehaviourBehaviour;
         private bool initialized;
         private Transform target;
         private IMover move;
         private IProjectileDeathBehaviour deathBehaviour;
         private float damagePercentage;
         private Damage damage;
-        public TowerAttack AttackBehaviour => attackBehaviour;
+        public AttackBehaviour AttackBehaviourBehaviour => attackBehaviourBehaviour;
         public Transform Target => target;
         public float DamageScale
         {
@@ -38,25 +38,25 @@ namespace Monobehaviors.Projectiles
                 Destroy(gameObject);
 
             var dir = target.position - transform.position;
-            float distThisFrame = attackBehaviour.ProjectileSpeed * Time.deltaTime;
+            float distThisFrame = attackBehaviourBehaviour.ProjectileSpeed * Time.deltaTime;
             
             if (dir.magnitude <= distThisFrame)
             {
-                attackBehaviour.AttackTarget(target, damage * damagePercentage);
+                attackBehaviourBehaviour.AttackTarget(target, damage * damagePercentage);
                 Die();
             }
             if(target != null)
-                move.Move(target.transform.position, attackBehaviour.ProjectileSpeed);
+                move.Move(target.transform.position, attackBehaviourBehaviour.ProjectileSpeed);
         }
 
-        public void Initialize(TowerAttack attackBehaviour, Transform target)
+        public void Initialize(AttackBehaviour attackBehaviourBehaviour, Transform target)
         {
             this.target = target;
-            this.attackBehaviour = attackBehaviour;
+            this.attackBehaviourBehaviour = attackBehaviourBehaviour;
             move = new SimpleMove(transform);
             deathBehaviour = new ProjectileSimpleDeath();
             damagePercentage = 1f;
-            damage = new Damage(attackBehaviour.DamageData);
+            damage = new Damage(attackBehaviourBehaviour.DamageData);
             initialized = true;
         }
 
