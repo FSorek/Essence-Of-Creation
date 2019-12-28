@@ -22,31 +22,12 @@ namespace DataBehaviors.Game.Systems
             foreach (var essence in essences)
             {
                 recipes.Add(essence.EssenceId, essence);
-                Debug.Log(Convert.ToString(essence.EssenceId,2).PadLeft(16,'0'));
             }
         }
 
         public Essence TryMerge(Essence essence1, Essence essence2)
         {
-            int key = 0;
-            Essence topEssence;
-            Essence lowEssence;
-            if (essence1.ElementCount >= essence2.ElementCount)
-            {
-                topEssence = essence1;
-                lowEssence = essence2;
-            }
-            else
-            {
-                topEssence = essence2;
-                lowEssence = essence1;
-            }
-
-
-            key = topEssence.EssenceId;
-            if (topEssence.ElementCount > 1)
-                key <<= 4;
-            key |= lowEssence.EssenceId;
+            int key = EssenceIdGenerator.GetID(essence1, essence2);
 
             Debug.Log(Convert.ToString(key,2).PadLeft(16,'0'));
             if (recipes.ContainsKey(key))

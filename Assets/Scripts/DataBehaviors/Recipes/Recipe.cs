@@ -9,7 +9,7 @@ namespace DataBehaviors.Recipes
     {
         public Recipe(List<BaseElement> elementChain)
         {
-            Id = TowerRecipeId.GetID(elementChain);
+            Id = EssenceIdGenerator.GetID(elementChain);
             Tier = 1;
             for (int i = 1; i <= 3; i++)
                 if (Id >= Mathf.Pow(16, i))
