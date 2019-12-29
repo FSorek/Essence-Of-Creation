@@ -32,6 +32,27 @@ namespace DataBehaviors.Player.States
         {
             input.OnPrimaryKeyPressed += PlayerInputOnPrimaryKeyPressed;
             input.OnSecondaryKeyPressed += PlayerInputOnSecondaryKeyPressed;
+            
+            if (buildData.ExtractedEssences == null || buildData.ExtractedEssences.Count < 2) 
+                return;
+            
+            var firstEssence = buildData.ExtractedEssences[0].GetComponent<Essence>();
+            var secondEssence = buildData.ExtractedEssences[1].GetComponent<Essence>();
+            var result = recipes.TryMerge(firstEssence, secondEssence);
+            if(result == null) return;
+            
+                
+            for (int i = 0; i < buildData.ExtractedEssences.Count; i++)
+            {
+                Object.Destroy(buildData.ExtractedEssences[i]);
+            }
+            
+            var resultObj = Object.Instantiate(result.gameObject, buildData.ConstructorObject.position + Vector3.down * 3f,
+                Quaternion.identity, buildData.ConstructorObject);
+            resultObj.GetComponent<Essence>().Deactivate();
+
+            buildData.ExtractedEssences.Clear();
+            buildData.ExtractedEssences.Add(resultObj);
         }
 
         private void PlayerInputOnPrimaryKeyPressed()
@@ -49,16 +70,10 @@ namespace DataBehaviors.Player.States
             var attractionSpot = ClosestEntityFinder.GetClosestTransform(openSpots, handPos).GetComponent<AttractionSpot>();
             var essence = buildData.ExtractedEssences.Last();
             
-            essence.transform.position = attractionSpot.transform.position;
-            essence.transform.SetParent(null);
             attractionSpot.AssignEssence(essence);
             buildData.ExtractedEssences.Remove(essence);
             
-            var attacks = essence.GetComponents<Attack>();
-            for (int i = 0; i < attacks.Length; i++)
-            {
-                attacks[i].enabled = true;
-            }
+            essence.GetComponent<Essence>().Activate();
         }
 
         private void PlayerInputOnSecondaryKeyPressed()
@@ -76,16 +91,7 @@ namespace DataBehaviors.Player.States
 
         public void ListenToState()
         {
-            if (buildData.ExtractedEssences == null) return;
-            if (buildData.ExtractedEssences.Count >= 2)
-            {
-                var firstEssence = buildData.ExtractedEssences[0].GetComponent<Essence>();
-                var secondEssence = buildData.ExtractedEssences[1].GetComponent<Essence>();
-                var result = recipes.TryMerge(firstEssence, secondEssence);
-                if(result == null) return;
-                
-                //to-do: replace held essence
-            }
+
         }
 
         public void StateExit()

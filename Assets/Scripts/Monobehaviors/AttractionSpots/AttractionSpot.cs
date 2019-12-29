@@ -11,10 +11,13 @@ namespace Monobehaviors.AttractionSpots
         public void AssignEssence(GameObject essence)
         {
             CurrentEssence = essence;
+            essence.transform.SetParent(transform);
+            essence.transform.position = transform.position;
         }
 
         public void ClearCurrentEssence()
         {
+            CurrentEssence.transform.SetParent(null);
             CurrentEssence = null;
         }
     }

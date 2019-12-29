@@ -1,6 +1,7 @@
 ﻿using Data.Data_Types.Enums;
 using Data.Interfaces.StateMachines;
 using Data.ScriptableObjects.Player;
+using Monobehaviors.Essences;
 using Monobehaviors.Essences.Attacks;
 using UnityEngine;
 
@@ -44,12 +45,7 @@ namespace DataBehaviors.Player.States
             
             essence.transform.SetParent(buildData.ConstructorObject);
             essence.transform.position = buildData.ConstructorObject.position + Vector3.down * 3f;
-            var attacks = essence.GetComponents<Attack>();
-
-            for (int i = 0; i < attacks.Length; i++)
-            {
-                attacks[i].enabled = false;
-            }
+            essence.GetComponent<Essence>().Deactivate();
         }
 
         public void StateExit()
