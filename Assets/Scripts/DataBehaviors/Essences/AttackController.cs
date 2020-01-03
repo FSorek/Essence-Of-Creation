@@ -1,4 +1,5 @@
-﻿using Data.ScriptableObjects.Attacks;
+﻿using System;
+using Data.ScriptableObjects.Attacks;
 using Data.ScriptableObjects.Globals;
 using DataBehaviors.Game.Targeting;
 using DataBehaviors.Game.Utility;
@@ -9,6 +10,8 @@ namespace DataBehaviors.Essences
 {
     public class AttackController
     {
+        public event Action<Projectile> OnProjectileFired = delegate {  };
+        
         private readonly Transform owner;
         private readonly AttackBehaviour attackBehaviour;
         private readonly TransformList enemiesList;
@@ -58,6 +61,8 @@ namespace DataBehaviors.Essences
             projectile.Initialize(attackBehaviour, target);
             if(attackBehaviour.ProjectileModifier != null)
                 attackBehaviour.ProjectileModifier.ApplyModification(projectile);
+
+            OnProjectileFired(projectile);
         }
 
         private Transform[] GetTargets()

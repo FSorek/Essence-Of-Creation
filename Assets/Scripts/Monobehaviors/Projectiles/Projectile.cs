@@ -8,6 +8,8 @@ using Data.Interfaces.Projectiles;
 using Data.ScriptableObjects.Attacks;
 using DataBehaviors.Game.Movements;
 using DataBehaviors.Projectiles;
+using JetBrains.Annotations;
+using Monobehaviors.Essences.Attacks;
 using Monobehaviors.Units;
 using UnityEngine;
 
@@ -15,15 +17,15 @@ namespace Monobehaviors.Projectiles
 {
     public class Projectile : MonoBehaviour
     {
-
-        private AttackBehaviour attackBehaviourBehaviour;
+        private List<HitAbility> hitAbilities = new List<HitAbility>();
+        private AttackBehaviour attackBehaviour;
+        private IProjectileDeathBehaviour deathBehaviour;
         private bool initialized;
         private Transform target;
         private IMover move;
-        private IProjectileDeathBehaviour deathBehaviour;
         private float damagePercentage;
         private Damage damage;
-        public AttackBehaviour AttackBehaviourBehaviour => attackBehaviourBehaviour;
+        public AttackBehaviour AttackBehaviour => attackBehaviour;
         public Transform Target => target;
         public float DamageScale
         {
@@ -38,21 +40,21 @@ namespace Monobehaviors.Projectiles
                 Destroy(gameObject);
 
             var dir = target.position - transform.position;
-            float distThisFrame = attackBehaviourBehaviour.ProjectileSpeed * Time.deltaTime;
+            float distThisFrame = attackBehaviour.ProjectileSpeed * Time.deltaTime;
             
             if (dir.magnitude <= distThisFrame)
             {
-                attackBehaviourBehaviour.AttackTarget(target, damage * damagePercentage);
+                attackBehaviour.AttackTarget(target, damage * damagePercentage, hitAbilities);
                 Die();
             }
             if(target != null)
-                move.Move(target.transform.position, attackBehaviourBehaviour.ProjectileSpeed);
+                move.Move(target.transform.position, attackBehaviour.ProjectileSpeed);
         }
 
         public void Initialize(AttackBehaviour attackBehaviourBehaviour, Transform target)
         {
             this.target = target;
-            this.attackBehaviourBehaviour = attackBehaviourBehaviour;
+            this.attackBehaviour = attackBehaviourBehaviour;
             move = new SimpleMove(transform);
             deathBehaviour = new ProjectileSimpleDeath();
             damagePercentage = 1f;
@@ -74,6 +76,24 @@ namespace Monobehaviors.Projectiles
         public void SetDeathBehaviour(IProjectileDeathBehaviour behaviour)
         {
             deathBehaviour = behaviour;
+        }
+
+        public void AttachAbility(HitAbility ability)
+        {
+            hitAbilities.Add(ability);
+        }
+        
+        public void AttachAbility([NotNull] IEnumerable<HitAbility> abilities)
+        {
+            if(hitAbilities == null)
+                hitAbilities = new List<HitAbility>(abilities);
+            else
+            {
+                foreach (var ability in abilities)
+                {
+                    AttachAbility(ability);
+                }
+            }
         }
     }
 }

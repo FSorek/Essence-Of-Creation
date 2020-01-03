@@ -1,6 +1,8 @@
-﻿using Data.Game;
+﻿using System.Collections.Generic;
+using Data.Game;
 using Data.ScriptableObjects.ForgedEssence;
 using Data.ScriptableObjects.Game;
+using Monobehaviors.Essences.Attacks;
 using UnityEngine;
 
 namespace Data.ScriptableObjects.Attacks
@@ -15,7 +17,7 @@ namespace Data.ScriptableObjects.Attacks
         [SerializeField] protected float projectileSpeed = 35;
         [SerializeField] protected AttackProjectileModifier projectileModifier;
 
-        public abstract void AttackTarget(Transform target, Damage damage);
+        public abstract void AttackTarget(Transform target, Damage damage, IEnumerable<HitAbility> hitAbilities);
 
         public float Range => range;
         public float ProjectileSpeed => projectileSpeed;

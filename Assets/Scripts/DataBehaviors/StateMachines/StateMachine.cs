@@ -29,6 +29,11 @@ namespace DataBehaviors.StateMachines
             availablePlayerStates.Add(key, state);
         }
 
+        public IState GetState(T key)
+        {
+            return availablePlayerStates.ContainsKey(key) ? currentState : null;
+        }
+
         private void DataOnStateEntered(T key)
         {
             if (!ValidateState(key)) return;

@@ -54,7 +54,7 @@ namespace Monobehaviors.Projectiles
             for (int i = 0; i < shatters; i++)
             {
                 // spawn new projectiles, to-do: pool
-                var proj = Instantiate(projectile.AttackBehaviourBehaviour.ProjectileModel, transform.position, Quaternion.identity).AddComponent<Projectile>();
+                var proj = Instantiate(projectile.AttackBehaviour.ProjectileModel, transform.position, Quaternion.identity).AddComponent<Projectile>();
                 proj.Initialize(shatterAttackBehaviour, availableTargets[i]);
                 proj.DamageScale = damageReductionOnShatter;
             }

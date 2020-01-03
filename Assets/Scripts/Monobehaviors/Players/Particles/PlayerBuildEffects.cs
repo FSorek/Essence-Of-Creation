@@ -36,11 +36,15 @@ namespace Monobehaviors.Players.Particles
 
         private void PlayerStateMachineOnStateEntered(PlayerStates state)
         {
-            if(state != PlayerStates.FORGING) return;
-            CancelInvoke();
-            if (buildData.TargetAttraction == null) return;
-            SetTargetedPosition(buildData.TargetAttraction.transform.position);
-            Invoke(nameof(StopEffect), buildData.BuildTime);
+            if(state == PlayerStates.FORGING)
+            {
+                CancelInvoke();
+                if (buildData.TargetAttraction == null) return;
+                SetTargetedPosition(buildData.TargetAttraction.transform.position);
+                Invoke(nameof(StopEffect), buildData.BuildTime);
+            }
+            
+            //if(state == )
         }
 
         private void PlayerInputOnEarthPressed()
