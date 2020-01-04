@@ -1,8 +1,8 @@
-﻿using Data.Data_Types.Enums;
+﻿using System;
+using Data.Data_Types.Enums;
 using Data.ScriptableObjects.Player;
 using UnityEngine;
 using UnityEngine.Experimental.VFX;
-using UnityEngine.Experimental.VFX.Utility;
 
 namespace Monobehaviors.Players.Particles
 {
@@ -18,6 +18,8 @@ namespace Monobehaviors.Players.Particles
         private VisualEffect summonFire;
         private VisualEffect summonWater;
 
+        private readonly int propertyId = Shader.PropertyToID("HandPosition");
+        
         public void Awake()
         {
             input.OnFirePressed += PlayerInputOnFirePressed;
@@ -29,15 +31,17 @@ namespace Monobehaviors.Players.Particles
             summonAir = Instantiate(vfxData.SummonAir).GetComponent<VisualEffect>();
             summonEarth = Instantiate(vfxData.SummonEarth).GetComponent<VisualEffect>();
             summonWater = Instantiate(vfxData.SummonWater).GetComponent<VisualEffect>();
-
-            summonFire.GetComponent<VFXPositionBinder>().Target = buildData.ConstructorObject;
-            summonAir.GetComponent<VFXPositionBinder>().Target = buildData.ConstructorObject;
-            summonEarth.GetComponent<VFXPositionBinder>().Target = buildData.ConstructorObject;
-            summonWater.GetComponent<VFXPositionBinder>().Target = buildData.ConstructorObject;
             
             playerStateData.OnStateEntered += PlayerStateDataOnStateEntered;
-            
-            Debug.Log(buildData.ConstructorObject.position);
+        }
+
+        private void Update()
+        {
+            var position = buildData.ConstructorObject.position;
+            summonFire.SetVector3(propertyId, position);
+            summonAir.SetVector3(propertyId, position);
+            summonEarth.SetVector3(propertyId, position);
+            summonWater.SetVector3(propertyId, position);
         }
 
         private void PlayerStateDataOnStateEntered(PlayerStates state)

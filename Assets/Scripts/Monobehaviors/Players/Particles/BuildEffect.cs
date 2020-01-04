@@ -1,21 +1,29 @@
-﻿using Data.Extensions;
+﻿using System;
+using Data.Extensions;
 using UnityEngine;
 using UnityEngine.Experimental.VFX;
-using UnityEngine.Experimental.VFX.Utility;
 
 namespace Monobehaviors.Players.Particles
 {
     public class BuildEffect : MonoBehaviour
     {
+        private readonly int propertyId = Shader.PropertyToID("HandPosition");
+        private Transform effectPositionTransform;
+        private VisualEffect effect;
+
         internal void SetFollowedTransform(Transform effectPositionTransform, Vector3 buildSpotPosition)
         {
-            var binders = GetComponents<VFXPositionBinder>();
-            foreach (var vfxPositionBinder in binders)
-                if (vfxPositionBinder.Parameter == "HandPosition" && vfxPositionBinder.Target == null)
-                    vfxPositionBinder.Target = effectPositionTransform;
+            this.effectPositionTransform = effectPositionTransform;
             transform.GetChild(0).position = buildSpotPosition;
             gameObject.SetActive(true);
-            GetComponent<VisualEffect>().SendEvent("OnPlay");
+            effect = GetComponent<VisualEffect>();
+            effect.SendEvent("OnPlay");
+        }
+
+        private void Update()
+        {
+            if(effect != null)
+                effect.SetVector3(propertyId, effectPositionTransform.position);
         }
 
         internal void Detach()
