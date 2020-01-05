@@ -23,6 +23,10 @@ namespace Monobehaviors.Essences.Attacks
         private void AttackControllerOnProjectileFired(Projectile projectile)
         {
             projectile.AttachAbility(hitAbilities);
+            foreach (var ability in hitAbilities)
+            {
+                ability.AbilityProjectileFired();
+            }
         }
 
         private void Update()

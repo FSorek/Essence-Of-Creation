@@ -3,6 +3,7 @@ using Data.Game;
 using Data.ScriptableObjects.ForgedEssence;
 using Data.ScriptableObjects.Game;
 using Monobehaviors.Essences.Attacks;
+using Monobehaviors.Projectiles;
 using UnityEngine;
 
 namespace Data.ScriptableObjects.Attacks
@@ -18,6 +19,17 @@ namespace Data.ScriptableObjects.Attacks
         [SerializeField] protected AttackProjectileModifier projectileModifier;
 
         public abstract void AttackTarget(Transform target, Damage damage, IEnumerable<HitAbility> hitAbilities);
+        
+        public Projectile FireProjectile(Transform target)
+        {
+            var projectile = GameObject.Instantiate(projectileModel, Vector3.zero, Quaternion.identity)
+                .AddComponent<Projectile>();
+            projectile.Initialize(this, target);
+            if(projectileModifier != null)
+                projectileModifier.ApplyModification(projectile);
+
+            return projectile;
+        }
 
         public float Range => range;
         public float ProjectileSpeed => projectileSpeed;
@@ -25,6 +37,5 @@ namespace Data.ScriptableObjects.Attacks
         public float AttackTimer => attackTimer;
         public GameObject ProjectileModel => projectileModel;
         public DamageData DamageData => damageData;
-        public AttackProjectileModifier ProjectileModifier => projectileModifier;
     }
 }

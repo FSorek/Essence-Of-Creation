@@ -13,7 +13,8 @@ namespace Data.Game
             damages = new Dictionary<DamageType, Stat>();
             foreach (var damage in data.Damages)
             {
-                damages.Add(damage.Key, damage.Value);
+                var stat = new Stat(damage.Value);
+                damages.Add(damage.Key, stat);
             }
         }
 

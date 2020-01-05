@@ -51,14 +51,14 @@ namespace Monobehaviors.Projectiles
                 move.Move(target.transform.position, attackBehaviour.ProjectileSpeed);
         }
 
-        public void Initialize(AttackBehaviour attackBehaviourBehaviour, Transform target)
+        public void Initialize(AttackBehaviour attackBehaviour, Transform target)
         {
             this.target = target;
-            this.attackBehaviour = attackBehaviourBehaviour;
+            this.attackBehaviour = attackBehaviour;
             move = new SimpleMove(transform);
             deathBehaviour = new ProjectileSimpleDeath();
             damagePercentage = 1f;
-            damage = new Damage(attackBehaviourBehaviour.DamageData);
+            damage = new Damage(attackBehaviour.DamageData);
             initialized = true;
         }
 
@@ -67,7 +67,7 @@ namespace Monobehaviors.Projectiles
             target = newTarget;
         }
 
-        public void Die()
+        private void Die()
         {
             if(deathBehaviour.CanDestroy() || target == null)
                 Destroy(gameObject);

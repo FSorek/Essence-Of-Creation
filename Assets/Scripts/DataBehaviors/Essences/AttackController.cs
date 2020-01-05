@@ -50,19 +50,10 @@ namespace DataBehaviors.Essences
             for (int i = 0; i < attackBehaviour.TargetLimit; i++)
                 if (targets[i] != null)
                 {
-                    FireProjectile(targets[i]);
+                    var projectile = attackBehaviour.FireProjectile(targets[i]);
+                    projectile.transform.position = owner.position;
+                    OnProjectileFired(projectile);
                 }
-        }
-
-        private void FireProjectile(Transform target)
-        {
-            var projectile = GameObject.Instantiate(attackBehaviour.ProjectileModel, owner.position, Quaternion.identity)
-                .AddComponent<Projectile>();
-            projectile.Initialize(attackBehaviour, target);
-            if(attackBehaviour.ProjectileModifier != null)
-                attackBehaviour.ProjectileModifier.ApplyModification(projectile);
-
-            OnProjectileFired(projectile);
         }
 
         private Transform[] GetTargets()

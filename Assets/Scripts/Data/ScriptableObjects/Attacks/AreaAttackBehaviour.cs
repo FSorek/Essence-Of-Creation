@@ -26,9 +26,12 @@ namespace Data.ScriptableObjects.Attacks
                 var unitHealth = aoeTarget.GetComponent<UnitHealth>();
                 if(unitHealth == null) return;
 
-                foreach (var hitAbility in hitAbilities)
+                if(hitAbilities != null)
                 {
-                    hitAbility.ApplyAbility(aoeTarget);
+                    foreach (var hitAbility in hitAbilities)
+                    {
+                        hitAbility.ApplyAbility(aoeTarget);
+                    }
                 }
                 unitHealth.TakeDamage(damage);
             }

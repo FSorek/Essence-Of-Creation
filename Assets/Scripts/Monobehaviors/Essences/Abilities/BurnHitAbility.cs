@@ -17,7 +17,7 @@ namespace Monobehaviors.Essences.Attacks
             damage = new Damage(burnDamage);
         }
 
-        public override void ApplyAbility(Transform target)
+        protected override void ApplyAbility()
         {
             target.GetComponent<EffectController>().ApplyStatus(new DamageOverTimeStatus(damage, duration));
         }

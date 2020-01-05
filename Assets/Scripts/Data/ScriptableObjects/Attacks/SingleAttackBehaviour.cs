@@ -13,10 +13,13 @@ namespace Data.ScriptableObjects.Attacks
         {
             var unitHealth = target.GetComponent<UnitHealth>();
             if(unitHealth == null) return;
-            
-            foreach (var hitAbility in hitAbilities)
+
+            if (hitAbilities != null)
             {
-                hitAbility.ApplyAbility(target);
+                foreach (var hitAbility in hitAbilities)
+                {
+                    hitAbility.ApplyAbility(target);
+                }
             }
             unitHealth.TakeDamage(damage);
         }
