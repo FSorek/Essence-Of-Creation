@@ -1,4 +1,6 @@
-﻿using Data.Data_Types.Enums;
+﻿using System.Collections.Generic;
+using Data.Data_Types.Enums;
+using Data.Extensions;
 using Data.Interfaces.StateMachines;
 using Data.ScriptableObjects.Game;
 using Data.ScriptableObjects.StateMachines;
@@ -15,14 +17,23 @@ namespace DataBehaviors.Game.States
         private EnemyFactory enemyFactory;
         private float lastSpawn;
         private int spawnCounter;
+        private GameObject[] archetypes;
+        
 
         public GameSpawningWave(ObjectPool enemyPool, GameStateData stateData, WaveSettings waveSettings)
         {
             this.stateData = stateData;
             this.waveSettings = waveSettings;
-            enemyFactory = new EnemyFactory(waveSettings.Seed, enemyPool);
-            //waveGenerator = new WaveGenerator(gameSettings.WavePowerPoints, gameSettings.Seed); || this.waveGenerator = waveGenerator; 
-            // create pre-defined waves first then a layer on top of it to generate it?
+            enemyFactory = new EnemyFactory(waveSettings.Seed, enemyPool, waveSettings.ConversionRates);
+            archetypes = new GameObject[waveSettings.WaveCount];
+            
+            var parent = new GameObject("WaveArchetypes").transform;
+            for (int i = 0; i < waveSettings.WaveCount; i++)
+            {
+                archetypes[i] = enemyFactory.CreateEnemy(waveSettings.EnemyPower[i]);
+                archetypes[i].name = $"Wave {i}";
+                archetypes[i].transform.SetParent(parent);
+            }
         }
 
         public void StateEnter()
@@ -50,9 +61,10 @@ namespace DataBehaviors.Game.States
 
         private void Spawn()
         {
+            var currentArchetype = archetypes[waveSettings.CurrentWave];
             for (int i = 0; i < waveSettings.EnemiesPerSpawn; i++)
             {
-                var enemy = enemyFactory.CreateEnemy(waveSettings.EnemyPower, waveSettings.ConversionRates);
+                var enemy = enemyFactory.CreateFromArchetype(currentArchetype);
                 enemy.transform.position = waveSettings.SpawnPosition;
                 enemy.SetActive(true);
             }

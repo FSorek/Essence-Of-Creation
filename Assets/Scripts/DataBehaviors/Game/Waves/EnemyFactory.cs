@@ -10,14 +10,29 @@ namespace DataBehaviors.Game.Waves
     public class EnemyFactory
     {
         private ObjectPool enemyPool;
+        private readonly StatConversionRates conversionRates;
 
-        public EnemyFactory(int seed, ObjectPool enemyPool)
+        public EnemyFactory(int seed, ObjectPool enemyPool, StatConversionRates conversionRates)
         {
             Random.InitState(seed);
             this.enemyPool = enemyPool;
+            this.conversionRates = conversionRates;
         }
 
-        public GameObject CreateEnemy(int power, StatConversionRates conversionRates)
+        public GameObject CreateFromArchetype(GameObject from)
+        {
+            var enemyFrom = from.GetComponent<StatController>();
+            var enemyTo = enemyPool.Get().GetComponent<StatController>();
+
+            enemyTo.SetStat(StatName.MovementSpeed, enemyFrom.GetStat(StatName.MovementSpeed));
+            enemyTo.SetStat(StatName.HealthPool, enemyFrom.GetStat(StatName.HealthPool));
+            enemyTo.SetStat(StatName.ArmorToughness, enemyFrom.GetStat(StatName.ArmorToughness));
+            enemyTo.SetStat(StatName.HealthRegeneration, enemyFrom.GetStat(StatName.HealthRegeneration));
+            
+            return enemyTo.gameObject;
+        }
+
+        public GameObject CreateEnemy(int power)
         {
             var enemy = enemyPool.Get();
             var stats = enemy.GetComponent<StatController>();

@@ -11,7 +11,7 @@ public class CleanEmptyFoldersEditorExtension : EditorWindow
     private static void Cleanup()
     {
         deletedFolders = string.Empty;
-
+        
         var directoryInfo = new DirectoryInfo(Application.dataPath);
         foreach(var subDirectory in directoryInfo.GetDirectories("*.*", SearchOption.AllDirectories))
         {

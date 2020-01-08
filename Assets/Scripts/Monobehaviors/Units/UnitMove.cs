@@ -18,6 +18,7 @@ namespace Monobehaviors.Units
         private Vector3 movePosition;
         private float moveSpeed;
         private StatController stats;
+        private float changeDestinationDistance;
         
         private void Awake()
         {
@@ -30,6 +31,7 @@ namespace Monobehaviors.Units
         {
             reachpoint = 0;
             movePosition = Vector3.zero;
+            changeDestinationDistance = Random.Range(5f, 25f);
         }
         
         private void Update()
@@ -52,7 +54,7 @@ namespace Monobehaviors.Units
                 movePosition = reachPoints.Items[reachpoint].position;
             }
 
-            if (Vector3.Distance(transform.position, movePosition) <= 15f)
+            if (Vector3.Distance(transform.position, movePosition) <= changeDestinationDistance)
             {
                 reachpoint = reachpoint >= reachPoints.Items.Count - 1 ? 0 : reachpoint + 1;
                 movePosition = reachPoints.Items[reachpoint].position;

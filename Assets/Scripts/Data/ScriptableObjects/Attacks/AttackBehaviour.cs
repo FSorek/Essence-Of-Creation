@@ -4,19 +4,23 @@ using Data.ScriptableObjects.ForgedEssence;
 using Data.ScriptableObjects.Game;
 using Monobehaviors.Essences.Attacks;
 using Monobehaviors.Projectiles;
+using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
+using UnityEditor;
 using UnityEngine;
 
 namespace Data.ScriptableObjects.Attacks
 {
+    [System.Serializable]
     public abstract class AttackBehaviour : ScriptableObject
     {
-        [SerializeField] protected DamageData damageData;
+        [SerializeField][InlineEditor(InlineEditorObjectFieldModes.Hidden)] protected DamageData damageData;
         [SerializeField] protected int targetLimit = 1;
         [SerializeField] protected float attackTimer = 1f;
         [SerializeField] protected float range = 40f;
         [SerializeField] protected GameObject projectileModel;
         [SerializeField] protected float projectileSpeed = 35;
-        [SerializeField] protected AttackProjectileModifier projectileModifier;
+        [SerializeField][InlineEditor(InlineEditorObjectFieldModes.Hidden)]  protected AttackProjectileModifier projectileModifier;
 
         public abstract void AttackTarget(Transform target, Damage damage, IEnumerable<HitAbility> hitAbilities);
         

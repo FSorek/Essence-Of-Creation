@@ -6,6 +6,8 @@ namespace Data.ScriptableObjects.Game
     [CreateAssetMenu(fileName = "Wave Settings", menuName = "Essence/Game/Wave Settings")]
     public class WaveSettings : ScriptableObject
     {
+        [SerializeField] private int currentWave;
+        
         public int Seed;
         public float TimeBetweenSpawns;
         public int SpawnAmount;
@@ -13,6 +15,11 @@ namespace Data.ScriptableObjects.Game
         public int EnemiesPerSpawn;
 
         public StatConversionRates ConversionRates;
-        public int EnemyPower;
+        public int[] EnemyPower;
+
+        public int WaveCount => EnemyPower.Length;
+        public int CurrentWave => currentWave;
+
+        public void NextWave() => currentWave++;
     }
 }
