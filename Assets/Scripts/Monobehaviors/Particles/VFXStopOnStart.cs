@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Experimental.VFX;
 
-
-public class VFXStopOnStart : MonoBehaviour
+namespace Monobehaviors.Particles
 {
-    void Awake()
+    public class VFXStopOnStart : MonoBehaviour
     {
-        GetComponent<VisualEffect>().Stop();
+        private void Awake()
+        {
+            GetComponent<VisualEffect>().Stop();
+        }
     }
 }

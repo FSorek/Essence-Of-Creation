@@ -1,11 +1,16 @@
-﻿public class StatModifier
-{
-    public readonly float Value;
-    public readonly StatModifierType Type;
+﻿using Data.Data_Types.Enums;
 
-    public StatModifier(float value, StatModifierType type)
+namespace Data.Data_Types
+{
+    public class StatModifier
     {
-        Value = value;
-        Type = type;
+        public StatModifier(float value, StatModifierType type)
+        {
+            Value = value;
+            Type = type;
+        }
+
+        public float Value { get; set; }
+        public StatModifierType Type { get; }
     }
 }

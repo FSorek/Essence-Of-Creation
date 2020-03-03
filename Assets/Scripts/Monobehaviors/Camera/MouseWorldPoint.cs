@@ -1,34 +1,33 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseWorldPoint : MonoBehaviour
+namespace Monobehaviors.Camera
 {
-    private static RaycastHit hit;
-    private Camera cam;
-    private Ray ray;
-
-    public static RaycastHit? RaycastHit => hit;
-    // Start is called before the first frame update
-    void Start()
+    public class MouseWorldPoint : MonoBehaviour
     {
-        cam = GetComponent<Camera>();
-        ray = cam.ScreenPointToRay(Input.mousePosition);
-    }
+        private static RaycastHit hit;
+        private UnityEngine.Camera cam;
+        private Ray ray;
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        if(cam == null)
+        public static RaycastHit? RaycastHit => hit;
+
+        // Start is called before the first frame update
+        private void Start()
         {
-            throw new Exception("No Camera component attached to read mouse hit point!");
+            cam = GetComponent<UnityEngine.Camera>();
+            ray = cam.ScreenPointToRay(Input.mousePosition);
         }
-        ray = cam.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit, 100f))
+
+        // Update is called once per frame
+        private void FixedUpdate()
         {
-            
+            if (cam == null) throw new Exception("No Camera component attached to read mouse hit point!");
+            ray = cam.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit, 100f))
+            {
+            }
+
+            Debug.DrawRay(ray.origin, ray.direction * 100, Color.cyan);
         }
-        Debug.DrawRay(ray.origin, ray.direction * 100, Color.cyan);
     }
 }

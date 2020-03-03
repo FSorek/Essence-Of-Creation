@@ -1,4 +1,4 @@
-﻿namespace MeshBrush
+﻿namespace Downloaded.MeshBrush.Scripts.Enums
 {
     public enum BrushMode
     {

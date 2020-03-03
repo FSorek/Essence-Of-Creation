@@ -1,25 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MouseShaderSphereMask : MonoBehaviour
+namespace Monobehaviors.Mouse
 {
-    public Camera PlayerCamera;
-    public float Radius = 1f;
-    public float Hardness = .5f;
-
-    private RaycastHit hit;
-    
-
-    // Update is called once per frame
-    void Update()
+    public class MouseShaderSphereMask : MonoBehaviour
     {
-        Ray ray = PlayerCamera.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out hit))
+        public float Hardness = .5f;
+
+        private RaycastHit hit;
+        public UnityEngine.Camera PlayerCamera;
+        public float Radius = 1f;
+
+
+        // Update is called once per frame
+        private void Update()
         {
-            Shader.SetGlobalVector("SpherePosition", hit.point);
-            Shader.SetGlobalFloat("SphereRadius", Radius);
-            Shader.SetGlobalFloat("SphereHardness", Hardness);
+            var ray = PlayerCamera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out hit))
+            {
+                Shader.SetGlobalVector("SpherePosition", hit.point);
+                Shader.SetGlobalFloat("SphereRadius", Radius);
+                Shader.SetGlobalFloat("SphereHardness", Hardness);
+            }
         }
     }
 }

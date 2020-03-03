@@ -1,9 +1,19 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using Data.Interfaces.Pooling;
+using UnityEngine;
 
-public static class GameObjectPoolExtension
+namespace Data.Extensions
 {
-    public static void ReturnToPool(this GameObject obj, float delay = 0f)
+    public static class GameObjectPoolExtension
     {
-        obj.GetComponent<IGameObjectPooled>()?.Pool.ReturnToPool(obj, delay);
+        public static void ReturnToPool(this GameObject obj)
+        {
+            obj.GetComponent<IGameObjectPooled>()?.Pool.ReturnToPool(obj);
+        }
+
+        public static IEnumerator DelayedReturnToPool(this GameObject obj, float delay)
+        {
+            yield return obj.GetComponent<IGameObjectPooled>()?.Pool.DelayedReturnToPool(obj, delay);
+        }
     }
 }

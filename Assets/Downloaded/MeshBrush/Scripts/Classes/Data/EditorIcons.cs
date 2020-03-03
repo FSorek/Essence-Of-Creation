@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MeshBrush {
+namespace Downloaded.MeshBrush.Scripts.Classes.Data {
     
 public static class EditorIcons
 {

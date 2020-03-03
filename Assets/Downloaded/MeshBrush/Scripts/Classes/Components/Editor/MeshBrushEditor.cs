@@ -1,17 +1,18 @@
-﻿using UnityEngine;
-using UnityEditor;
-
-using System;
-using System.IO;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using Downloaded.MeshBrush.Scripts.Classes.Data;
+using Downloaded.MeshBrush.Scripts.Classes.Utilities;
+using Downloaded.MeshBrush.Scripts.Classes.Wizards.Editor;
+using Downloaded.MeshBrush.Scripts.Enums;
+using UnityEditor;
+using UnityEngine;
 
-using Random = UnityEngine.Random;
-
-namespace MeshBrush
+namespace Downloaded.MeshBrush.Scripts.Classes.Components.Editor
 {
     [ExecuteInEditMode]
     [CustomEditor(typeof(MeshBrush))]
-    public class MeshBrushEditor : Editor
+    public class MeshBrushEditor : UnityEditor.Editor
     {
         MeshBrush meshBrush;
         MeshBrushParent meshBrushParent;

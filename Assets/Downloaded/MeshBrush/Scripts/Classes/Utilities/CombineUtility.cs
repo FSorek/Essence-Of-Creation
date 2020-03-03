@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MeshBrush
+namespace Downloaded.MeshBrush.Scripts.Classes.Utilities
 {
     public static class CombineUtility
     {

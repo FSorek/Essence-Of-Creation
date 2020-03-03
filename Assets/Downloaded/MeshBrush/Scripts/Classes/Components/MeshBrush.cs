@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-
-#if UNITY_EDITOR
-using UnityEditor;
+﻿#if UNITY_EDITOR
 #endif
-
-using UnityEngine;
-using Random = UnityEngine.Random;
-
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Downloaded.MeshBrush.Scripts.Classes.Utilities;
+using UnityEditor;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
-namespace MeshBrush
+namespace Downloaded.MeshBrush.Scripts.Classes.Components
 {
     /// <summary>
     /// MeshBrush component that provides functionality for painting, deleting and combining meshes in your scenes.

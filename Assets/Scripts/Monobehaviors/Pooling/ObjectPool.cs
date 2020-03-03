@@ -1,51 +1,66 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Data.Interfaces.Pooling;
 using UnityEngine;
 
-public class ObjectPool : MonoBehaviour
+namespace Monobehaviors.Pooling
 {
-    public GameObject prefab;
-    public int PrespawnAmount = 0;
-    private Queue<GameObject> objects = new Queue<GameObject>();
-
-
-    private void Awake()
+    public class ObjectPool : MonoBehaviour
     {
-        AddObjects(PrespawnAmount);
-    }
+        private readonly Queue<GameObject> objects = new Queue<GameObject>();
+        private Transform poolRoot;
+        public GameObject prefab;
+        public int prespawnAmount;
 
-    public GameObject Get()
-    {
-        if (objects.Count == 0)
+        private void Awake()
         {
-            AddObjects(1);
+            if (poolRoot == null)
+                poolRoot = transform;
         }
 
-        return objects.Dequeue();
-    }
-
-    private void AddObjects(int v)
-    {
-        for (int i = 0; i < v; i++)
+        private void OnEnable()
         {
-            GameObject obj = Instantiate(prefab);
-            obj.gameObject.SetActive(false);
+            AddObjects(prespawnAmount);
+        }
+        
+        public GameObject Get()
+        {
+            if (objects.Count == 0) AddObjects(1);
+
+            return objects.Dequeue();
+        }
+
+        private void AddObjects(int v)
+        {
+            for (int i = 0; i < v; i++)
+            {
+                var obj = Instantiate(prefab, transform, true);
+                objects.Enqueue(obj);
+                if (obj.GetComponent<IGameObjectPooled>() == null)
+                    obj.AddComponent<PooledGameObject>().Pool = this;
+                else
+                    obj.GetComponent<IGameObjectPooled>().Pool = this;
+                obj.SetActive(false);
+            }
+        }
+
+        public void ReturnToPool(GameObject obj)
+        {
+            obj.SetActive(false);
             objects.Enqueue(obj);
-            obj.GetComponent<IGameObjectPooled>().Pool = this;
-            obj.transform.SetParent(this.transform);
         }
-    }
+        
+        public IEnumerator DelayedReturnToPool(GameObject obj, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            obj.SetActive(false);
+            objects.Enqueue(obj);
+        }
 
-    public void ReturnToPool(GameObject obj, float delay = 0f)
-    {
-        StartCoroutine(DelayedReturnToPool(obj, delay));
-    }
-
-    private IEnumerator DelayedReturnToPool(GameObject obj, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        obj.gameObject.SetActive(false);
-        objects.Enqueue(obj);
+        private void OnDisable()
+        {
+            Destroy(poolRoot);
+        }
     }
 }

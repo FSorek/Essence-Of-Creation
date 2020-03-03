@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace MeshBrush
+namespace Downloaded.MeshBrush.Scripts.Classes.Components
 {
     // This class is useful if you want to save your
     // combined meshes to disk for prefabbing or for

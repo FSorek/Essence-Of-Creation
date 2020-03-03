@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Downloaded.MeshBrush.Scripts.Classes.Data;
 using UnityEditor;
+using UnityEngine;
 
-namespace MeshBrush
+namespace Downloaded.MeshBrush.Scripts.Classes.Components.Editor
 {
     [CustomEditor(typeof(SaveCombinedMesh))]
-    public class SaveCombinedMeshEditor : Editor
+    public class SaveCombinedMeshEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {

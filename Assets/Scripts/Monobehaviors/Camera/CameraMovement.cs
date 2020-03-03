@@ -1,15 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class CameraMovement : MonoBehaviour
+namespace Monobehaviors.Camera
 {
-    public int Acceleration = 1;
-    public float PanningSpeed = 1f;
-    void FixedUpdate()
+    public class CameraMovement : MonoBehaviour
     {
-        float xAxisValue = Mathf.Clamp(Mathf.Pow(Input.GetAxis("Horizontal"), Acceleration), -1, 1);
-        float zAxisValue = Mathf.Clamp(Mathf.Pow(Input.GetAxis("Vertical"), Acceleration), -1, 1);
-        transform.Translate(new Vector3(xAxisValue * PanningSpeed, 0.0f, zAxisValue * PanningSpeed) * Time.deltaTime);
+        public int Acceleration = 1;
+        public float PanningSpeed = 1f;
+
+        private void FixedUpdate()
+        {
+            float xAxisValue = Mathf.Clamp(Mathf.Pow(Input.GetAxis("Horizontal"), Acceleration), -1, 1);
+            float zAxisValue = Mathf.Clamp(Mathf.Pow(Input.GetAxis("Vertical"), Acceleration), -1, 1);
+            transform.Translate(new Vector3(xAxisValue * PanningSpeed, 0.0f, zAxisValue * PanningSpeed) * Time.deltaTime);
+        }
     }
 }
